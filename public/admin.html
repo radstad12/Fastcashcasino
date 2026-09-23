@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Casino Admin</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main class="admin">
+<h1>Casino Admin</h1>
+<div class="admin-login">
+<input id="user" value="chicano" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="loadAdmin()">Přihlásit</button>
+</div>
+<div id="dashboard"></div>
+</main>
+<script>
+let auth="";
+async function loadAdmin(){
+  const u=document.getElementById("user").value;
+  const p=document.getElementById("pass").value;
+  auth="Basic "+btoa(u+":"+p);
+  const r=await fetch("/api/casino",{headers:{Authorization:auth}});
+  // casino endpoint is public; use transactions as the auth check
+  const t=await fetch("/api/admin/transactions",{headers:{Authorization:auth}});
+  if(!t.ok){document.getElementById("dashboard").innerText="Přihlášení selhalo.";return;}
+  refresh();
+}
+async function refresh(){
+  const c=await fetch("/api/casino").then(r=>r.json());
+  const t=await fetch("/api/admin/transactions",{headers:{Authorization:auth}}).then(r=>r.json());
+  document.getElementById("dashboard").innerHTML=`
+    <div class="stats">
+      <div><b>${c.bankroll.toLocaleString("cs-CZ")}</b><small>Casino bankroll</small></div>
+      <div><b>${c.minimumReserve.toLocaleString("cs-CZ")}</b><small>Min. rezerva</small></div>
+      <div><b>${c.safeAvailable.toLocaleString("cs-CZ")}</b><small>Dostupné pro výhry</small></div>
+    </div>
+    <div class="adjust">
+      <input id="adjust" type="number" placeholder="+ / - částka">
+      <button onclick="adjust()">Upravit bankroll</button>
+    </div>
+    <h2>Posledních 200 transakcí</h2>
+    <pre>${JSON.stringify(t,null,2)}</pre>`;
+}
+async function adjust(){
+  const amount=Number(document.getElementById("adjust").value);
+  const r=await fetch("/api/admin/casino/adjust",{
+    method:"POST",headers:{"Content-Type":"application/json",Authorization:auth},
+    body:JSON.stringify({amount})
+  });
+  const j=await r.json();
+  if(!r.ok) alert(j.error); else refresh();
+}
+</script>
+</body>
+</html>
