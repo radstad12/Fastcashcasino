@@ -1,34 +1,33 @@
-# FastCashCasino v2 — GitHub Pages Demo
+# FastCash Casino — Slot Floor v3
 
-A polished GTA-inspired, tablet-first casino frontend.
+Frontend-only GitHub Pages demo using virtual TOKENS.
 
-### New in v2
-- 10 individual illustrated game-card images (no emoji game thumbnails)
-- +10,000 TOKENS button in the top wallet
-- Every slot has a different cabinet/layout:
-  - 5x3 classic
-  - 5x4
-  - 6x4
-  - 3x3 classic
-  - 3x2 compact
-  - 5x3 with bonus area
-  - 4x3 high roller
-  - 5x4 fruits
-  - 4x3 VIP
-  - 6x3 Ocean Drive
-- Different reel symbols, paylines, cabinet styling and presentation
-- Animated spins, wins, paytables, stats and history
-- Responsive tablet/mobile/desktop layout
-- Fully static: works on GitHub Pages
+## What changed
+- Removed poker from the build.
+- Replaced blurry raster game covers with sharp vector SVG artwork.
+- 10 original slot themes with different mechanics.
+- Added animated reel stopping, win highlights, bonus effects and browser-generated casino sounds.
+- Added feature states: free spins, sticky respins, expanding wilds, tumble/cascade, multipliers, mystery bonus, cashback and a virtual jackpot meter.
+- Symbols are rendered as crisp inline SVG icons instead of emoji.
+- Spin outcome is generated before the visual reel animation; animation only presents the result.
+- +10,000 TOKENS remains a testing-only balance button.
 
-## Install
+## Slot designs
+1. Neon 81 — 4x3, 81 ways, Multi Wild x2/x4/x8
+2. Wild Hunt — 5x3, 20 lines, Wild x2, Sticky Free Spins
+3. Hot 100 — 6x4, 100 lines, Expanding Wild, two scatter-style symbols, virtual jackpot
+4. Joker ReSpin — 4x3, 81 ways, Sticky Wild Respin + Gamble
+5. Multi Five — 5x4, 20 lines, Multi Wild + Free Spins
+6. Midnight Fruits — 4x3, 81 ways, Wild + zero-balance Cashback event
+7. Fruit Jack — 5x4, 40 lines, Wild + Scatter + Mystery Bonus + Gamble
+8. Vegas 81 — 4x3, 81 ways, Multi Wild
+9. Olympus Clash — 6x5, Pay Anywhere, Tumble/Cascade + multiplier-style bonus events
+10. Firebird Double — 4x3, 27 ways from each side, Wild
 
-Upload the contents of this folder to the root of your `Fastcashcasino` GitHub repository.
+The mechanics are original FastCash implementations inspired by common Czech slot patterns, not copies of third-party game artwork or source code.
 
-Then:
+## GitHub Pages
+Upload the contents of `Fastcashcasino-main` to the repository root and enable:
+Settings → Pages → Deploy from branch → main → /(root)
 
-Settings → Pages → Deploy from branch → `main` → `/ (root)`
-
-The demo is intentionally browser-only for now. The +10,000 button and balance are test features.
-
-Later, the spin and wallet functions can be replaced with the authoritative backend so all players share the same casino pool.
+This is a browser-only demo. For real multiplayer/shared balances, move RNG, balances and game state to a server.
