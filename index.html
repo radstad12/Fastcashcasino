@@ -22,7 +22,7 @@
 
   <nav class="nav">
     <button class="nav-btn active" onclick="showLobby()">⌂ <span>HOME</span></button>
-    <button class="nav-btn" onclick="scrollToGames()">▣ <span>SLOTS</span></button>
+    <button class="nav-btn" onclick="scrollToGames()">▣ <span>SLOTS</span></button><button class="nav-btn" onclick="openPoker()">♠ <span>POKER</span></button>
     <button class="nav-btn" onclick="openRewards()">♛ <span>VIP</span></button>
     <button class="nav-btn" onclick="openRewards()">🎁 <span>REWARDS</span></button>
     <button class="nav-btn" onclick="openStats()">▥ <span>STATS</span></button>
@@ -50,6 +50,20 @@
 </section>
 
 <section class="ticker"><div><span class="dot"></span> LIVE WINS</div><div id="tickerText">Mikey hit 2,500 tokens on Lucky Sevens</div><div class="ticker-right">DEMO MODE • <b>PLAY RESPONSIBLY</b></div></section>
+
+<section class="poker-promo" onclick="openPoker()">
+  <div class="poker-promo-copy">
+    <div class="eyebrow gold">♠ FASTCASH POKER ROOM</div>
+    <h2>SIT DOWN.<br><em>PLAY TEXAS HOLD'EM.</em></h2>
+    <p>4 seats • virtual TOKENS • animated dealer • blinds • raise • all-in • showdown</p>
+    <button class="gold-btn" type="button">ENTER POKER ROOM <span>→</span></button>
+  </div>
+  <div class="poker-mini-table">
+    <div class="mini-dealer"><div class="mini-head"></div><div class="mini-body"></div></div>
+    <div class="mini-felt"><span>♠</span><b>FASTCASH</b><span>♥</span></div>
+    <div class="mini-chip-stack"><i></i><i></i><i></i></div>
+  </div>
+</section>
 
 <section class="section" id="gamesSection">
   <div class="section-head">
@@ -89,6 +103,54 @@
 </div>
 </div>
 
+<div class="overlay hidden" id="pokerOverlay">
+  <div class="poker-window">
+    <div class="poker-top">
+      <button class="back-btn" onclick="closePoker()">← LOBBY</button>
+      <div class="game-title"><small>FASTCASH POKER ROOM • 4 SEATS</small><h2>TEXAS HOLD'EM</h2></div>
+      <div class="poker-status"><span class="live-dot"></span><b id="pokerStreet">WAITING</b><small id="pokerBlinds">100 / 200</small></div>
+    </div>
+    <div class="poker-stage">
+      <div class="dealer-3d" id="dealer3d">
+        <div class="dealer-head"><span></span></div>
+        <div class="dealer-neck"></div><div class="dealer-torso"></div>
+        <div class="dealer-arm left"></div><div class="dealer-arm right"></div>
+        <div class="dealer-badge">FC</div>
+      </div>
+      <div class="dealer-speech" id="dealerSpeech">Welcome to the table.</div>
+      <div class="poker-table">
+        <div class="table-rail"></div><div class="table-felt">
+          <div class="table-logo">FASTCASH <span>POKER</span></div>
+          <div class="pot-display">POT <b id="pokerPot">0</b></div>
+          <div class="community" id="communityCards"></div>
+          <div class="seat seat-0" id="seat0"></div>
+          <div class="seat seat-1" id="seat1"></div>
+          <div class="seat seat-2" id="seat2"></div>
+          <div class="seat seat-3" id="seat3"></div>
+          <div class="dealer-button">D</div>
+        </div>
+      </div>
+      <div class="poker-announce" id="pokerAnnounce"></div>
+    </div>
+    <div class="poker-deckbar">
+      <div class="poker-stack"><small>YOUR STACK</small><b id="pokerStack">20,000</b></div>
+      <div class="poker-to-call"><small>TO CALL</small><b id="pokerToCall">0</b></div>
+      <div class="poker-turn"><small>ACTION</small><b id="pokerActionText">DEALING...</b></div>
+    </div>
+    <div class="poker-controls">
+      <button class="poker-action danger" id="foldBtn" onclick="pokerAction('fold')">FOLD</button>
+      <button class="poker-action" id="checkBtn" onclick="pokerAction('check')">CHECK</button>
+      <button class="poker-action" id="callBtn" onclick="pokerAction('call')">CALL <span id="callAmount">0</span></button>
+      <div class="raise-box"><input id="raiseAmount" type="number" min="200" step="100" value="400"><button class="poker-action gold" id="raiseBtn" onclick="pokerAction('raise')">RAISE</button></div>
+      <button class="poker-action allin" id="allinBtn" onclick="pokerAction('allin')">ALL-IN</button>
+    </div>
+    <div class="poker-footer">
+      <button onclick="startPokerHand(true)">NEW HAND</button>
+      <span>Play-money demo • TOKENS only</span>
+      <span id="pokerLastResult">No hand yet</span>
+    </div>
+  </div>
+</div>
 <div class="overlay hidden" id="paytableOverlay"><div class="panel"><button class="panel-close" onclick="closePaytable()">×</button><div class="eyebrow gold">GAME INFO</div><h2 id="paytableTitle">PAYTABLE</h2><div id="paytableContent" class="paytable"></div></div></div>
 <div class="overlay hidden" id="panelOverlay"><div class="panel"><button class="panel-close" onclick="closePanel()">×</button><div id="panelContent"></div></div></div>
 <div class="toast" id="toast"></div>
