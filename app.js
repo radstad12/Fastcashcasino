@@ -623,103 +623,61 @@ pokerBet = function(i,amount){
   }
 })();
 
-/* ==========================================================
-   TEMPORARY POKER LAYOUT EDITOR
-   Values are stored in localStorage and can be exported as
-   project JSON for the final ZIP integration.
-   ========================================================== */
-const PLE_DEFAULTS={
-  table:{scale:68},
-  dealer:{x:50,y:10,scale:1},
-  luna:{x:35,y:22,scale:1},
-  sophie:{x:65,y:22,scale:1},
-  nico:{x:24,y:50,scale:1},
-  marcus:{x:76,y:50,scale:1},
-  you:{x:50,y:83,scale:1}
-};
-let pleConfig=JSON.parse(localStorage.getItem("fastcash_poker_layout_v1")||"null")||JSON.parse(JSON.stringify(PLE_DEFAULTS));
+/* === WORKING TEMPORARY LAYOUT EDITOR === */
+const PLE_DEFAULTS={table:{scale:68},dealer:{x:50,y:8,scale:1},luna:{x:35,y:25,scale:1},sophie:{x:65,y:25,scale:1},nico:{x:25,y:52,scale:1},marcus:{x:75,y:52,scale:1},you:{x:50,y:84,scale:1}};
+let pleConfig=JSON.parse(localStorage.getItem("fastcash_poker_layout_v2")||"null")||JSON.parse(JSON.stringify(PLE_DEFAULTS));
 let pleRole="dealer";
 
-function pleOpenData(){
-  const stage=document.getElementById("pleStage");
-  const table=document.getElementById("pleTable");
-  if(!stage||!table)return;
-  table.style.width=pleConfig.table.scale+"%";
-  Object.keys(pleConfig).filter(k=>k!=="table").forEach(k=>{
-    const el=stage.querySelector('[data-role="'+k+'"]');
-    if(!el)return;
-    const d=pleConfig[k];
-    el.style.left=d.x+"%";el.style.top=d.y+"%";el.style.transform="translate(-50%,-50%) scale("+d.scale+")";
-    el.classList.toggle("selected",k===pleRole);
-  });
-  pleSelect(pleRole);
+function pleStatus(t){const e=document.getElementById("pleStatus");if(e)e.textContent=t;}
+function pleBuildSelect(){
+ const s=document.getElementById("pleSelected");if(!s||s.options.length)return;
+ [["dealer","KRUPIÉR"],["luna","LUNA"],["sophie","SOPHIE"],["nico","NICO"],["marcus","MARCUS"],["you","TY"]].forEach(x=>{const o=document.createElement("option");o.value=x[0];o.textContent=x[1];s.appendChild(o)});
+ s.onchange=()=>pleSelect(s.value);
 }
-function openPokerEditor(){
-  const el=document.getElementById("pokerLayoutEditor"); if(!el)return;
-  el.hidden=false; pleOpenData();
+function pleRender(){
+ pleBuildSelect();
+ const stage=document.getElementById("pleStage"), table=document.getElementById("pleTable"); if(!stage||!table)return;
+ table.style.width=pleConfig.table.scale+"%";
+ stage.querySelectorAll(".ple-item").forEach(el=>{
+   const d=pleConfig[el.dataset.role]; if(!d)return;
+   el.style.left=d.x+"%";el.style.top=d.y+"%";el.style.transform="translate(-50%,-50%) scale("+d.scale+")";
+   el.classList.toggle("selected",el.dataset.role===pleRole);
+ });
+ const d=pleConfig[pleRole];
+ if(d){
+   document.getElementById("pleX").value=Math.round(d.x);
+   document.getElementById("pleY").value=Math.round(d.y);
+   document.getElementById("pleScale").value=d.scale;
+ }
+ document.getElementById("pleTableScale").value=pleConfig.table.scale;
 }
-function closePokerEditor(){
-  const el=document.getElementById("pokerLayoutEditor"); if(el)el.hidden=true;
+function openPokerEditor(){const e=document.getElementById("pokerLayoutEditor");if(!e)return;e.classList.add("open");e.style.display="flex";pleRole="dealer";pleRender();pleStatus("Editor otevřen — přetahuj hráče myší.");}
+function closePokerEditor(){const e=document.getElementById("pokerLayoutEditor");if(e){e.classList.remove("open");e.style.display="none";}}
+function pleSelect(r){pleRole=r;pleRender();}
+function pleFieldChange(){const d=pleConfig[pleRole];if(!d)return;d.x=Number(document.getElementById("pleX").value)||0;d.y=Number(document.getElementById("pleY").value)||0;d.scale=Number(document.getElementById("pleScale").value)||1;pleRender();}
+function pleTableChange(){pleConfig.table.scale=Number(document.getElementById("pleTableScale").value)||68;pleRender();}
+function pleNudge(dx,dy){const d=pleConfig[pleRole];if(!d)return;d.x=Math.max(0,Math.min(100,d.x+dx));d.y=Math.max(0,Math.min(100,d.y+dy));pleRender();}
+function pleReset(){pleConfig=JSON.parse(JSON.stringify(PLE_DEFAULTS));localStorage.setItem("fastcash_poker_layout_v2",JSON.stringify(pleConfig));pleRender();pleStatus("Rozložení resetováno.");}
+function pleSave(){localStorage.setItem("fastcash_poker_layout_v2",JSON.stringify(pleConfig));pleStatus("Uloženo v prohlížeči.");}
+function pleJson(){return JSON.stringify(pleConfig,null,2);}
+function pleDownload(){
+ const blob=new Blob([pleJson()],{type:"application/json"});
+ const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="poker-layout.json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);pleStatus("poker-layout.json stažen.");
 }
-function pleSelect(role){
-  pleRole=role;
-  const d=pleConfig[role];
-  if(!d)return;
-  const sel=document.getElementById("pleSelected");if(sel)sel.value=role;
-  document.getElementById("pleX").value=Math.round(d.x);
-  document.getElementById("pleY").value=Math.round(d.y);
-  document.getElementById("pleScale").value=d.scale;
-  pleOpenData();
-}
-function pleFieldChange(){
-  const d=pleConfig[pleRole];if(!d)return;
-  d.x=Number(document.getElementById("pleX").value)||0;
-  d.y=Number(document.getElementById("pleY").value)||0;
-  d.scale=Number(document.getElementById("pleScale").value)||1;
-  pleOpenData();
-}
-function pleTableChange(){
-  pleConfig.table.scale=Number(document.getElementById("pleTableScale").value)||68;
-  pleOpenData();
-}
-function pleNudge(dx,dy){
-  const d=pleConfig[pleRole];if(!d)return;
-  d.x=Math.max(0,Math.min(100,d.x+dx/2));
-  d.y=Math.max(0,Math.min(100,d.y+dy/2));
-  pleOpenData();
-}
-function pleSaveLocal(){
-  localStorage.setItem("fastcash_poker_layout_v1",JSON.stringify(pleConfig));
-  alert("Rozložení uloženo v prohlížeči.");
-}
-function pleReset(){
-  pleConfig=JSON.parse(JSON.stringify(PLE_DEFAULTS));
-  localStorage.setItem("fastcash_poker_layout_v1",JSON.stringify(pleConfig));
-  pleOpenData();
-}
-function pleExport(){
-  const blob=new Blob([JSON.stringify(pleConfig,null,2)],{type:"application/json"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="poker-layout.json";a.click();
-  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-}
+async function pleCopy(){try{await navigator.clipboard.writeText(pleJson());pleStatus("JSON zkopírován.");}catch(e){pleStatus("Kopírování blokuje prohlížeč — použij STÁHNOUT JSON.");}}
 (function(){
-  function init(){
-    const stage=document.getElementById("pleStage");if(!stage)return;
-    stage.querySelectorAll(".ple-item").forEach(el=>{
-      el.addEventListener("pointerdown",function(ev){
-        ev.preventDefault();pleRole=el.dataset.role;pleSelect(pleRole);
-        el.setPointerCapture(ev.pointerId);
-        const rect=stage.getBoundingClientRect();
-        const move=e=>{
-          const d=pleConfig[pleRole];
-          d.x=Math.max(0,Math.min(100,(e.clientX-rect.left)/rect.width*100));
-          d.y=Math.max(0,Math.min(100,(e.clientY-rect.top)/rect.height*100));
-          pleOpenData();
-        };
-        const up=()=>{el.removeEventListener("pointermove",move);el.removeEventListener("pointerup",up)};
-        el.addEventListener("pointermove",move);el.addEventListener("pointerup",up);
-      });
-    });
-  }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+ function initPle(){
+  pleBuildSelect();
+  const stage=document.getElementById("pleStage");if(!stage)return;
+  stage.querySelectorAll(".ple-item").forEach(el=>{
+   el.addEventListener("pointerdown",ev=>{
+    ev.preventDefault();pleRole=el.dataset.role;pleRender();el.setPointerCapture(ev.pointerId);
+    const rect=stage.getBoundingClientRect();
+    const move=e=>{const d=pleConfig[pleRole];d.x=Math.max(0,Math.min(100,(e.clientX-rect.left)/rect.width*100));d.y=Math.max(0,Math.min(100,(e.clientY-rect.top)/rect.height*100));pleRender();};
+    const stop=()=>{el.removeEventListener("pointermove",move);el.removeEventListener("pointerup",stop);};
+    el.addEventListener("pointermove",move);el.addEventListener("pointerup",stop);
+   });
+  });
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initPle);else initPle();
 })();
