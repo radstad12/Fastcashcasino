@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700">
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#19070a"/><stop offset=".45" stop-color="#8f0e0e"/><stop offset="1" stop-color="#260608"/></linearGradient><radialGradient id="gl"><stop stop-color="#ffcf32" stop-opacity=".9"/><stop offset="1" stop-color="#ff5a00" stop-opacity="0"/></radialGradient></defs>
+<rect width="1200" height="700" fill="url(#bg)"/><circle cx="870" cy="280" r="350" fill="url(#gl)"/>
+<path d="M0 620C180 470 180 120 390 20c70 180-80 270-12 420 60 130 180 170 300 260H0z" fill="#e8320c" opacity=".9"/>
+<path d="M1200 640C980 540 1060 290 900 80c130 70 180 120 300 40z" fill="#ffbc18" opacity=".75"/>
+<g transform="translate(330 100)"><rect x="0" y="0" width="530" height="500" rx="28" fill="#130f13" stroke="#f1c62e" stroke-width="12"/>
+<rect x="42" y="45" width="446" height="310" rx="18" fill="#f6f4e8"/>
+<g font-family="Arial Black,Arial" text-anchor="middle">
+<text x="118" y="160" font-size="80" fill="#f22">7</text><text x="265" y="160" font-size="70" fill="#111">BAR</text><text x="412" y="160" font-size="80" fill="#f22">7</text>
+<text x="118" y="255" font-size="66" fill="#ff9c00">●</text><text x="265" y="255" font-size="66" fill="#7b27b6">●</text><text x="412" y="255" font-size="66" fill="#2f7bdb">●</text>
+<text x="118" y="335" font-size="65" fill="#ffcf22">★</text><text x="265" y="335" font-size="65" fill="#f22">♥</text><text x="412" y="335" font-size="65" fill="#ffcf22">★</text>
+</g><circle cx="265" cy="423" r="55" fill="#d50d0d" stroke="#ffd82f" stroke-width="10"/><text x="265" y="442" text-anchor="middle" font-family="Arial Black,Arial" font-size="27" fill="#fff2a4">BONUS</text></g>
+<text x="600" y="675" text-anchor="middle" font-family="Arial Black,Arial" font-size="54" fill="#ffe44a">LUCKY 27 STREAK</text></svg>

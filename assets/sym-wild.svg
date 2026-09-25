@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+<defs><radialGradient id="g"><stop stop-color="#ff9b1c"/><stop offset=".48" stop-color="#e52a00"/><stop offset="1" stop-color="#5a0010"/></radialGradient></defs>
+<circle cx="120" cy="120" r="96" fill="url(#g)" stroke="#ffd83d" stroke-width="8"/><path d="M120 34l15 57 54-31-31 54 58 15-58 15 31 54-54-31-15 58-15-58-54 31 31-54-58-15 58-15-31-54 54 31z" fill="#ffdf38" opacity=".32"/>
+<text x="120" y="137" text-anchor="middle" font-family="Arial Black,Arial" font-size="58" fill="#fff4a1" stroke="#8d1600" stroke-width="7">WILD</text>
+</svg>

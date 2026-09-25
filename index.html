@@ -3,94 +3,76 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#07090f">
-<title>FastCash Casino — Los Santos</title>
+<meta name="theme-color" content="#09060a">
+<title>FastCash Casino — Lucky 27 Streak</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="ambient"></div>
-
 <header class="topbar">
-  <button class="brand" onclick="showLobby()">
-    <span class="brand-script">Los Santos</span>
-    <span class="brand-main">FAST<span>CASH</span></span>
-    <span class="brand-sub">CASINO • PLAY BIGGER</span>
-  </button>
-
-  <nav class="nav">
-    <button class="nav-btn active" onclick="showLobby()">⌂ <span>HOME</span></button>
-    <button class="nav-btn" onclick="scrollToGames()">▣ <span>SLOTS</span></button>
-    <button class="nav-btn" onclick="openRewards()">♛ <span>VIP</span></button>
-    <button class="nav-btn" onclick="openRewards()">🎁 <span>REWARDS</span></button>
-    <button class="nav-btn" onclick="openStats()">▥ <span>STATS</span></button>
-    <button class="nav-btn" onclick="openHelp()">?</button>
-  </nav>
-
-  <div class="profile">
-    <div class="avatar">MC</div>
-    <div class="profile-copy"><b>Player</b><small>LOS SANTOS CITIZEN</small></div>
-    <div class="wallet"><span>▣</span><b id="balance">10,000</b><small>TOKENS</small></div>
-    <button class="add-money" onclick="addTokens()">＋ <b>10,000</b><small>ADD TOKENS</small></button>
-    <button class="icon-btn" onclick="toggleSound()" id="soundBtn">♫</button>
-  </div>
+  <button class="brand" id="homeBtn"><span class="brand-script">Los Santos</span><span class="brand-main">FAST<span>CASH</span></span><span class="brand-sub">CASINO • DEMO TOKENS</span></button>
+  <nav><button class="nav-btn active" id="slotsBtn">▣ SLOTS</button><button class="nav-btn" id="statsBtn">▥ STATS</button><button class="nav-btn" id="soundBtn">♫ SOUND</button></nav>
+  <div class="wallet"><span>▣</span><b id="balance">10,000</b><small>TOKENS</small><button id="addBtn">＋10,000</button></div>
 </header>
 
 <main id="lobby">
 <section class="hero">
-  <div class="hero-copy">
-    <div class="eyebrow"><span class="pulse"></span> CASINO ONLINE</div>
-    <h1>GOOD PEOPLE.<br><em>BAD DECISIONS.</em></h1>
-    <p>Los Santos never sleeps. Pick a machine, set your bet and spin.</p>
-    <div class="hero-actions"><button class="gold-btn" onclick="openGame('los-santos')">PLAY NOW <span>→</span></button><button class="ghost-btn" onclick="scrollToGames()">VIEW ALL SLOTS</button></div>
-  </div>
-  <div class="hero-stats"><div><b>1,248</b><small>PLAYERS ONLINE</small></div><div><b>10</b><small>LIVE SLOTS</small></div><div><b>24/7</b><small>LOS SANTOS</small></div></div>
+  <div class="hero-copy"><div class="eyebrow"><i></i> LIVE DEMO MACHINE</div><h1>LUCKY <em>27</em><br>STREAK</h1><p>Three reels. Twenty-seven ways. A fiery bonus pick and a Wild Joker.</p><button class="gold-btn" id="playHero">PLAY LUCKY 27 <span>→</span></button></div>
+  <div class="hero-art"><img src="assets/games/lucky-27-streak.svg" alt="Lucky 27 Streak slot artwork"></div>
 </section>
-
-<section class="ticker"><div><span class="dot"></span> LIVE WINS</div><div id="tickerText">Mikey hit 2,500 tokens on Lucky Sevens</div><div class="ticker-right">DEMO MODE • <b>PLAY RESPONSIBLY</b></div></section>
 
 <section class="section" id="gamesSection">
-  <div class="section-head">
-    <div><div class="eyebrow gold">♛ SLOT FLOOR</div><h2>CHOOSE YOUR <em>GAME</em></h2></div>
-    <div class="filter-row"><button class="filter active" data-filter="all">ALL</button><button class="filter" data-filter="hot">HOT</button><button class="filter" data-filter="new">NEW</button><button class="filter" data-filter="vip">VIP</button></div>
-  </div>
-  <div class="game-grid" id="gameGrid"></div>
-</section>
-
-<section class="promo-row">
-  <div class="promo-card vip-card"><div class="promo-copy"><small>FASTCASH VIP</small><h3>CLIMB THE<br><em>RANKS.</em></h3><p>Unlock exclusive tables, bigger bets and VIP rewards.</p><button onclick="openRewards()">VIEW VIP</button></div><div class="promo-icon">♛</div></div>
-  <div class="promo-card daily-card"><div class="promo-copy"><small>DAILY REWARD</small><h3>FREE TOKENS<br><em>EVERY DAY.</em></h3><p>Your daily reward is waiting.</p><button onclick="claimDaily()">CLAIM 250</button></div><div class="promo-icon">★</div></div>
+  <div class="section-head"><div><div class="eyebrow gold">♛ SLOT FLOOR</div><h2>YOUR <em>MACHINE</em></h2></div><span class="demo-note">1 machine • built as a real-feeling demo</span></div>
+  <button class="game-card" id="gameCard"><div class="card-art"><img src="assets/games/lucky-27-streak.svg" alt="Lucky 27 Streak"></div><div class="card-info"><div><b>LUCKY 27 STREAK</b><small>3×3 • 27 WAYS • WILD • BONUS PICK</small></div><span>→</span></div></button>
 </section>
 </main>
 
-<footer><div><b>FASTCASH</b><span> LOS SANTOS NEVER SLEEPS</span></div><div class="footer-badges"><span>✓ FAIR PLAY</span><span>♙ YOUR PRIORITY</span><span>● 1,248 PLAYERS ONLINE</span></div><div class="footer-motto">Same City.<br><em>Bigger Dreams.</em></div></footer>
-
 <div class="overlay hidden" id="gameOverlay">
-<div class="game-window">
-  <div class="game-top"><button class="back-btn" onclick="closeGame()">← LOBBY</button><div class="game-title"><small id="gameTag">SLOT GAME</small><h2 id="gameTitle">LOS SANTOS LEGENDS</h2></div><div class="game-tools"><button class="icon-btn" onclick="toggleFullscreen()">⛶</button><button class="icon-btn" onclick="openPaytable()">?</button></div></div>
-  <div class="machine-scene" id="machineScene">
-    <div class="neon-sign" id="neonSign">LOS SANTOS<br><span>LEGENDS</span></div>
-    <div class="machine" id="machine">
-      <div class="machine-topline"><span>FASTCASH</span><span id="gameRtp">RTP 95%</span></div>
-      <div class="reel-frame" id="reelFrame"></div>
-      <div class="win-line"></div>
-      <div class="feature-strip"><span id="featureText">REALISTIC SLOT MECHANIC</span><span class="live-dot"></span></div><div class="machine-result" id="machineResult">READY TO SPIN</div>
-      <div class="machine-bottom"><span>BET <b id="machineBetLabel">100</b></span><span>WIN <b id="lastWin">0</b></span></div>
+  <div class="game-window">
+    <div class="game-top"><button class="back-btn" id="backBtn">← LOBBY</button><div class="game-title"><small>3 REELS • 3 ROWS • 27 WAYS</small><h2>LUCKY <em>27</em> STREAK</h2></div><div class="game-tools"><button id="paytableBtn">?</button></div></div>
+    <div class="machine-scene">
+      <div class="flame flame-left"></div><div class="flame flame-right"></div>
+      <div class="machine-brand">LUCKY <span>27</span><small>STREAK</small></div>
+      <div class="machine-shell">
+        <div class="jackpot-bar"><span>LUCKY 27 STREAK</span><b id="featureText">READY</b><span>FASTCASH</span></div>
+        <div class="reel-wrap"><div class="reel-frame" id="reelFrame"></div><div class="payline-glow hidden" id="paylineGlow"></div></div>
+        <div class="under-reels"><span>27 WAYS</span><span id="status">PRESS SPIN</span><span>MAX WIN x100</span></div>
+        <div class="machine-controls">
+          <div class="bet-box"><small>BET</small><button id="betDown">−</button><b id="betValue">50</b><button id="betUp">+</button></div>
+          <button class="big-spin" id="spinBtn"><span>SPIN</span><i>↻</i></button>
+          <div class="mini-actions"><button id="autoBtn">AUTO</button><button id="turboBtn">TURBO</button><button id="soundMini">♫</button></div>
+        </div>
+        <div class="machine-foot"><span>BALANCE <b id="gameBalance">10,000</b></span><span>WIN <b id="lastWin">0</b></span><button id="paytableMini">PAYTABLE</button></div>
+      </div>
     </div>
   </div>
-  <div class="control-deck">
-    <div class="bet-control"><small>BET</small><button onclick="adjustBet(-1)">−</button><strong id="betValue">100</strong><button onclick="adjustBet(1)">+</button></div>
-    <div class="quick-bets"><button onclick="setBet('half')">½</button><button onclick="setBet('min')">MIN</button><button onclick="setBet(2)">2X</button><button onclick="setBet(5)">5X</button><button onclick="setBet(10)">10X</button><button onclick="setBet('max')">MAX</button></div>
-    <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN <span>↻</span></button>
-  </div>
-  <div class="game-footer"><button onclick="openPaytable()">PAYTABLE</button><span>Balance <b id="gameBalance">10,000</b></span><span>Max Win <b id="maxWin">5,000</b></span></div>
-</div>
 </div>
 
-<div class="overlay hidden" id="paytableOverlay"><div class="panel"><button class="panel-close" onclick="closePaytable()">×</button><div class="eyebrow gold">GAME INFO</div><h2 id="paytableTitle">PAYTABLE</h2><div id="paytableContent" class="paytable"></div></div></div>
-<div class="overlay hidden" id="panelOverlay"><div class="panel"><button class="panel-close" onclick="closePanel()">×</button><div id="panelContent"></div></div></div>
+<div class="overlay hidden" id="bonusOverlay">
+  <div class="bonus-screen">
+    <div class="bonus-title">BONUS <em>PICK</em></div>
+    <p>Vyber jeden žeton a odhal násobitel.</p>
+    <div class="chips" id="chips"></div>
+    <div class="bonus-result hidden" id="bonusResult"></div>
+    <button class="gold-btn hidden" id="continueBonus">CONTINUE</button>
+  </div>
+</div>
+
+<div class="overlay hidden" id="paytableOverlay">
+  <div class="panel"><button class="panel-close" id="payClose">×</button><div class="eyebrow gold">GAME RULES</div><h2>LUCKY <em>27</em> STREAK</h2>
+  <div class="rules-grid">
+    <div><b>27 WAYS</b><small>Každá pozice na 3×3 může vytvořit výhru přes všechny 3 válce.</small></div>
+    <div><b>WILD JOKER</b><small>Nahrazuje běžné symboly a pomáhá dokončit kombinaci.</small></div>
+    <div><b>3 BONUSY</b><small>Tři Bonus Chips spustí výběrovou hru s násobitelem.</small></div>
+    <div><b>VIRTUAL TOKENS</b><small>Demo měna pouze pro váš RP projekt.</small></div>
+  </div>
+  <div class="paytable-list" id="paytableList"></div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="statsOverlay"><div class="panel"><button class="panel-close" id="statsClose">×</button><div class="eyebrow gold">SESSION</div><h2>PLAYER <em>STATS</em></h2><div id="statsContent"></div></div></div>
 <div class="toast" id="toast"></div>
 <script src="app.js"></script>
 </body>
