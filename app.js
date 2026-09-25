@@ -624,14 +624,15 @@ pokerBet = function(i,amount){
 })();
 
 /* ==========================================================
-   POKER LIVE LAYOUT EDITOR
+   POKER LIVE LAYOUT EDITOR — robust drag/scale version
    - opens automatically whenever poker opens
-   - drag + scale every registered object
-   - mouse wheel scales selected object
-   - center crosshair is always visible in editor
+   - explicit OFF button lets the user test the real game
+   - dealer and table have priority hit-testing so they are always draggable
+   - wheel / +/- scales the selected object, including the table
+   - center crosshair marks the exact editor center
    ========================================================== */
 (function(){
-  const KEY='fastcash_poker_live_layout_v2';
+  const KEY='fastcash_poker_live_layout_v3';
   let drag=null, selected=null;
   const targets=[
     ['pokerOverlay .poker-topbar','TOPBAR'],['pokerOverlay .poker-title','TITLE'],['pokerOverlay .poker-top-actions','TOP ACTIONS'],
@@ -650,31 +651,86 @@ pokerBet = function(i,amount){
   function updateScaleLabel(){const e=el('#pokerEditorScale'); if(e)e.textContent=selected?Math.round((Number(selected.dataset.editorScale)||1)*100)+'%':'100%'}
   function baseTransform(e){const s=Number(e.dataset.editorScale)||1; e.style.setProperty('transform',`translate(-50%,-50%) scale(${s})`,'important')}
   function markTargets(){
-    targets.forEach(([sel,name])=>{const e=el(sel);if(!e||e.dataset.editorTarget==='1')return;e.dataset.editorTarget='1';e.dataset.editorName=name;e.dataset.editorScale=e.dataset.editorScale||'1';e.title='EDITOR: '+name;e.addEventListener('pointerdown',startDrag,{passive:false});e.addEventListener('click',()=>select(e),true);e.addEventListener('wheel',scaleWheel,{passive:false});});
+    targets.forEach(([sel,name])=>{
+      const e=el(sel); if(!e||e.dataset.editorTarget==='1')return;
+      e.dataset.editorTarget='1'; e.dataset.editorName=name; e.dataset.editorScale=e.dataset.editorScale||'1'; e.title='EDITOR: '+name;
+      e.addEventListener('click',()=>select(e),true);
+      e.addEventListener('wheel',scaleWheel,{passive:false});
+    });
   }
   function select(e){if(selected)selected.classList.remove('editor-selected');selected=e||null;if(selected)selected.classList.add('editor-selected');updateScaleLabel();status(selected?'VYBRÁNO: '+(selected.dataset.editorName||selected.id||'OBJ'):'EDITOR AKTIVNÍ')}
-  function startDrag(ev){
-    const ov=el('#pokerOverlay');if(!ov||!ov.classList.contains('editor-mode'))return;if(ev.button!==undefined&&ev.button!==0)return;
-    const e=ev.currentTarget,s=stage();if(!s)return;ev.preventDefault();ev.stopPropagation();select(e);
-    const parent=e.offsetParent||s, r=parent.getBoundingClientRect(), er=e.getBoundingClientRect();
-    e.style.setProperty('position','absolute','important');
-    drag={e,parent,r,dx:ev.clientX-(er.left+er.width/2),dy:ev.clientY-(er.top+er.height/2)};
-    e.setPointerCapture?.(ev.pointerId);window.addEventListener('pointermove',moveDrag,{passive:false});window.addEventListener('pointerup',endDrag,{once:true});
+  function pointerInside(e,x,y){const r=e.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom}
+  function pickTarget(ev){
+    const s=stage(); if(!s)return null;
+    const ov=el('#pokerOverlay');
+    if(!ov?.classList.contains('editor-mode'))return null;
+    if(ev.target?.closest?.('.poker-editor-ui'))return null;
+    /* Children get first chance; then the whole table/dealer. */
+    const priority=[...targets].map(([sel])=>el(sel)).filter(Boolean);
+    const special=priority.filter(e=>e.matches?.('.poker-dealer,.poker-table-v5'));
+    const normal=priority.filter(e=>!e.matches?.('.poker-dealer,.poker-table-v5')).reverse();
+    for(const e of normal){if(pointerInside(e,ev.clientX,ev.clientY))return e}
+    for(const e of special){if(pointerInside(e,ev.clientX,ev.clientY))return e}
+    return null;
   }
-  function moveDrag(ev){if(!drag)return;ev.preventDefault();const {e,r,dx,dy}=drag;let x=((ev.clientX-r.left-dx)/r.width)*100,y=((ev.clientY-r.top-dy)/r.height)*100;x=Math.max(-20,Math.min(120,x));y=Math.max(-20,Math.min(120,y));e.style.setProperty('left',x+'%','important');e.style.setProperty('top',y+'%','important');e.style.setProperty('right','auto','important');e.style.setProperty('bottom','auto','important');baseTransform(e);e.dataset.editorX=x.toFixed(4);e.dataset.editorY=y.toFixed(4)}
+  function startDrag(ev){
+    const e=pickTarget(ev); if(!e)return;
+    const s=stage(); if(!s)return;
+    ev.preventDefault(); ev.stopPropagation(); select(e);
+    const parent=s, r=parent.getBoundingClientRect(), er=e.getBoundingClientRect();
+    e.style.setProperty('position','absolute','important');
+    drag={e,r,dx:ev.clientX-(er.left+er.width/2),dy:ev.clientY-(er.top+er.height/2)};
+    try{s.setPointerCapture?.(ev.pointerId)}catch(_){ }
+    window.addEventListener('pointermove',moveDrag,{passive:false});
+    window.addEventListener('pointerup',endDrag,{once:true});
+  }
+  function moveDrag(ev){
+    if(!drag)return; ev.preventDefault();
+    const {e,r,dx,dy}=drag;
+    let x=((ev.clientX-r.left-dx)/r.width)*100, y=((ev.clientY-r.top-dy)/r.height)*100;
+    x=Math.max(-30,Math.min(130,x)); y=Math.max(-30,Math.min(130,y));
+    e.style.setProperty('left',x+'%','important'); e.style.setProperty('top',y+'%','important');
+    e.style.setProperty('right','auto','important'); e.style.setProperty('bottom','auto','important');
+    baseTransform(e); e.dataset.editorX=x.toFixed(4); e.dataset.editorY=y.toFixed(4);
+  }
   function endDrag(){if(!drag)return;drag=null;pokerEditorSave(false);window.removeEventListener('pointermove',moveDrag)}
-  function setScale(e,val){if(!e)return;val=Math.max(.2,Math.min(2.5,val));e.dataset.editorScale=val.toFixed(3);baseTransform(e);updateScaleLabel();pokerEditorSave(false)}
-  function scaleWheel(ev){const ov=el('#pokerOverlay');if(!ov||!ov.classList.contains('editor-mode'))return;ev.preventDefault();ev.stopPropagation();select(ev.currentTarget);setScale(ev.currentTarget,(Number(ev.currentTarget.dataset.editorScale)||1)+(ev.deltaY<0?.05:-.05))}
+  function setScale(e,val){if(!e)return;val=Math.max(.15,Math.min(3,val));e.dataset.editorScale=val.toFixed(3);baseTransform(e);updateScaleLabel();pokerEditorSave(false)}
+  function scaleWheel(ev){
+    const ov=el('#pokerOverlay');if(!ov||!ov.classList.contains('editor-mode'))return;
+    ev.preventDefault();ev.stopPropagation();select(ev.currentTarget);
+    setScale(ev.currentTarget,(Number(ev.currentTarget.dataset.editorScale)||1)+(ev.deltaY<0?.05:-.05));
+  }
   window.pokerEditorScale=function(delta){if(!selected){status('NEJDŘÍV KLIKNI NA OBJEKT');return}setScale(selected,(Number(selected.dataset.editorScale)||1)+delta)};
-  window.pokerEditorCenter=function(){if(!selected){status('NEJDŘÍV KLIKNI NA OBJEKT');return}const s=stage(),r=s.getBoundingClientRect();selected.style.setProperty('left','50%','important');selected.style.setProperty('top','50%','important');selected.style.setProperty('right','auto','important');selected.style.setProperty('bottom','auto','important');baseTransform(selected);selected.dataset.editorX='50';selected.dataset.editorY='50';pokerEditorSave(false);status('OBJEKT V CENTRU ✓')};
-  function getData(){markTargets();const s=stage(),out={version:2,stage:{width:s?.clientWidth||0,height:s?.clientHeight||0},items:{}};targets.forEach(([sel,name])=>{const e=el(sel);if(!e)return;const r=e.getBoundingClientRect(),pr=(e.offsetParent||s).getBoundingClientRect();const x=e.dataset.editorX!==undefined?Number(e.dataset.editorX):((r.left+r.width/2-pr.left)/pr.width)*100;const y=e.dataset.editorY!==undefined?Number(e.dataset.editorY):((r.top+r.height/2-pr.top)/pr.height)*100;out.items[name]={selector:sel,x:Number(x.toFixed(4)),y:Number(y.toFixed(4)),scale:Number((Number(e.dataset.editorScale)||1).toFixed(3))}});return out}
-  function applyData(data){if(!data?.items)return;markTargets();targets.forEach(([sel,name])=>{const e=el(sel),d=data.items[name];if(!e||!d)return;e.style.setProperty('position','absolute','important');e.style.setProperty('left',d.x+'%','important');e.style.setProperty('top',d.y+'%','important');e.style.setProperty('right','auto','important');e.style.setProperty('bottom','auto','important');e.dataset.editorX=d.x;e.dataset.editorY=d.y;e.dataset.editorScale=d.scale||1;baseTransform(e)})}
+  window.pokerEditorCenter=function(){
+    if(!selected){status('NEJDŘÍV KLIKNI NA OBJEKT');return}
+    selected.style.setProperty('left','50%','important');selected.style.setProperty('top','50%','important');
+    selected.style.setProperty('right','auto','important');selected.style.setProperty('bottom','auto','important');
+    baseTransform(selected);selected.dataset.editorX='50';selected.dataset.editorY='50';pokerEditorSave(false);status('OBJEKT V CENTRU ✓')
+  };
+  function getData(){
+    markTargets();const s=stage(),out={version:3,stage:{width:s?.clientWidth||0,height:s?.clientHeight||0},items:{}};
+    targets.forEach(([sel,name])=>{const e=el(sel);if(!e)return;const r=e.getBoundingClientRect(),pr=s.getBoundingClientRect();
+      const x=e.dataset.editorX!==undefined?Number(e.dataset.editorX):((r.left+r.width/2-pr.left)/pr.width)*100;
+      const y=e.dataset.editorY!==undefined?Number(e.dataset.editorY):((r.top+r.height/2-pr.top)/pr.height)*100;
+      out.items[name]={selector:sel,x:Number(x.toFixed(4)),y:Number(y.toFixed(4)),scale:Number((Number(e.dataset.editorScale)||1).toFixed(3))}
+    });return out
+  }
+  function applyData(data){if(!data?.items)return;markTargets();targets.forEach(([sel,name])=>{const e=el(sel),d=data.items[name];if(!e||!d)return;
+    e.style.setProperty('position','absolute','important');e.style.setProperty('left',d.x+'%','important');e.style.setProperty('top',d.y+'%','important');e.style.setProperty('right','auto','important');e.style.setProperty('bottom','auto','important');
+    e.dataset.editorX=d.x;e.dataset.editorY=d.y;e.dataset.editorScale=d.scale||1;baseTransform(e)
+  })}
   window.pokerEditorSave=function(show=true){try{localStorage.setItem(KEY,JSON.stringify(getData(),null,2));if(show)status('ULOŽENO ✓')}catch(e){status('CHYBA ULOŽENÍ')}};
   window.pokerEditorReset=function(){localStorage.removeItem(KEY);location.reload()};
   window.pokerEditorExport=function(){const blob=new Blob([JSON.stringify(getData(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='poker-layout-editor.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);status('JSON EXPORT ✓')};
   window.pokerEditorEnable=function(){const ov=el('#pokerOverlay');if(!ov)return;ov.classList.add('editor-mode');markTargets();try{const raw=localStorage.getItem(KEY);if(raw)applyData(JSON.parse(raw))}catch(e){}updateScaleLabel();status('EDITOR AKTIVNÍ')};
-  window.pokerEditorDisable=function(){const ov=el('#pokerOverlay');if(ov)ov.classList.remove('editor-mode');if(selected)selected.classList.remove('editor-selected');selected=null};
-  const oldOpen=window.openPoker;window.openPoker=function(){if(typeof oldOpen==='function')oldOpen();setTimeout(()=>window.pokerEditorEnable(),50)};
-  const oldClose=window.closePoker;window.closePoker=function(){pokerEditorSave(false);pokerEditorDisable();if(typeof oldClose==='function')oldClose()};
-  document.addEventListener('DOMContentLoaded',()=>{markTargets();window.addEventListener('keydown',e=>{if(e.key==='Escape'&&el('#pokerOverlay')?.classList.contains('editor-mode'))pokerEditorSave()})});
+  window.pokerEditorDisable=function(){const ov=el('#pokerOverlay');if(!ov)return;pokerEditorSave(false);ov.classList.remove('editor-mode');if(selected)selected.classList.remove('editor-selected');selected=null;status('EDITOR VYPNUTÝ — HRA');updateScaleLabel()};
+  const oldOpen=window.openPoker;window.openPoker=function(){if(typeof oldOpen==='function')oldOpen();setTimeout(()=>window.pokerEditorEnable(),80)};
+  const oldClose=window.closePoker;window.closePoker=function(){pokerEditorSave(false);window.pokerEditorDisable();if(typeof oldClose==='function')oldClose()};
+  document.addEventListener('DOMContentLoaded',()=>{
+    markTargets();
+    const s=stage();
+    if(s)s.addEventListener('pointerdown',startDrag,{capture:true,passive:false});
+    window.addEventListener('keydown',e=>{if(e.key==='Escape'&&el('#pokerOverlay')?.classList.contains('editor-mode'))pokerEditorDisable()});
+  });
 })();
+

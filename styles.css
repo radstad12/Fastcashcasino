@@ -1076,3 +1076,15 @@ body.poker-open{overflow:hidden}
 .poker-editor-crosshair:before,.poker-editor-crosshair:after{content:"";position:absolute;background:#f7c84a66;box-shadow:0 0 8px #f7c84a44}
 .poker-editor-crosshair:before{left:50%;top:0;bottom:0;width:1px}.poker-editor-crosshair:after{top:50%;left:0;right:0;height:1px}
 .poker-editor-crosshair i{position:absolute;left:50%;top:50%;width:13px;height:13px;transform:translate(-50%,-50%);border:2px solid #f7c84a;border-radius:50%;box-shadow:0 0 12px #f7c84a88}
+/* LIVE EDITOR V3: the table/dealer are always draggable while editor is active. */
+#pokerOverlay.editor-mode .poker-dealer,
+#pokerOverlay.editor-mode .poker-table-v5,
+#pokerOverlay.editor-mode .poker-table-v5 * { pointer-events:auto !important; }
+#pokerOverlay.editor-mode .poker-dealer,
+#pokerOverlay.editor-mode .poker-table-v5 { cursor:grab !important; touch-action:none !important; user-select:none !important; }
+#pokerOverlay.editor-mode .poker-dealer:active,
+#pokerOverlay.editor-mode .poker-table-v5:active,
+#pokerOverlay.editor-mode [data-editor-target="1"]:active { cursor:grabbing !important; }
+#pokerOverlay.editor-mode .poker-table-v5.editor-selected { outline:3px solid #f7c84a !important; outline-offset:8px !important; }
+#pokerOverlay.editor-mode .poker-dealer.editor-selected { outline:2px solid #f7c84a !important; outline-offset:8px !important; }
+#pokerOverlay.editor-mode .editor-off-btn { background:#321416 !important; border-color:#9a3b42 !important; color:#ffb3b7 !important; }
