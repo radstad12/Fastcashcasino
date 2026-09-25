@@ -1,5 +1,5 @@
 const games=[
-{id:"los-santos",name:"Multi Vegas 81",tag:"CLASSIC",type:"hot",rtp:94.8,min:10,max:5000,theme:"multivegas",layout:"4x3",lines:81,image:"multivegas-81.svg",symbols:["SEVEN","WATERMELON","GRAPES","BELL","PLUM","ORANGE","DOLLAR","CHERRY","WILD"],payouts:{SEVEN:100,WATERMELON:55,GRAPES:35,BELL:24,PLUM:16,ORANGE:11,DOLLAR:8,CHERRY:5,WILD:0}},
+{id:"los-santos",name:"Multi Vegas 81",tag:"CLASSIC",type:"hot",rtp:95,min:25,max:5000,theme:"sunset",layout:"4x3",lines:"81 WAYS",image:"multi-vegas-81.svg",symbols:["CHERRY","DOLLAR","ORANGE","PLUM","BELL","GRAPES","MELON","SEVEN","MULTI_WILD"],payouts:{SEVEN:{3:16,4:160},MELON:{3:6,4:60},GRAPES:{3:4,4:40},BELL:{3:1,4:4},PLUM:{3:1,4:4},DOLLAR:{3:1,4:4},ORANGE:{3:1,4:4},CHERRY:{3:1,4:2}}},
 {id:"vinewood",name:"Vinewood Nights",tag:"NEW",type:"new",rtp:96,min:10,max:3000,theme:"pink",layout:"5x4",lines:40,image:"vinewood.jpg",symbols:["STAR","CLAP","GEM","CHAMP","SEVEN"],payouts:{SEVEN:40,GEM:20,STAR:12,CLAP:8,CHAMP:5}},
 {id:"cash-cartel",name:"Cash Cartel",tag:"POPULAR",type:"hot",rtp:95,min:25,max:7500,theme:"gold",layout:"5x3",lines:25,image:"cash-cartel.jpg",symbols:["CASH","GOLD","GUN","CAR","SEVEN"],payouts:{SEVEN:50,CASH:30,GOLD:15,GUN:8,CAR:5}},
 {id:"diamond",name:"Diamond Rush",tag:"JACKPOT",type:"vip",rtp:94,min:50,max:10000,theme:"blue",layout:"6x4",lines:"MEGAWAYS",image:"diamond-rush.jpg",symbols:["DIAMOND","CLUB","ACE","COIN","SEVEN"],payouts:{SEVEN:60,DIAMOND:35,COIN:15,ACE:8,CLUB:5}},
@@ -28,8 +28,8 @@ function scrollToGames(){$("gamesSection").scrollIntoView({behavior:"smooth"})}
 function addTokens(){balance+=10000;updateBalances();toast("＋10,000 TOKENŮ PŘIDÁNO");}
 function openGame(id){
  current=games.find(g=>g.id===id);bet=Math.max(current.min,Math.min(current.max,bet));
- $("gameTitle").textContent=current.name.toUpperCase();$("gameTag").textContent=current.tag+" • "+current.layout+" • "+current.lines+" LINES";$("gameRtp").textContent=`RTP ${current.rtp}%`;
- $("neonSign").innerHTML=current.id==="los-santos"?"MULTI<br><span>VEGAS 81</span>":current.name.split(" ").slice(0,-1).join(" ")+"<br><span>"+current.name.split(" ").at(-1).toUpperCase()+"</span>";
+ $("gameTitle").textContent=current.name.toUpperCase();$("gameTag").textContent=current.tag+" • "+current.layout+" • "+current.lines;$("gameRtp").textContent=`RTP ${current.rtp}%`;
+ $("neonSign").innerHTML=current.name.split(" ").slice(0,-1).join(" ")+"<br><span>"+current.name.split(" ").at(-1).toUpperCase()+"</span>";
  $("machine").className="machine machine-"+current.theme;$("machineScene").className="machine-scene scene-"+current.theme;
  buildReels();updateBetUI();setReels(randomReels());$("machineResult").textContent="READY TO SPIN";$("gameOverlay").classList.remove("hidden");
 }
@@ -39,168 +39,121 @@ function buildReels(){
  frame.style.setProperty("--cols",cols);frame.style.setProperty("--rows",rows);
  for(let i=0;i<cols*rows;i++){const el=document.createElement("div");el.className="reel";el.dataset.index=i;frame.appendChild(el)}
 }
-function isMultiVegas(){return current?.id==="los-santos"}
-const MV_ASSETS={
- SEVEN:"assets/games/mv-symbol-seven.svg",
- WATERMELON:"assets/games/mv-symbol-watermelon.svg",
- GRAPES:"assets/games/mv-symbol-grapes.svg",
- BELL:"assets/games/mv-symbol-bell.svg",
- PLUM:"assets/games/mv-symbol-plum.svg",
- ORANGE:"assets/games/mv-symbol-orange.svg",
- DOLLAR:"assets/games/mv-symbol-dollar.svg",
- CHERRY:"assets/games/mv-symbol-cherry.svg",
- WILD:"assets/games/mv-symbol-wild.svg"
-};
 function symbolMarkup(s){
- if(isMultiVegas()) return `<img class="mv-symbol" src="${MV_ASSETS[s]}" alt="${s}">`;
- return `<span class="slot-symbol sym-${s.toLowerCase()}">${s}</span>`;
+ if(current?.id==="los-santos" && ["CHERRY","DOLLAR","ORANGE","PLUM","BELL","GRAPES","MELON","SEVEN","MULTI_WILD"].includes(s)){
+  return `<span class="slot-symbol sym-${s.toLowerCase()}"><img src="assets/mv81/${s.toLowerCase()}.svg" alt="${s}"></span>`
+ }
+ const labels={SEVEN:"7",BAR:"BAR",CASH:"CASH",ROSE:"ROSE",CITY:"CITY",CHERRY:"CHERRY",BELL:"BELL",LEMON:"LEMON"};
+ return `<span class="slot-symbol sym-${s.toLowerCase()}">${labels[s]||s}</span>`
 }
-function randomReels(){
- const n=+current.layout.split("x")[0]*+current.layout.split("x")[1];
- return Array.from({length:n},()=>current.symbols[Math.floor(Math.random()*current.symbols.length)])
-}
-function setReels(values){
- document.querySelectorAll(".reel").forEach((el,i)=>{
-   el.innerHTML=symbolMarkup(values[i%values.length]);
-   el.classList.remove("reel-win","mv-winning","mv-wild-hit");
- });
-}
+function randomReels(){const n=+current.layout.split("x")[0]*+current.layout.split("x")[1];return Array.from({length:n},()=>current.symbols[Math.floor(Math.random()*current.symbols.length)])}
+function setReels(values){document.querySelectorAll(".reel").forEach((el,i)=>{el.innerHTML=symbolMarkup(values[i%values.length]);el.classList.remove("reel-win","way-win")})}
 function weightedSymbol(){
- if(isMultiVegas()){
-   const weights={SEVEN:4,WATERMELON:7,GRAPES:9,BELL:11,PLUM:13,ORANGE:15,DOLLAR:16,CHERRY:18,WILD:3};
-   const total=Object.values(weights).reduce((a,b)=>a+b,0);
-   let r=Math.random()*total;
-   for(const s of current.symbols){r-=weights[s]||1;if(r<=0)return s}
-   return "CHERRY";
+ if(current.id!=="los-santos"){
+  const weights=current.symbols.map(s=>Math.max(1,Math.round(100/(typeof current.payouts[s]==="number"?current.payouts[s]:1))));
+  const total=weights.reduce((a,b)=>a+b,0);let r=Math.random()*total;
+  for(let i=0;i<weights.length;i++){r-=weights[i];if(r<=0)return current.symbols[i]}
+  return current.symbols.at(-1)
  }
- const weights=current.symbols.map(s=>Math.max(1,Math.round(100/(current.payouts[s]||1))));
- const total=weights.reduce((a,b)=>a+b,0);let r=Math.random()*total;
- for(let i=0;i<weights.length;i++){r-=weights[i];if(r<=0)return current.symbols[i]}
- return current.symbols.at(-1);
+ // Multi Vegas 81: rare Multi Wild, with the remaining symbols weighted by their relative value.
+ const weights={CHERRY:28,DOLLAR:18,ORANGE:18,PLUM:18,BELL:14,GRAPES:9,MELON:6,SEVEN:3,MULTI_WILD:2};
+ const total=Object.values(weights).reduce((a,b)=>a+b,0);let r=Math.random()*total;
+ for(const s of current.symbols){r-=weights[s]||1;if(r<=0)return s}
+ return "CHERRY"
 }
-function outcome(){
- const n=+current.layout.split("x")[0]*+current.layout.split("x")[1];
- if(!isMultiVegas()) return Array.from({length:n},()=>weightedSymbol());
-
- // 4 reels x 3 rows. The result is generated independently for every cell.
- return Array.from({length:n},()=>weightedSymbol());
-}
-function multiVegasWin(result){
- const cols=4,rows=3;
- const grid=Array.from({length:cols},(_,c)=>result.slice(c*rows,c*rows+rows));
- let total=0,winPaths=[];
- // 81 ways = every choice of one row on each of the four reels.
- for(let a=0;a<3;a++)for(let b=0;b<3;b++)for(let c=0;c<3;c++)for(let d=0;d<3;d++){
-   const path=[a,b,c,d], syms=path.map((r,col)=>grid[col][r]);
-   let base=syms[0], count=1, wilds=(base==="WILD"?1:0);
-   for(let col=1;col<4;col++){
-     const s=syms[col];
-     if(s===base || s==="WILD" || base==="WILD"){ 
-       if(base==="WILD" && s!=="WILD" && count===1) base=s;
-       count++; if(s==="WILD")wilds++;
-     } else break;
-   }
-   if(count>=3 && base!=="WILD"){
-     const mult=wilds>=3?8:wilds===2?4:wilds===1?2:1;
-     const pay=count===4?Math.round(current.payouts[base]*1.85):current.payouts[base];
-     const amount=bet*pay*mult/10;
-     if(amount>0){total+=amount;winPaths.push({path,amount,wilds,count})}
-   }
+function outcome(){const n=+current.layout.split("x")[0]*+current.layout.split("x")[1];return Array.from({length:n},()=>weightedSymbol())}
+function cellIndex(row,col,cols){return row*cols+col}
+function evaluateMultiVegas(grid){
+ const cols=4, rows=3, wins=[];
+ const symbolsAt=(row,col)=>grid[cellIndex(row,col,cols)];
+ const allRows=[0,1,2];
+ const matches=(vals)=>{
+  const base=vals.find(x=>x!=="MULTI_WILD");
+  return base && vals.every(x=>x===base||x==="MULTI_WILD") ? base : null;
+ };
+ // 4-of-a-kind: all 81 possible row paths across all four reels.
+ for(const r0 of allRows) for(const r1 of allRows) for(const r2 of allRows) for(const r3 of allRows){
+  const pathRows=[r0,r1,r2,r3], vals=pathRows.map((r,c)=>symbolsAt(r,c)), base=matches(vals);
+  if(base){
+   const multCount=vals.filter(x=>x==="MULTI_WILD").length;
+   wins.push({rows:pathRows,cols:[0,1,2,3],symbol:base,count:4,mult:multCount});
+  }
  }
- return {total:Math.floor(total),paths:winPaths};
+ // 3-of-a-kind: 27 paths across the first three reels, but only when that exact path does not continue on reel 4.
+ for(const r0 of allRows) for(const r1 of allRows) for(const r2 of allRows){
+  const pathRows=[r0,r1,r2], vals=pathRows.map((r,c)=>symbolsAt(r,c)), base=matches(vals);
+  if(!base) continue;
+  const fourthHasMatch=allRows.some(r3=>{
+   const v=symbolsAt(r3,3);
+   return v===base||v==="MULTI_WILD";
+  });
+  if(fourthHasMatch) continue;
+  const multCount=vals.filter(x=>x==="MULTI_WILD").length;
+  wins.push({rows:pathRows,cols:[0,1,2],symbol:base,count:3,mult:multCount});
+ }
+ const finalWins=wins.map(w=>{
+  const payout=current.payouts[w.symbol]?.[w.count]||0;
+  const multiplier=w.mult?Math.pow(2,w.mult):1;
+  return {...w,multiplier,amount:bet*payout*multiplier};
+ }).filter(w=>w.amount>0);
+ return {wins:finalWins,total:finalWins.reduce((sum,w)=>sum+w.amount,0),ways3:finalWins.filter(w=>w.count===3).length,ways4:finalWins.filter(w=>w.count===4).length};
 }
 function calculateWin(r){
- if(isMultiVegas()) return multiVegasWin(r).total;
- const cols=+current.layout.split("x")[0], rows=+current.layout.split("x")[1];
- let wins=0;
- for(let row=0;row<rows;row++){
-   const line=r.slice(row*cols,(row+1)*cols);
-   if(line.length===cols&&line.every(x=>x===line[0]))wins+=bet*(current.payouts[line[0]]||0)
- }
+ if(current.id==="los-santos") return evaluateMultiVegas(r).total;
+ const cols=+current.layout.split("x")[0], rows=+current.layout.split("x")[1];let wins=0;
+ for(let row=0;row<rows;row++){const line=r.slice(row*cols,(row+1)*cols);if(line.length===cols&&line.every(x=>x===line[0]))wins+=bet*(current.payouts[line[0]]||0)}
  return wins;
 }
-function playTone(type){
- if(!sound || !isMultiVegas()) return;
- try{
-   const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
-   window.__mvAudio=window.__mvAudio||new AC();
-   const ac=window.__mvAudio,now=ac.currentTime;
-   const o=ac.createOscillator(),g=ac.createGain();
-   const map={click:[180,.045],stop:[280,.07],wild:[620,.13],win:[520,.16],big:[760,.28]};
-   const [freq,dur]=map[type]||map.click;
-   o.type=type==="win"||type==="big"?"triangle":"square";o.frequency.setValueAtTime(freq,now);
-   if(type==="win"||type==="big")o.frequency.exponentialRampToValueAtTime(freq*1.55,now+dur);
-   g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(type==="big"?.12:.06,now+.012);g.gain.exponentialRampToValueAtTime(.0001,now+dur);
-   o.connect(g).connect(ac.destination);o.start(now);o.stop(now+dur+.02);
- }catch(e){}
+function showMultiVegasWins(grid,result){
+ document.querySelectorAll(".reel").forEach(el=>el.classList.remove("reel-win","way-win"));
+ if(!result.wins.length)return;
+ const unique=[];
+ result.wins.forEach(w=>w.rows.forEach((row,i)=>{const idx=cellIndex(row,w.cols[i],4);if(!unique.includes(idx))unique.push(idx)}));
+ unique.forEach(idx=>document.querySelectorAll(".reel")[idx]?.classList.add("reel-win"));
+ let i=0;
+ const flash=()=>{
+  if(i>=result.wins.length)return;
+  document.querySelectorAll(".reel").forEach(el=>el.classList.remove("way-win"));
+  const w=result.wins[i++];w.rows.forEach((row,c)=>document.querySelectorAll(".reel")[cellIndex(row,w.cols[c],4)]?.classList.add("way-win"));
+  const wildText=w.multiplier>1?` • WILD ×${w.multiplier}`:"";
+  $("machineResult").textContent=`${w.symbol.replace("_"," ")} ${w.count}X • +${fmt(w.amount)}${wildText}`;
+  playTone(w.multiplier>1?720:560,0.09,"triangle");
+  setTimeout(flash,Math.min(850,420+result.wins.length*20));
+ };
+ flash();
 }
-function mvBurst(big=false){
- if(!isMultiVegas())return;
- const scene=$("machineScene");
- scene.classList.remove("mv-flash");void scene.offsetWidth;scene.classList.add("mv-flash");
- const box=document.createElement("div");box.className="mv-burst"+(big?" big":"");
- for(let i=0;i<(big?28:14);i++){const p=document.createElement("i");p.style.setProperty("--a",(i/(big?28:14))*360+"deg");p.style.setProperty("--d",(80+Math.random()*170)+"px");p.style.setProperty("--delay",(Math.random()*.15)+"s");box.appendChild(p)}
- scene.appendChild(box);setTimeout(()=>box.remove(),900);
-}
-async function spinMultiVegas(){
- const reels=[...document.querySelectorAll(".reel")],result=outcome();
- const cols=4,rows=3;
- playTone("click");
- reels.forEach(el=>el.classList.add("reel-spin"));
- const timer=setInterval(()=>reels.forEach((el,i)=>{el.innerHTML=symbolMarkup(current.symbols[Math.floor(Math.random()*current.symbols.length)])}),70);
- await new Promise(r=>setTimeout(r,520));clearInterval(timer);
- for(let col=0;col<cols;col++){
-   playTone("stop");
-   for(let row=0;row<rows;row++){
-     const el=reels[col*rows+row];
-     el.innerHTML=symbolMarkup(result[col*rows+row]);el.classList.remove("reel-spin");
-     if(result[col*rows+row]==="WILD")el.classList.add("mv-wild-hit");
-   }
-   await new Promise(r=>setTimeout(r,125));
- }
- const calc=multiVegasWin(result),win=calc.total;
- if(win){
-   calc.paths.slice(0,14).forEach(p=>p.path.forEach((row,col)=>reels[col*rows+row].classList.add("mv-winning")));
-   const wildCount=result.filter(s=>s==="WILD").length;
-   playTone(wildCount>=2||win>=bet*20?"big":"win");mvBurst(wildCount>=2||win>=bet*20);
-   $("machineResult").textContent=wildCount>=2?`MULTI WILD • WIN +${fmt(win)}`:`WIN +${fmt(win)} TOKENS`;
-   toast(`🎰 ${wildCount>=2?"MULTI WILD • ":""}VÝHRA +${fmt(win)} TOKENŮ`);
- }else $("machineResult").textContent="NO WIN — TRY AGAIN";
- return win;
+let audioCtx=null;
+function playTone(freq,duration=0.08,type="sine"){
+ if(!sound)return;
+ try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.035,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+duration)}catch(e){}
 }
 async function spin(){
  if(spinning)return;if(balance<bet){toast("NEMÁŠ DOSTATEK TOKENŮ");return}
  spinning=true;$("spinBtn").disabled=true;balance-=bet;updateBalances();$("machineResult").textContent="SPINNING...";
- if(isMultiVegas()){
-   const win=await spinMultiVegas();balance+=win;
-   history.unshift({game:current.name,bet,win,time:new Date().toLocaleTimeString("cs-CZ",{hour:"2-digit",minute:"2-digit"})});
-   history=history.slice(0,25);$("lastWin").textContent=fmt(win);updateBalances();spinning=false;$("spinBtn").disabled=false;return;
- }
  const reels=[...document.querySelectorAll(".reel")];
- for(let round=0;round<18;round++){reels.forEach(el=>el.innerHTML=symbolMarkup(current.symbols[Math.floor(Math.random()*current.symbols.length)]));reels.forEach(el=>el.classList.add("reel-spin"));await new Promise(r=>setTimeout(r,45+round*3))}
+ playTone(110,.12,"sawtooth");
+ for(let round=0;round<18;round++){reels.forEach(el=>el.innerHTML=symbolMarkup(current.symbols[Math.floor(Math.random()*current.symbols.length)]));reels.forEach(el=>el.classList.add("reel-spin"));await new Promise(r=>setTimeout(r,45+round*3));}
  reels.forEach(el=>el.classList.remove("reel-spin"));
- const r=outcome();setReels(r);const win=calculateWin(r);balance+=win;
- if(win){$("machineResult").textContent=`WIN +${fmt(win)} TOKENS`;reels.slice(0,Math.min(6,reels.length)).forEach(el=>el.classList.add("reel-win"));toast(`🎉 VÝHRA +${fmt(win)} TOKENŮ`)}else $("machineResult").textContent="NO WIN — TRY AGAIN";
+ const r=outcome();setReels(r);
+ let win=0,result=null;
+ if(current.id==="los-santos"){
+  result=evaluateMultiVegas(r);win=result.total;
+ }else win=calculateWin(r);
+ balance+=win;
+ if(win){
+  $("machineResult").textContent=`WIN +${fmt(win)} TOKENS`;
+  if(current.id==="los-santos")showMultiVegasWins(r,result);else reels.slice(0,Math.min(6,reels.length)).forEach(el=>el.classList.add("reel-win"));
+  playTone(880,.16,"square");toast(`🎉 VÝHRA +${fmt(win)} TOKENŮ`)
+ }else $("machineResult").textContent="NO WIN — TRY AGAIN";
  history.unshift({game:current.name,bet,win,time:new Date().toLocaleTimeString("cs-CZ",{hour:"2-digit",minute:"2-digit"})});history=history.slice(0,25);$("lastWin").textContent=fmt(win);updateBalances();spinning=false;$("spinBtn").disabled=false;
 }
 function updateBalances(){$("balance").textContent=fmt(balance);$("gameBalance").textContent=fmt(balance)}
 function setBet(v){if(v==="half")bet=Math.max(current.min,Math.floor(bet/2));else if(v==="min")bet=current.min;else bet=Math.min(current.max,Math.max(current.min,bet*v));updateBetUI()}
 function adjustBet(dir){const step=Math.max(current.min,Math.round(bet*.25));bet=Math.max(current.min,Math.min(current.max,bet+dir*step));updateBetUI()}
-function updateBetUI(){$("betValue").textContent=fmt(bet);$("machineBetLabel").textContent=fmt(bet);$("maxWin").textContent=fmt(bet*Math.max(...Object.values(current.payouts)))}
+function updateBetUI(){$("betValue").textContent=fmt(bet);$("machineBetLabel").textContent=fmt(bet);const maxPayout=current?.id==="los-santos"?160:Math.max(...Object.values(current?.payouts||{0:0}));$("maxWin").textContent=fmt(bet*maxPayout)}
 function toggleSound(){sound=!sound;$("soundBtn").textContent=sound?"♫":"🔇";toast(sound?"SOUND ON":"SOUND OFF")}
 function toggleFullscreen(){if(!document.fullscreenElement)$("gameOverlay").requestFullscreen?.();else document.exitFullscreen?.()}
-function openPaytable(){
- const g=current||games[0];$("paytableTitle").textContent=g.name.toUpperCase();
- if(g.id==="los-santos"){
-   const order=["SEVEN","WATERMELON","GRAPES","BELL","PLUM","ORANGE","DOLLAR","CHERRY"];
-   $("paytableContent").innerHTML=order.map(s=>`<div class="pay-row mv-pay"><span class="pay-symbol"><img src="${MV_ASSETS[s]}" alt="${s}"></span><span>3 / 4 × ${s}</span><b>x${g.payouts[s]} / x${Math.round(g.payouts[s]*1.85)}</b></div>`).join("")+
-   `<div class="pay-row mv-pay"><span class="pay-symbol"><img src="${MV_ASSETS.WILD}" alt="WILD"></span><span>MULTI WILD</span><b>×2 / ×4 / ×8</b></div>`+
-   `<div class="pay-note">4 reels × 3 rows • 81 ways • Multi Wild replaces symbols and can multiply a win ×2, ×4 or ×8 • RTP ${g.rtp}% • Demo TOKENS</div>`;
- }else{
-   $("paytableContent").innerHTML=Object.entries(g.payouts).map(([s,m])=>`<div class="pay-row"><span class="pay-symbol">${s}</span><span>3 × ${s}</span><b>x${m}</b></div>`).join("")+`<div class="pay-note">${g.layout} • ${g.lines} lines • RTP ${g.rtp}% • Min ${fmt(g.min)} • Max ${fmt(g.max)}</div>`;
- }
- $("paytableOverlay").classList.remove("hidden")
-}
+function openPaytable(){const g=current||games[0];$("paytableTitle").textContent=g.name.toUpperCase();if(g.id==="los-santos"){$("paytableContent").innerHTML=`<div class="mv81-rules"><b>81 WAYS / CRISS-CROSS</b><span>3 stejné symboly zleva = 27 cest • 4 stejné = 81 cest</span><span>Symboly nemusí být v jedné vodorovné řadě. MULTI WILD nahrazuje ostatní symboly.</span></div>`+Object.entries(g.payouts).map(([s,p])=>`<div class="pay-row"><span class="pay-symbol">${symbolMarkup(s)}</span><span>3× / 4× ${s.replace("_"," ")}</span><b>x${p[3]} / x${p[4]}</b></div>`).join("")+`<div class="pay-row"><span class="pay-symbol">${symbolMarkup("MULTI_WILD")}</span><span>1 / 2 / 3 Wildy ve výherní cestě</span><b>×2 / ×4 / ×8</b></div><div class="pay-note">4 válce × 3 řady • výhry zleva doprava • více výher se sčítá • na stejné cestě platí pouze nejvyšší výhra • RTP ${g.rtp}%</div>`}else{$("paytableContent").innerHTML=Object.entries(g.payouts).map(([s,m])=>`<div class="pay-row"><span class="pay-symbol">${s}</span><span>3 × ${s}</span><b>x${m}</b></div>`).join("")+`<div class="pay-note">${g.layout} • ${g.lines} • RTP ${g.rtp}% • Min ${fmt(g.min)} • Max ${fmt(g.max)}</div>`}$("paytableOverlay").classList.remove("hidden")}
 function closePaytable(){$("paytableOverlay").classList.add("hidden")}
 function openRewards(){$("panelContent").innerHTML=`<div class="eyebrow gold">REWARDS</div><h2>FASTCASH <em>VIP</em></h2><div class="reward-level"><b>BRONZE</b><span>0 / 10,000 XP</span></div><div class="progress"><i style="width:18%"></i></div><div class="reward-grid"><div>♛<b>VIP TABLES</b><small>Coming soon</small></div><div>★<b>DAILY BONUS</b><small>250 tokens</small></div><div>◆<b>EXCLUSIVE SLOTS</b><small>Unlock at VIP</small></div></div>`;$("panelOverlay").classList.remove("hidden")}
 function openStats(){const spins=history.length,wins=history.reduce((a,x)=>a+x.win,0),bets=history.reduce((a,x)=>a+x.bet,0);$("panelContent").innerHTML=`<div class="eyebrow gold">PLAYER STATS</div><h2>YOUR <em>SESSION</em></h2><div class="stats-big"><div><b>${spins}</b><small>SPINS</small></div><div><b>${fmt(bets)}</b><small>WAGERED</small></div><div><b>${fmt(wins)}</b><small>WON</small></div></div><h3>RECENT SPINS</h3><div class="history">${history.length?history.map(x=>`<div><span>${x.game}</span><small>${x.time}</small><b class="${x.win?'win':''}">${x.win?"+":""}${fmt(x.win-x.bet)}</b></div>`).join(""):"No spins yet."}</div>`;$("panelOverlay").classList.remove("hidden")}
