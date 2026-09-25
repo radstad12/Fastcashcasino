@@ -550,3 +550,15 @@ pokerBet = function(i,amount){
   _pokerBetOriginal(i,amount);
   if(amount>0) animatePokerChips(amount);
 };
+
+/* Poker visual v2: force Czech labels and animate chip stacks after every bet. */
+(function(){
+  const cz={
+    "Pre-flop — your move.":"Pre-flop — jsi na tahu.",
+    "Showdown — ":"Showdown — ",
+    "Hand over.":"Konec hry.",
+    "Table is ready. Press DEAL.":"Stůl je připraven. Stiskni ROZDAT.",
+    "Press DEAL to start":"Stiskni ROZDAT pro začátek."
+  };
+  window.pokerMessageCZ=function(t){ const e=document.getElementById("pokerMessage"); if(e)e.textContent=cz[t]||t; };
+})();

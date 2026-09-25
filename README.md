@@ -44,3 +44,7 @@ Added a compact 5-seat Texas Hold'em room with animated dealer avatar, hole card
 
 ### Poker GTA-style CZ UI update
 Dealer is seated directly opposite the player, the table is compact/no-scroll, cards are larger and fully visible, UI text is Czech, and chip/pot stacking animations were added. The dealer is an original GTA-inspired visual treatment, not a copy of a specific copyrighted character.
+
+
+### Poker V2 visual redesign
+The poker table has been structurally rearranged: the dealer is centered directly opposite the player, the player cards are larger and face-on, the table is larger and more GTA-like, player chip stacks are visible, and the dealer has a full original GTA-inspired tuxedo-style silhouette.
