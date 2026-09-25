@@ -43,7 +43,7 @@
   <div class="hero-copy">
     <div class="eyebrow"><span class="pulse"></span> CASINO ONLINE</div>
     <h1>GOOD PEOPLE.<br><em>BAD DECISIONS.</em></h1>
-    <p>Los Santos never sleeps. Každý automat má vlastní mechaniku, bonusy, zvuky a animace. Vyber stroj, nastav sázku a roztoč válce.</p>
+    <p>Los Santos never sleeps. Pick a machine, set your bet and spin.</p>
     <div class="hero-actions"><button class="gold-btn" onclick="openGame('los-santos')">PLAY NOW <span>→</span></button><button class="ghost-btn" onclick="scrollToGames()">VIEW ALL SLOTS</button></div>
   </div>
   <div class="hero-stats"><div><b>1,248</b><small>PLAYERS ONLINE</small></div><div><b>10</b><small>LIVE SLOTS</small></div><div><b>24/7</b><small>LOS SANTOS</small></div></div>
@@ -73,18 +73,16 @@
   <div class="machine-scene" id="machineScene">
     <div class="neon-sign" id="neonSign">LOS SANTOS<br><span>LEGENDS</span></div>
     <div class="machine" id="machine">
-      <div class="effect-layer" aria-hidden="true"></div>
       <div class="machine-topline"><span>FASTCASH</span><span id="gameRtp">RTP 95%</span></div>
       <div class="reel-frame" id="reelFrame"></div>
       <div class="win-line"></div>
-      <div class="machine-result" id="machineResult">READY TO SPIN</div>
+      <div class="feature-strip"><span id="featureText">REALISTIC SLOT MECHANIC</span><span class="live-dot"></span></div><div class="machine-result" id="machineResult">READY TO SPIN</div>
       <div class="machine-bottom"><span>BET <b id="machineBetLabel">100</b></span><span>WIN <b id="lastWin">0</b></span></div>
     </div>
   </div>
-  <div class="feature-controls" id="featureControls" aria-live="polite"></div>
   <div class="control-deck">
     <div class="bet-control"><small>BET</small><button onclick="adjustBet(-1)">−</button><strong id="betValue">100</strong><button onclick="adjustBet(1)">+</button></div>
-    <div class="quick-bets"><button onclick="setBet('half')">½</button><button onclick="setBet('min')">MIN</button><button onclick="setBet(2)">2X</button><button onclick="setBet(5)">5X</button><button onclick="setBet(10)">10X</button></div>
+    <div class="quick-bets"><button onclick="setBet('half')">½</button><button onclick="setBet('min')">MIN</button><button onclick="setBet(2)">2X</button><button onclick="setBet(5)">5X</button><button onclick="setBet(10)">10X</button><button onclick="setBet('max')">MAX</button></div>
     <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN <span>↻</span></button>
   </div>
   <div class="game-footer"><button onclick="openPaytable()">PAYTABLE</button><span>Balance <b id="gameBalance">10,000</b></span><span>Max Win <b id="maxWin">5,000</b></span></div>
