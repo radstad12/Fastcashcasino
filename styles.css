@@ -1051,8 +1051,7 @@ body.poker-open{overflow:hidden}
 .poker-editor-crosshair:before{left:21px;top:0;width:2px;height:44px}.poker-editor-crosshair:after{left:0;top:21px;width:44px;height:2px}
 .poker-editor-crosshair i{position:absolute;left:17px;top:17px;width:10px;height:10px;border:2px solid #f6ca4a;border-radius:50%;box-shadow:0 0 8px rgba(246,202,74,.75)}
 #pokerOverlay.editor-mode .poker-editor-lock{display:none}
-#pokerOverlay:not(.editor-mode) .poker-editor-ui{display:flex!important}
-#pokerOverlay:not(.editor-mode) .poker-editor-crosshair{display:none!important}
+#pokerOverlay:not(.editor-mode) .poker-editor-ui,#pokerOverlay:not(.editor-mode) .poker-editor-crosshair{display:none!important}
 
 /* LIVE EDITOR FIX: everything is draggable and scalable, including dealer and table */
 #pokerOverlay.editor-mode .poker-dealer,
