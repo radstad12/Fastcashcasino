@@ -40,3 +40,7 @@ The first slot is a browser demo implementation inspired by the supplied Multi V
 
 ### Texas Hold'em Poker Pro
 Added a compact 5-seat Texas Hold'em room with animated dealer avatar, hole cards, community cards, blinds, betting actions, bots, showdown evaluator, split pots, and responsive no-scroll table layout. The current version is local/demo multiplayer architecture; real cross-device multiplayer requires a WebSocket backend.
+
+
+### Poker GTA-style CZ UI update
+Dealer is seated directly opposite the player, the table is compact/no-scroll, cards are larger and fully visible, UI text is Czech, and chip/pot stacking animations were added. The dealer is an original GTA-inspired visual treatment, not a copy of a specific copyrighted character.

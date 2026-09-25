@@ -227,3 +227,50 @@
 }
 
 body.poker-open{overflow:hidden}
+
+/* ===== GTA STYLE POKER REWORK ===== */
+.poker-stage{background:
+ radial-gradient(ellipse at 50% 45%,rgba(46,58,69,.28),transparent 45%),
+ linear-gradient(180deg,#080b10,#11161d 55%,#07090d)}
+.poker-table{width:min(800px,72vw);height:min(450px,54vh);margin-top:28px}
+.table-felt{background:
+ radial-gradient(ellipse at 50% 42%,#1b6d50 0,#10503c 43%,#082d24 100%),
+ repeating-radial-gradient(ellipse at center,transparent 0 24px,rgba(255,255,255,.018) 25px 26px)}
+.table-felt:after{content:"";position:absolute;inset:22px;border-radius:50%;border:1px solid rgba(220,196,117,.16);pointer-events:none}
+.dealer-front{position:absolute;z-index:25;left:50%;bottom:3px;transform:translateX(-50%);width:180px;text-align:center;pointer-events:none}
+.dealer-avatar.gta-style{height:118px;width:92px;margin:auto;transform:perspective(600px) rotateX(-3deg)}
+.dealer-front .dealer-name{margin-top:-1px}
+.dealer-front .dealer-speech{margin:5px auto 0;width:165px}
+.dealer-body{background:linear-gradient(100deg,#090b10,#2c3340 48%,#080a0f)!important;width:68px!important;height:64px!important;left:12px!important}
+.dealer-shirt{position:absolute;width:28px;height:38px;left:32px;bottom:17px;background:#eee;clip-path:polygon(0 0,50% 15%,100% 0,78% 100%,22% 100%);z-index:2}
+.dealer-jacket{position:absolute;width:48px;height:45px;left:22px;bottom:12px;border-left:2px solid #515b6b;border-right:2px solid #515b6b;z-index:3}
+.dealer-bowtie{bottom:44px!important}
+.dealer-head{width:48px!important;height:55px!important;left:22px!important;top:7px!important}
+.dealer-hair{width:50px!important;left:21px!important;top:2px!important;height:25px!important}
+.dealer-eye{top:31px!important}.eye-a{left:34px!important}.eye-b{left:52px!important}.dealer-smile{top:45px!important;left:39px!important}
+.poker-table .seat-bottom{bottom:-17px;transform:translate(-50%,50%);z-index:30}
+.poker-table .seat-bottom .hole-cards{margin-top:2px}
+.hole-cards{min-height:62px;gap:6px}
+.hole-cards .card{width:46px;height:64px;font-size:16px;transform:translateZ(0);border-radius:7px}
+.community-cards .card{width:54px;height:74px;border-radius:7px;font-size:18px}
+.card .rank{font-size:18px}.card .suit{font-size:16px}
+.card.back:after{font-size:22px}
+.card.winning{box-shadow:0 0 0 2px #f7c84a,0 0 24px #f7c84a88,0 10px 20px #000b}
+.chip-pile{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:120px;height:55px;z-index:3;pointer-events:none}
+.chip-pile .chip{position:absolute;width:27px;height:27px;border-radius:50%;border:3px dashed #e8e8e8;box-shadow:0 2px 4px #0008;animation:chipFly .45s cubic-bezier(.2,.9,.3,1) both}
+.chip-pile .chip:after{content:"";position:absolute;inset:5px;border:1px solid rgba(255,255,255,.65);border-radius:50%}
+@keyframes chipFly{from{opacity:0;transform:translate(var(--sx),var(--sy)) scale(.3) rotate(-30deg)}to{opacity:1;transform:translate(var(--ex),var(--ey)) scale(1) rotate(0)}}
+.pot-chips{height:22px;display:flex;justify-content:center;gap:3px;margin-top:3px}
+.pot-chips i{display:block;width:12px;height:12px;border-radius:50%;border:2px dashed #eee;box-shadow:0 2px 3px #000;animation:stackPop .25s ease both}
+@keyframes stackPop{from{transform:translateY(-15px) scale(.4);opacity:0}to{transform:none;opacity:1}}
+.seat{filter:drop-shadow(0 5px 7px rgba(0,0,0,.3))}
+.seat.active:after{content:"TAH";display:block;color:#f7c84a;font-size:8px;font-weight:1000;letter-spacing:1px;animation:pulseTurn 1s infinite}
+@keyframes pulseTurn{50%{opacity:.35}}
+.poker-action{border-radius:9px;text-transform:uppercase;letter-spacing:.5px}
+.poker-bottomline{font-size:8px}
+@media(max-width:950px){
+ .dealer-front{bottom:-3px;transform:translateX(-50%) scale(.82);transform-origin:bottom center}
+ .poker-table{margin-top:20px}
+ .hole-cards .card{width:42px;height:60px}
+ .community-cards .card{width:48px;height:66px}
+}

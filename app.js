@@ -495,3 +495,58 @@ function pokerUpdateActions(enabled){
 }
 function updateRaisePreview(v){document.getElementById("raisePreview").textContent=Number(v).toLocaleString("cs-CZ");document.getElementById("raiseAmount").textContent=Number(v).toLocaleString("cs-CZ")}
 function pokerDoNotScroll(e){if(e) e.preventDefault()}
+
+/* ===== GTA POKER PRESENTATION / CHIP ANIMATION ===== */
+const _pokerSpeakOriginal = pokerSpeak;
+pokerSpeak = function(t,anim=""){
+  const cz = {
+    "Welcome to FastCash.":"Vítejte u stolu.",
+    "Cards are in. Action starts after the big blind.":"Karty jsou rozdány. Začínáme po velké sázce.",
+    "Flop is on the table.":"Flop je na stole.",
+    "Turn card.":"Turnová karta.",
+    "River. Last card.":"River. Poslední karta.",
+    "Beautiful hand. You take the pot!":"Výborná kombinace. Berete bank!",
+  };
+  let msg=cz[t]||t;
+  if(/folds\./.test(msg)) msg=msg.replace("folds.","se skládá.");
+  if(/checks\./.test(msg)) msg=msg.replace("checks.","check.");
+  if(/raises\./.test(msg)) msg=msg.replace("raises.","navyšuje.");
+  if(/moves all-in\./.test(msg)) msg=msg.replace("moves all-in.","jde all-in.");
+  if(/takes the pot\./.test(msg)) msg=msg.replace("takes the pot.","bere bank.");
+  const e=document.getElementById("dealerSpeech"); if(e)e.textContent=msg;
+  const a=document.getElementById("dealerAvatar"); if(a){a.classList.remove("deal","win"); if(anim){void a.offsetWidth;a.classList.add(anim)}}
+};
+
+function animatePokerChips(amount){
+  const pile=document.getElementById("chipPile");
+  const potChips=document.getElementById("potChips");
+  if(!pile)return;
+  const count=Math.max(3,Math.min(14,Math.ceil(amount/100)));
+  for(let i=0;i<count;i++){
+    const c=document.createElement("i"); c.className="chip";
+    const hues=["#d9414d","#e8c44a","#4b83c6","#e9e9e9"];
+    c.style.background=`radial-gradient(circle at 35% 30%,#fff 0 8%,${hues[i%4]} 9% 70%,#16191d 71%)`;
+    c.style.setProperty("--sx",(Math.random()*160-80)+"px");
+    c.style.setProperty("--sy",(Math.random()*100-50)+"px");
+    c.style.setProperty("--ex",(Math.random()*40-20)+"px");
+    c.style.setProperty("--ey",(i%5)*-5+"px");
+    c.style.left=(46+i%5*7)+"px"; c.style.top=(16+Math.floor(i/5)*7)+"px";
+    pile.appendChild(c);
+    setTimeout(()=>c.remove(),1600);
+  }
+  if(potChips){
+    const n=Math.max(4,Math.min(18,Math.ceil(poker.pot/150)));
+    potChips.innerHTML="";
+    for(let i=0;i<n;i++){
+      const s=document.createElement("i");
+      s.style.background=["#d9414d","#e8c44a","#4b83c6","#e9e9e9"][i%4];
+      s.style.transform=`translateY(${-Math.floor(i/6)*3}px)`;
+      potChips.appendChild(s);
+    }
+  }
+}
+const _pokerBetOriginal = pokerBet;
+pokerBet = function(i,amount){
+  _pokerBetOriginal(i,amount);
+  if(amount>0) animatePokerChips(amount);
+};
