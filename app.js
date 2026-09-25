@@ -612,3 +612,13 @@ pokerBet = function(i,amount){
     };
   }
 })();
+
+/* V7: dealer speech remains a single readable line. */
+(function(){
+  const e=document.getElementById("dealerSpeech");
+  if(e){
+    e.style.whiteSpace="nowrap";
+    e.style.overflow="hidden";
+    e.style.textOverflow="ellipsis";
+  }
+})();

@@ -634,3 +634,194 @@ body.poker-open{overflow:hidden}
   #pokerOverlay .poker-table-v5 .seat-farleft{left:72%!important;top:-72px!important}
   #pokerOverlay .poker-table-v5 .seat-bottom{bottom:-92px!important}
 }
+
+/* ==========================================================
+   POKER V7 — BALANCED FIVE-SEAT COMPOSITION
+   Requested:
+                 DEALER
+          LUNA             SOPHIE
+          NICO             MARCUS
+                    YOU
+   Everything stays inside one viewport.
+   ========================================================== */
+
+/* Give the play area more vertical room and reserve HUD space. */
+#pokerOverlay .poker-shell{
+  width:min(1450px,98vw)!important;
+  height:min(920px,96vh)!important;
+  grid-template-rows:54px minmax(0,1fr) 112px 26px!important;
+  overflow:hidden!important;
+}
+
+/* Table is slightly smaller and centered lower, leaving clean rows above/below. */
+#pokerOverlay .poker-table-v5{
+  width:min(870px,69vw)!important;
+  height:min(390px,43vh)!important;
+  left:50%!important;
+  top:57%!important;
+  transform:translate(-50%,-50%)!important;
+}
+
+/* TOP ROW: Luna / Sophie, directly below the dealer. */
+#pokerOverlay .poker-table-v5 .seat-top{
+  left:24%!important;
+  top:-91px!important;
+  right:auto!important;
+  bottom:auto!important;
+  transform:translateX(-50%)!important;
+}
+#pokerOverlay .poker-table-v5 .seat-farleft{
+  left:76%!important;
+  top:-91px!important;
+  right:auto!important;
+  bottom:auto!important;
+  transform:translateX(-50%)!important;
+}
+
+/* SIDE ROW: Nico / Marcus. */
+#pokerOverlay .poker-table-v5 .seat-left{
+  left:-112px!important;
+  top:54%!important;
+  right:auto!important;
+  bottom:auto!important;
+  transform:translateY(-50%)!important;
+}
+#pokerOverlay .poker-table-v5 .seat-right{
+  right:-112px!important;
+  top:54%!important;
+  left:auto!important;
+  bottom:auto!important;
+  transform:translateY(-50%)!important;
+}
+
+/* YOU: bottom center, but fully inside the stage so cards cannot enter HUD. */
+#pokerOverlay .poker-table-v5 .seat-bottom{
+  left:50%!important;
+  bottom:-6px!important;
+  top:auto!important;
+  right:auto!important;
+  transform:translateX(-50%)!important;
+  z-index:140!important;
+}
+#pokerOverlay .poker-table-v5 .seat-bottom .player-cards{
+  min-height:86px!important;
+}
+#pokerOverlay .poker-table-v5 .seat-bottom .player-cards .card{
+  width:55px!important;
+  height:78px!important;
+}
+
+/* Keep the five player areas visually centered and separated from the felt. */
+#pokerOverlay .poker-table-v5 .seat{
+  width:150px!important;
+}
+#pokerOverlay .poker-table-v5 .seat .hole-cards{
+  min-height:62px!important;
+}
+#pokerOverlay .poker-table-v5 .seat-top .hole-cards,
+#pokerOverlay .poker-table-v5 .seat-farleft .hole-cards{
+  margin-top:2px!important;
+}
+#pokerOverlay .poker-table-v5 .seat-left .hole-cards,
+#pokerOverlay .poker-table-v5 .seat-right .hole-cards{
+  margin-top:2px!important;
+}
+
+/* Dealer: centered above the table, with a one-line speech bubble. */
+#pokerOverlay .poker-dealer{
+  left:50%!important;
+  top:2px!important;
+  transform:translateX(-50%)!important;
+  width:250px!important;
+  height:135px!important;
+  z-index:180!important;
+}
+#pokerOverlay .poker-dealer .dealer-avatar{
+  transform:scale(.57)!important;
+  transform-origin:bottom center!important;
+  margin-bottom:-48px!important;
+}
+#pokerOverlay .poker-dealer .dealer-name{
+  white-space:nowrap!important;
+  margin-top:0!important;
+}
+#pokerOverlay .poker-dealer .dealer-speech{
+  width:max-content!important;
+  max-width:245px!important;
+  min-width:170px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  margin:4px auto 0!important;
+  padding:6px 10px!important;
+  font-size:8px!important;
+  line-height:1.1!important;
+}
+
+/* Make the cards sit in front of seat labels, never underneath them. */
+#pokerOverlay .poker-table-v5 .seat .hole-cards{
+  position:relative!important;
+  z-index:160!important;
+}
+#pokerOverlay .poker-table-v5 .seat .hole-cards .card{
+  position:relative!important;
+  z-index:161!important;
+}
+
+/* Community cards and pot stay in the center of the felt. */
+#pokerOverlay .poker-table-v5 .community-cards{
+  top:53%!important;
+  z-index:80!important;
+}
+#pokerOverlay .poker-table-v5 .pot-display{
+  top:40%!important;
+  z-index:70!important;
+}
+
+/* HUD is a hard boundary. Nothing from the table is allowed to overlap it. */
+#pokerOverlay .poker-hud-v5{
+  height:112px!important;
+  min-height:112px!important;
+  overflow:visible!important;
+  z-index:500!important;
+}
+#pokerOverlay .poker-bottomline{
+  height:26px!important;
+  min-height:26px!important;
+  z-index:600!important;
+}
+
+/* Smaller displays: compress the table instead of creating a page scroll. */
+@media(max-width:1100px){
+  #pokerOverlay .poker-table-v5{
+    width:67vw!important;
+    height:40vh!important;
+  }
+  #pokerOverlay .poker-table-v5 .seat-top{left:21%!important;top:-78px!important}
+  #pokerOverlay .poker-table-v5 .seat-farleft{left:79%!important;top:-78px!important}
+  #pokerOverlay .poker-table-v5 .seat-left{left:-90px!important}
+  #pokerOverlay .poker-table-v5 .seat-right{right:-90px!important}
+  #pokerOverlay .poker-dealer{transform:translateX(-50%) scale(.9)!important;transform-origin:top center!important}
+}
+@media(max-width:820px){
+  #pokerOverlay .poker-shell{
+    width:100vw!important;height:100vh!important;border-radius:0!important;
+    grid-template-rows:48px minmax(0,1fr) 164px 24px!important;
+  }
+  #pokerOverlay .poker-table-v5{
+    width:84vw!important;height:39vh!important;top:54%!important;
+  }
+  #pokerOverlay .poker-table-v5 .seat-top{left:20%!important;top:-67px!important}
+  #pokerOverlay .poker-table-v5 .seat-farleft{left:80%!important;top:-67px!important}
+  #pokerOverlay .poker-table-v5 .seat-left{left:-64px!important}
+  #pokerOverlay .poker-table-v5 .seat-right{right:-64px!important}
+  #pokerOverlay .poker-table-v5 .seat-bottom{bottom:-2px!important}
+  #pokerOverlay .poker-dealer{
+    top:0!important;
+    transform:translateX(-50%) scale(.72)!important;
+    transform-origin:top center!important;
+  }
+  #pokerOverlay .poker-dealer .dealer-speech{
+    max-width:230px!important;
+  }
+}
