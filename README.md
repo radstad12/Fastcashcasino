@@ -32,3 +32,7 @@ Settings → Pages → Deploy from branch → `main` → `/ (root)`
 The demo is intentionally browser-only for now. The +10,000 button and balance are test features.
 
 Later, the spin and wallet functions can be replaced with the authoritative backend so all players share the same casino pool.
+
+
+## Multi Vegas 81 (first game)
+The first slot is a browser demo implementation inspired by the supplied Multi Vegas 81 reference: 4x3 reels, 27 criss-cross ways for 3 matching symbols, 81 ways for 4, left-to-right evaluation, additive wins, highest win on a way only, and Multi Wild x2/x4/x8. Other games are unchanged.

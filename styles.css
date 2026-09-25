@@ -2,24 +2,138 @@
 @media(max-width:1200px){.game-grid{grid-template-columns:repeat(4,1fr)}.nav-btn span{display:none}.topbar{padding:0 18px}.profile-copy{display:none}.control-deck{grid-template-columns:1fr 1fr}.spin-btn{grid-column:1/-1}}
 @media(max-width:800px){.topbar{height:70px}.brand{min-width:auto}.brand-script,.brand-sub,.nav{display:none}.brand-main{font-size:24px}.profile{margin-left:auto}.add-money{min-width:115px}.hero{margin:15px}.hero-copy{padding:42px 25px}.hero h1{font-size:52px}.hero-stats{left:25px;right:auto;bottom:20px}.section,.ticker,.promo-row{margin-left:15px;margin-right:15px}.game-grid{grid-template-columns:repeat(2,1fr)}.card-art{height:155px}.promo-row{grid-template-columns:1fr}.footer-badges{display:none}.reel{min-height:60px}.machine-scene{min-height:380px}.control-deck{grid-template-columns:1fr}.quick-bets{justify-content:center}.bet-control{justify-content:center}.game-footer{justify-content:space-between}.game-footer span:first-of-type{margin-left:0}}
 @media(max-width:480px){.wallet{min-width:85px}.wallet small{display:none}.add-money{min-width:100px;padding:5px}.hero h1{font-size:45px}.hero-stats{gap:14px}.game-grid{gap:8px}.card-art{height:140px}.layout-badge{font-size:7px}.card-info{padding:10px}.card-info b{font-size:10px}.reel-frame{gap:5px;padding:7px}.reel{min-height:48px}.slot-symbol{font-size:11px}.panel{padding:25px 18px}.stats-big,.reward-grid{grid-template-columns:1fr}}
-/* Multi Vegas 81 — first slot only */
-.machine-sunset{background:linear-gradient(160deg,#31070b,#12070a 62%,#090b10);border-color:#b43b30;box-shadow:0 25px 80px #000,0 0 0 8px #160b0d,0 0 45px #e02a2428}
-.scene-sunset{background:radial-gradient(circle at 50% 43%,#6b1714 0,#2a0b0d 35%,#07090e 70%)}
-.machine-sunset .machine-topline span:first-child{color:#ffcc48}
-.machine-sunset .reel-frame{background:#26070a;border-color:#9b3b30;box-shadow:inset 0 0 30px #000,0 0 35px #e11e2420}
-.machine-sunset .reel{background:linear-gradient(90deg,#c7c7c7,#fff 42%,#d0d0d0);border:1px solid #8d8d8d;min-height:92px}
-.machine-sunset .reel:after{background:linear-gradient(transparent 45%,#f2b52e38 50%,transparent 55%)}
-.machine-sunset .neon-sign{color:#fff1dc;text-shadow:0 0 8px #ff302e,0 0 24px #ff302e,0 0 48px #ff9b1a}
-.machine-sunset .neon-sign span{color:#ffd34e;text-shadow:0 0 8px #ff9d18,0 0 25px #ff4b1c}
-.machine-sunset .slot-symbol{width:100%;height:100%;display:grid;place-items:center}
-.machine-sunset .slot-symbol img{width:78%;height:78%;object-fit:contain;filter:drop-shadow(0 4px 4px #0008)}
-.machine-sunset .sym-multi_wild img{width:90%;height:75%;filter:drop-shadow(0 0 9px #ffcf42)}
-.machine-sunset .reel-win{animation:mv81Win .42s ease-in-out infinite alternate;box-shadow:0 0 0 3px #ffd44d,0 0 26px #ffb71b,inset 0 0 25px #0005}
-.machine-sunset .way-win{animation:mv81Way .32s ease-in-out infinite alternate;box-shadow:0 0 0 4px #ff342e,0 0 35px #ff2e27,inset 0 0 25px #0005}
-@keyframes mv81Win{from{filter:brightness(1)}to{filter:brightness(1.45)}}
-@keyframes mv81Way{from{transform:scale(1)}to{transform:scale(1.045)}}
-.mv81-rules{margin:0 0 10px;padding:15px;border:1px solid #6c3b29;background:linear-gradient(135deg,#29100f,#17151b);border-radius:9px;display:grid;gap:6px;color:#c8ccd5;font-size:11px}
-.mv81-rules b{color:#ffd04d;letter-spacing:1px}
-.mv81-rules span{color:#8e96a7}
-.mv81-rules + .pay-row .pay-symbol img{width:54px;height:54px;object-fit:contain}
-.pay-symbol .slot-symbol img{width:54px;height:54px;object-fit:contain;display:block;margin:auto}
+
+/* Multi Vegas 81 — first machine only */
+.scene-mv81{
+  background:
+    radial-gradient(circle at 50% 35%,#ff3a19 0%,#a70b0b 28%,#3d0206 62%,#08090e 100%);
+}
+.scene-mv81 .neon-sign{
+  color:#fff4c2;
+  text-shadow:0 0 7px #fff,0 0 18px #ffcb3d,0 0 36px #ff261d;
+}
+.scene-mv81 .neon-sign span{color:#ffe46d;text-shadow:0 0 10px #ffad22}
+.machine-mv81{
+  max-width:1000px;
+  background:linear-gradient(180deg,#6c0707 0,#260306 12%,#100b0d 88%,#3b0906 100%);
+  border:4px solid #f2b52d;
+  box-shadow:0 0 0 5px #780c08,0 0 0 9px #ffdb52,0 20px 80px #000,0 0 55px #ff2c1644;
+}
+.machine-mv81 .machine-topline{color:#ffe6a1}
+.machine-mv81 .machine-topline span:first-child{color:#fff0a1}
+.machine-mv81 .reel-frame{
+  position:relative;
+  gap:3px;
+  margin:15px 0 10px;
+  padding:0;
+  background:#260203;
+  border:7px solid #f5b72d;
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:inset 0 0 0 3px #ffed77,0 0 25px #ff8c1a66;
+}
+.machine-mv81 .reel{
+  min-height:112px;
+  border-radius:0;
+  background:
+    radial-gradient(circle at 50% 50%,#fff7b8 0,#ffd84b 46%,#f09c0a 82%,#a85600 100%);
+  border-right:2px solid #a86609;
+  box-shadow:inset 0 0 25px #7b390044;
+}
+.machine-mv81 .reel:nth-child(3n+1){background:radial-gradient(circle,#fff8c4 0,#ffd747 48%,#e89306 85%,#9a4d00 100%)}
+.machine-mv81 .reel:after{
+  background:linear-gradient(transparent 47%,#fff3a866 50%,transparent 53%);
+}
+.mv81-symbol{display:grid;place-items:center;width:100%;height:100%;position:relative;z-index:2}
+.mv81-symbol img{width:min(88%,112px);height:min(88%,100px);object-fit:contain;filter:drop-shadow(0 5px 3px #5c210066)}
+.mv81-hit{
+  animation:mv81WinPulse .55s ease-in-out infinite alternate;
+  z-index:3;
+}
+.mv81-hit .mv81-symbol img{filter:drop-shadow(0 0 8px #fff) drop-shadow(0 0 18px #ffd22d)}
+.mv81-line-svg{
+  position:absolute;inset:0;width:100%;height:100%;z-index:8;pointer-events:none;overflow:visible;
+}
+.mv81-path{
+  fill:none;
+  stroke:#fff3a0;
+  stroke-width:5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-dasharray:8 7;
+  filter:drop-shadow(0 0 5px #ff9d00) drop-shadow(0 0 11px #ff2a14);
+  animation:mv81Path .85s ease-in-out both;
+}
+.machine-mv81 .machine-result{
+  color:#ffe36b;
+  text-shadow:0 0 12px #ff641c;
+  font-size:19px;
+}
+.machine-mv81 .machine-bottom{color:#f5c96b}
+.machine-mv81 .machine-bottom b{color:#fff}
+.machine-mv81 .control-deck{
+  background:linear-gradient(180deg,#240507,#0c0c10);
+  border-top:2px solid #9f5c12;
+}
+.machine-mv81 .spin-btn{
+  background:radial-gradient(circle at 50% 38%,#9cff6e,#36c91f 48%,#0c7d0c 100%);
+  border:4px solid #f0e7b0;
+  border-radius:50%;
+  width:92px;height:92px;
+  justify-self:center;
+  box-shadow:0 0 0 4px #4c4f45,0 0 24px #5cff3f99;
+  font-size:0;
+}
+.machine-mv81 .spin-btn span{font-size:42px;display:block}
+.machine-mv81 .spin-btn::after{content:"SPIN";display:block;font-size:10px;margin-top:-5px}
+.machine-mv81 .bet-control button,.machine-mv81 .quick-bets button{
+  border-color:#765b35;background:linear-gradient(#302014,#151014);color:#ffe49a;
+}
+.mv81-pay-row{grid-template-columns:100px 1fr 90px}
+.mv81-pay-row .pay-symbol img{width:64px;height:48px;object-fit:contain;vertical-align:middle}
+.mv81-pay-row span:nth-child(2) b{display:block;color:#fff}
+.mv81-pay-row span:nth-child(2) small{display:block;color:#8f97a7;font-size:8px;margin-top:4px}
+.mv81-section-title{color:#43c7f1;font:900 22px "Barlow Condensed";margin:28px 0 12px;text-align:center}
+.mv81-info{
+  background:#080a0f;border:1px solid #303746;border-radius:10px;
+  padding:15px;color:#c3c8d2;font-size:11px;line-height:1.6;
+}
+.mv81-info strong{color:#43c7f1}
+.mv81-diagrams{
+  display:grid;grid-template-columns:repeat(9,1fr);gap:12px;
+  background:#050609;padding:14px;border-radius:10px;border:1px solid #202532;
+}
+.mv81-line-card{text-align:center;color:#43c7f1;font-size:10px}
+.mv81-line-card>b{display:block;margin-bottom:5px;font-size:12px}
+.mv81-line-card>div{
+  display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,11px);
+  width:54px;height:40px;margin:auto;border:1px solid #747985;
+  position:relative;background:#050505;
+}
+.mv81-line-card>div::before{
+  content:"";position:absolute;left:0;right:0;top:0;bottom:0;
+  background:linear-gradient(to right,#ffffff00 24%,#666 25%,#666 26%,#ffffff00 27%,#ffffff00 49%,#666 50%,#666 51%,#ffffff00 52%,#ffffff00 74%,#666 75%,#666 76%,#ffffff00 77%);
+  pointer-events:none;
+}
+.mv81-line-card i{display:block;z-index:1}
+.mv81-line-card i::after{content:""}
+.mv81-line-card i{width:100%;height:100%;background:transparent}
+.mv81-line-card i.active{background:#fff}
+@keyframes mv81WinPulse{
+ from{box-shadow:inset 0 0 0 2px #fff,0 0 8px #ffd000}
+ to{box-shadow:inset 0 0 0 4px #fff,0 0 30px #ff2d12,0 0 45px #ffd000}
+}
+@keyframes mv81Path{
+ 0%{opacity:0;stroke-dashoffset:120}
+ 25%{opacity:1}
+ 100%{opacity:1;stroke-dashoffset:0}
+}
+@media(max-width:800px){
+ .mv81-diagrams{grid-template-columns:repeat(6,1fr)}
+ .machine-mv81 .reel{min-height:82px}
+}
+@media(max-width:480px){
+ .mv81-diagrams{grid-template-columns:repeat(4,1fr)}
+ .machine-mv81 .reel{min-height:62px}
+ .mv81-symbol img{width:82%;height:82%}
+}
