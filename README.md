@@ -48,3 +48,7 @@ Dealer is seated directly opposite the player, the table is compact/no-scroll, c
 
 ### Poker V2 visual redesign
 The poker table has been structurally rearranged: the dealer is centered directly opposite the player, the player cards are larger and face-on, the table is larger and more GTA-like, player chip stacks are visible, and the dealer has a full original GTA-inspired tuxedo-style silhouette.
+
+
+### Poker V6
+Poker seats are centered as: YOU bottom, one player left, one player right, dealer opposite at top center, and one player on each side of the dealer. The player's poker stack is now tied directly to the main TOKENS balance: bets immediately reduce TOKENS and winnings return TOKENS.

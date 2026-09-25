@@ -376,10 +376,30 @@ function compareScores(a,b){for(let i=0;i<Math.max(a.length,b.length);i++){const
 function pokerHandName(score){
   return ["High Card","One Pair","Two Pair","Three of a Kind","Straight","Flush","Full House","Four of a Kind","Straight Flush","Royal Flush"][score[0]==8&&score[1]===14?9:score[0]];
 }
-function pokerResetSeats(){
-  poker.players.forEach((p,i)=>{p.stack=Math.max(p.stack,2000);p.folded=false;p.allin=false;document.getElementById("stack"+i).textContent=p.stack.toLocaleString("cs-CZ");document.getElementById("cards"+i).innerHTML="";document.getElementById("badge"+i).textContent="";document.getElementById("seat"+i).classList.remove("folded","winner","active")});
+function pokerSyncBalance(flash=true){
+  balance=Math.max(0,Math.floor(Number(poker.players[2].stack)||0));
+  updateBalances();
+  if(flash){
+    ["balance","gameBalance"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.classList.remove("poker-balance-flash");void el.offsetWidth;el.classList.add("poker-balance-flash");}
+    });
+  }
 }
+function pokerResetSeats(){
+  poker.players.forEach((p,i)=>{
+    if(i===2) p.stack=Math.max(0,Math.floor(balance));
+    else p.stack=Math.max(p.stack,2000);
+    p.folded=false;p.allin=false;
+    document.getElementById("stack"+i).textContent=p.stack.toLocaleString("cs-CZ");
+    document.getElementById("cards"+i).innerHTML="";
+    document.getElementById("badge"+i).textContent="";
+    document.getElementById("seat"+i).classList.remove("folded","winner","active");
+  });
+}
+
 function openPoker(){
+  poker.players[2].stack=Math.max(0,Math.floor(balance));
   document.getElementById("pokerOverlay").classList.remove("hidden");
   document.body.classList.add("poker-open");
   pokerSpeak("Welcome to FastCash. Five seats, one winner.");
@@ -396,19 +416,35 @@ function pokerDealCard(playerIndex,hidden=false){
   document.getElementById("cards"+playerIndex).insertAdjacentHTML("beforeend",pokerCardHTML(c,hidden));
 }
 function pokerStartHand(){
+  if(balance<50){
+    pokerMessage("Nemáš dostatek tokenů na blind.");
+    pokerSpeak("Na stůl potřebuješ alespoň 50 tokenů.");
+    pokerUpdateActions(false);
+    return;
+  }
+  poker.players[2].stack=Math.floor(balance);
   poker.handId++;poker.deck=pokerNewDeck();poker.community=[];poker.pot=0;poker.street="preflop";poker.currentBet=100;poker.minRaise=100;poker.folded=new Set();poker.contrib=[0,0,0,0,0];poker.hole=[[],[],[],[],[]];poker.active=true;poker.acting=true;
   poker.players.forEach((p,i)=>{p.folded=false;p.allin=false;document.getElementById("seat"+i).classList.remove("folded","winner","active");document.getElementById("cards"+i).innerHTML="";document.getElementById("badge"+i).textContent=""});
-  // Rotate dealer and post blinds.
   poker.dealer=(poker.dealer+1)%5;
   const sb=(poker.dealer+1)%5, bb=(poker.dealer+2)%5;
   pokerBet(sb,50);pokerBet(bb,100);
   for(let r=0;r<2;r++)for(let i=0;i<5;i++)pokerDealCard(i,i!==2);
-  pokerRender();pokerSpeak("Cards are in. Action starts after the big blind.","deal");pokerMessage("Pre-flop — your move.");
+  pokerRender();pokerSpeak("Karty jsou rozdány. Začínáme po velké sázce.","deal");pokerMessage("Pre-flop — jsi na tahu.");
   poker.turn=(bb+1)%5;pokerSetTurn();
 }
+
 function pokerBet(i,amount){
-  const p=poker.players[i], actual=Math.min(amount,p.stack);p.stack-=actual;poker.contrib[i]+=actual;poker.pot+=actual;if(p.stack===0)p.allin=true;
+  const p=poker.players[i];
+  const actual=Math.min(Math.max(0,amount),p.stack);
+  if(actual<=0)return 0;
+  p.stack-=actual;
+  poker.contrib[i]+=actual;
+  poker.pot+=actual;
+  if(p.stack===0)p.allin=true;
+  if(i===2) pokerSyncBalance(true);
+  return actual;
 }
+
 function pokerSetTurn(){
   if(!poker.active)return;
   let loops=0;while(loops++<10 && (poker.folded.has(poker.turn)||poker.players[poker.turn].allin))poker.turn=(poker.turn+1)%5;
@@ -464,13 +500,13 @@ function pokerShowdown(){
   let best=null,winners=[];
   live.forEach(i=>{const result=pokerBestFive(poker.community.concat(poker.hole[i]));if(!best||compareScores(result.score,best.score)>0){best=result;winners=[i]}else if(compareScores(result.score,best.score)===0)winners.push(i)});
   const share=Math.floor(poker.pot/winners.length),remainder=poker.pot-share*winners.length;
-  winners.forEach((i,k)=>{poker.players[i].stack+=share+(k===0?remainder:0);document.getElementById("seat"+i).classList.add("winner");document.getElementById("badge"+i).textContent="WIN • "+pokerHandName(best.score)});
+  winners.forEach((i,k)=>{poker.players[i].stack+=share+(k===0?remainder:0);document.getElementById("seat"+i).classList.add("winner");document.getElementById("badge"+i).textContent="VÝHRA • "+pokerHandName(best.score);}); if(winners.includes(2)) pokerSyncBalance(true);
   pokerSpeak(winners.includes(2)?"Beautiful hand. You take the pot!":poker.players[winners[0]].name+" takes the pot.", "win");
   pokerMessage("Showdown — "+winners.map(i=>poker.players[i].name).join(" / ")+" wins.");
   pokerRender(true);poker.active=false;pokerUpdateActions(false);
   document.getElementById("dealPokerBtn").textContent="DEAL AGAIN";
 }
-function pokerAward(i){poker.players[i].stack+=poker.pot;document.getElementById("seat"+i).classList.add("winner");document.getElementById("badge"+i).textContent="WIN • FOLD";pokerSpeak(poker.players[i].name+" wins — everyone folded.","win");pokerMessage("Hand over.");poker.active=false;pokerRender(true);pokerUpdateActions(false);document.getElementById("dealPokerBtn").textContent="DEAL AGAIN"}
+function pokerAward(i){poker.players[i].stack+=poker.pot; if(i===2) pokerSyncBalance(true); document.getElementById("seat"+i).classList.add("winner");document.getElementById("badge"+i).textContent="VÝHRA • VŠICHNI FOLD";pokerSpeak(poker.players[i].name+" wins — everyone folded.","win");pokerMessage("Hand over.");poker.active=false;pokerRender(true);pokerUpdateActions(false);document.getElementById("dealPokerBtn").textContent="DEAL AGAIN"}
 function dealPoker(){if(poker.active)return;pokerResetSeats();document.getElementById("dealPokerBtn").textContent="DEAL";pokerStartHand()}
 function pokerRender(showdown=false){
   document.getElementById("pokerPot").textContent=poker.pot.toLocaleString("cs-CZ");
