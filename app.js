@@ -623,61 +623,22 @@ pokerBet = function(i,amount){
   }
 })();
 
-/* === WORKING TEMPORARY LAYOUT EDITOR === */
-const PLE_DEFAULTS={table:{scale:68},dealer:{x:50,y:8,scale:1},luna:{x:35,y:25,scale:1},sophie:{x:65,y:25,scale:1},nico:{x:25,y:52,scale:1},marcus:{x:75,y:52,scale:1},you:{x:50,y:84,scale:1}};
-let pleConfig=JSON.parse(localStorage.getItem("fastcash_poker_layout_v2")||"null")||JSON.parse(JSON.stringify(PLE_DEFAULTS));
-let pleRole="dealer";
-
-function pleStatus(t){const e=document.getElementById("pleStatus");if(e)e.textContent=t;}
-function pleBuildSelect(){
- const s=document.getElementById("pleSelected");if(!s||s.options.length)return;
- [["dealer","KRUPIÉR"],["luna","LUNA"],["sophie","SOPHIE"],["nico","NICO"],["marcus","MARCUS"],["you","TY"]].forEach(x=>{const o=document.createElement("option");o.value=x[0];o.textContent=x[1];s.appendChild(o)});
- s.onchange=()=>pleSelect(s.value);
+/* REAL GLOBAL LAYOUT EDITOR */
+const REAL_PLE_DEFAULTS={table:{scale:68},dealer:{x:50,y:8,scale:1},luna:{x:35,y:25,scale:1},sophie:{x:65,y:25,scale:1},nico:{x:25,y:52,scale:1},marcus:{x:75,y:52,scale:1},you:{x:50,y:84,scale:1}};
+let REAL_PLE_CFG=JSON.parse(localStorage.getItem("fastcash_real_poker_layout")||"null")||JSON.parse(JSON.stringify(REAL_PLE_DEFAULTS));
+let REAL_PLE_ROLE="dealer";
+function realPleStatus(t){const e=document.getElementById("REAL_PLE_STATUS");if(e)e.textContent=t}
+function openPokerEditor(){const e=document.getElementById("GLOBAL_POKER_EDITOR");if(!e)return;e.classList.add("open");REAL_PLE_ROLE="dealer";realPleRender();realPleStatus("Editor otevřen — přetahuj prvky myší.")}
+function closePokerEditor(){const e=document.getElementById("GLOBAL_POKER_EDITOR");if(e)e.classList.remove("open")}
+function realPleRender(){
+ const stage=document.getElementById("REAL_PLE_STAGE"),table=document.getElementById("REAL_PLE_TABLE");if(!stage||!table)return;
+ table.style.width=REAL_PLE_CFG.table.scale+"%";
+ stage.querySelectorAll(".REAL_PLE_ITEM").forEach(el=>{const d=REAL_PLE_CFG[el.dataset.role];el.style.left=d.x+"%";el.style.top=d.y+"%";el.style.transform="translate(-50%,-50%) scale("+d.scale+")";el.classList.toggle("selected",el.dataset.role===REAL_PLE_ROLE)});
+ const d=REAL_PLE_CFG[REAL_PLE_ROLE];document.getElementById("REAL_PLE_SELECT").value=REAL_PLE_ROLE;document.getElementById("REAL_PLE_X").value=Math.round(d.x);document.getElementById("REAL_PLE_Y").value=Math.round(d.y);document.getElementById("REAL_PLE_SCALE").value=d.scale;document.getElementById("REAL_PLE_TABLE_SIZE").value=REAL_PLE_CFG.table.scale;
 }
-function pleRender(){
- pleBuildSelect();
- const stage=document.getElementById("pleStage"), table=document.getElementById("pleTable"); if(!stage||!table)return;
- table.style.width=pleConfig.table.scale+"%";
- stage.querySelectorAll(".ple-item").forEach(el=>{
-   const d=pleConfig[el.dataset.role]; if(!d)return;
-   el.style.left=d.x+"%";el.style.top=d.y+"%";el.style.transform="translate(-50%,-50%) scale("+d.scale+")";
-   el.classList.toggle("selected",el.dataset.role===pleRole);
- });
- const d=pleConfig[pleRole];
- if(d){
-   document.getElementById("pleX").value=Math.round(d.x);
-   document.getElementById("pleY").value=Math.round(d.y);
-   document.getElementById("pleScale").value=d.scale;
- }
- document.getElementById("pleTableScale").value=pleConfig.table.scale;
-}
-function openPokerEditor(){const e=document.getElementById("pokerLayoutEditor");if(!e)return;e.classList.add("open");e.style.display="flex";pleRole="dealer";pleRender();pleStatus("Editor otevřen — přetahuj hráče myší.");}
-function closePokerEditor(){const e=document.getElementById("pokerLayoutEditor");if(e){e.classList.remove("open");e.style.display="none";}}
-function pleSelect(r){pleRole=r;pleRender();}
-function pleFieldChange(){const d=pleConfig[pleRole];if(!d)return;d.x=Number(document.getElementById("pleX").value)||0;d.y=Number(document.getElementById("pleY").value)||0;d.scale=Number(document.getElementById("pleScale").value)||1;pleRender();}
-function pleTableChange(){pleConfig.table.scale=Number(document.getElementById("pleTableScale").value)||68;pleRender();}
-function pleNudge(dx,dy){const d=pleConfig[pleRole];if(!d)return;d.x=Math.max(0,Math.min(100,d.x+dx));d.y=Math.max(0,Math.min(100,d.y+dy));pleRender();}
-function pleReset(){pleConfig=JSON.parse(JSON.stringify(PLE_DEFAULTS));localStorage.setItem("fastcash_poker_layout_v2",JSON.stringify(pleConfig));pleRender();pleStatus("Rozložení resetováno.");}
-function pleSave(){localStorage.setItem("fastcash_poker_layout_v2",JSON.stringify(pleConfig));pleStatus("Uloženo v prohlížeči.");}
-function pleJson(){return JSON.stringify(pleConfig,null,2);}
-function pleDownload(){
- const blob=new Blob([pleJson()],{type:"application/json"});
- const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="poker-layout.json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);pleStatus("poker-layout.json stažen.");
-}
-async function pleCopy(){try{await navigator.clipboard.writeText(pleJson());pleStatus("JSON zkopírován.");}catch(e){pleStatus("Kopírování blokuje prohlížeč — použij STÁHNOUT JSON.");}}
-(function(){
- function initPle(){
-  pleBuildSelect();
-  const stage=document.getElementById("pleStage");if(!stage)return;
-  stage.querySelectorAll(".ple-item").forEach(el=>{
-   el.addEventListener("pointerdown",ev=>{
-    ev.preventDefault();pleRole=el.dataset.role;pleRender();el.setPointerCapture(ev.pointerId);
-    const rect=stage.getBoundingClientRect();
-    const move=e=>{const d=pleConfig[pleRole];d.x=Math.max(0,Math.min(100,(e.clientX-rect.left)/rect.width*100));d.y=Math.max(0,Math.min(100,(e.clientY-rect.top)/rect.height*100));pleRender();};
-    const stop=()=>{el.removeEventListener("pointermove",move);el.removeEventListener("pointerup",stop);};
-    el.addEventListener("pointermove",move);el.addEventListener("pointerup",stop);
-   });
-  });
- }
- if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initPle);else initPle();
-})();
+function realPleApply(){const d=REAL_PLE_CFG[REAL_PLE_ROLE];d.x=Number(document.getElementById("REAL_PLE_X").value)||0;d.y=Number(document.getElementById("REAL_PLE_Y").value)||0;d.scale=Number(document.getElementById("REAL_PLE_SCALE").value)||1;REAL_PLE_CFG.table.scale=Number(document.getElementById("REAL_PLE_TABLE_SIZE").value)||68;realPleRender()}
+function realPleNudge(dx,dy){const d=REAL_PLE_CFG[REAL_PLE_ROLE];d.x=Math.max(0,Math.min(100,d.x+dx));d.y=Math.max(0,Math.min(100,d.y+dy));realPleRender()}
+function realPleReset(){REAL_PLE_CFG=JSON.parse(JSON.stringify(REAL_PLE_DEFAULTS));realPleSave();realPleRender();realPleStatus("Reset hotov.")}
+function realPleSave(){localStorage.setItem("fastcash_real_poker_layout",JSON.stringify(REAL_PLE_CFG));realPleStatus("Uloženo v prohlížeči.")}
+function realPleDownload(){const blob=new Blob([JSON.stringify(REAL_PLE_CFG,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="poker-layout.json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);realPleStatus("poker-layout.json stažen.")}
+(function(){function init(){const stage=document.getElementById("REAL_PLE_STAGE"),sel=document.getElementById("REAL_PLE_SELECT");if(!stage)return;sel.onchange=()=>{REAL_PLE_ROLE=sel.value;realPleRender()};["REAL_PLE_X","REAL_PLE_Y","REAL_PLE_SCALE","REAL_PLE_TABLE_SIZE"].forEach(id=>document.getElementById(id).addEventListener("input",realPleApply));stage.querySelectorAll(".REAL_PLE_ITEM").forEach(el=>el.addEventListener("pointerdown",ev=>{ev.preventDefault();REAL_PLE_ROLE=el.dataset.role;realPleRender();el.setPointerCapture(ev.pointerId);const r=stage.getBoundingClientRect();const move=e=>{const d=REAL_PLE_CFG[REAL_PLE_ROLE];d.x=Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100));d.y=Math.max(0,Math.min(100,(e.clientY-r.top)/r.height*100));realPleRender()};const stop=()=>{el.removeEventListener("pointermove",move);el.removeEventListener("pointerup",stop)};el.addEventListener("pointermove",move);el.addEventListener("pointerup",stop)}))}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init()})();
