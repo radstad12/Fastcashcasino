@@ -623,8 +623,103 @@ pokerBet = function(i,amount){
   }
 })();
 
+/* ==========================================================
+   TEMPORARY POKER LAYOUT EDITOR
+   Values are stored in localStorage and can be exported as
+   project JSON for the final ZIP integration.
+   ========================================================== */
+const PLE_DEFAULTS={
+  table:{scale:68},
+  dealer:{x:50,y:10,scale:1},
+  luna:{x:35,y:22,scale:1},
+  sophie:{x:65,y:22,scale:1},
+  nico:{x:24,y:50,scale:1},
+  marcus:{x:76,y:50,scale:1},
+  you:{x:50,y:83,scale:1}
+};
+let pleConfig=JSON.parse(localStorage.getItem("fastcash_poker_layout_v1")||"null")||JSON.parse(JSON.stringify(PLE_DEFAULTS));
+let pleRole="dealer";
+
+function pleOpenData(){
+  const stage=document.getElementById("pleStage");
+  const table=document.getElementById("pleTable");
+  if(!stage||!table)return;
+  table.style.width=pleConfig.table.scale+"%";
+  Object.keys(pleConfig).filter(k=>k!=="table").forEach(k=>{
+    const el=stage.querySelector('[data-role="'+k+'"]');
+    if(!el)return;
+    const d=pleConfig[k];
+    el.style.left=d.x+"%";el.style.top=d.y+"%";el.style.transform="translate(-50%,-50%) scale("+d.scale+")";
+    el.classList.toggle("selected",k===pleRole);
+  });
+  pleSelect(pleRole);
+}
+function openPokerEditor(){
+  const el=document.getElementById("pokerLayoutEditor"); if(!el)return;
+  el.hidden=false; pleOpenData();
+}
+function closePokerEditor(){
+  const el=document.getElementById("pokerLayoutEditor"); if(el)el.hidden=true;
+}
+function pleSelect(role){
+  pleRole=role;
+  const d=pleConfig[role];
+  if(!d)return;
+  const sel=document.getElementById("pleSelected");if(sel)sel.value=role;
+  document.getElementById("pleX").value=Math.round(d.x);
+  document.getElementById("pleY").value=Math.round(d.y);
+  document.getElementById("pleScale").value=d.scale;
+  pleOpenData();
+}
+function pleFieldChange(){
+  const d=pleConfig[pleRole];if(!d)return;
+  d.x=Number(document.getElementById("pleX").value)||0;
+  d.y=Number(document.getElementById("pleY").value)||0;
+  d.scale=Number(document.getElementById("pleScale").value)||1;
+  pleOpenData();
+}
+function pleTableChange(){
+  pleConfig.table.scale=Number(document.getElementById("pleTableScale").value)||68;
+  pleOpenData();
+}
+function pleNudge(dx,dy){
+  const d=pleConfig[pleRole];if(!d)return;
+  d.x=Math.max(0,Math.min(100,d.x+dx/2));
+  d.y=Math.max(0,Math.min(100,d.y+dy/2));
+  pleOpenData();
+}
+function pleSaveLocal(){
+  localStorage.setItem("fastcash_poker_layout_v1",JSON.stringify(pleConfig));
+  alert("Rozložení uloženo v prohlížeči.");
+}
+function pleReset(){
+  pleConfig=JSON.parse(JSON.stringify(PLE_DEFAULTS));
+  localStorage.setItem("fastcash_poker_layout_v1",JSON.stringify(pleConfig));
+  pleOpenData();
+}
+function pleExport(){
+  const blob=new Blob([JSON.stringify(pleConfig,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="poker-layout.json";a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
 (function(){
-  document.querySelectorAll('#pokerOverlay [class*="marker"],#pokerOverlay [class*="guide"],#pokerOverlay [class*="debug"]').forEach(n=>n.remove());
-  const d=document.getElementById('dealerSpeech');
-  if(d){d.style.whiteSpace='nowrap';d.style.wordBreak='normal';d.style.overflow='hidden';d.style.textOverflow='ellipsis';}
+  function init(){
+    const stage=document.getElementById("pleStage");if(!stage)return;
+    stage.querySelectorAll(".ple-item").forEach(el=>{
+      el.addEventListener("pointerdown",function(ev){
+        ev.preventDefault();pleRole=el.dataset.role;pleSelect(pleRole);
+        el.setPointerCapture(ev.pointerId);
+        const rect=stage.getBoundingClientRect();
+        const move=e=>{
+          const d=pleConfig[pleRole];
+          d.x=Math.max(0,Math.min(100,(e.clientX-rect.left)/rect.width*100));
+          d.y=Math.max(0,Math.min(100,(e.clientY-rect.top)/rect.height*100));
+          pleOpenData();
+        };
+        const up=()=>{el.removeEventListener("pointermove",move);el.removeEventListener("pointerup",up)};
+        el.addEventListener("pointermove",move);el.addEventListener("pointerup",up);
+      });
+    });
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
