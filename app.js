@@ -1,5 +1,5 @@
 const games=[
-{id:"multi-vegas-81",name:"Multi Vegas 81",tag:"CLASSIC",type:"hot",rtp:95,min:1,max:250,theme:"mv81",layout:"4x3",lines:81,image:"mv81/multi-vegas-81.svg",symbols:["CHERRY","DOLLAR","ORANGE","PLUM","BELL","GRAPES","MELON","SEVEN","WILD"],payouts:{CHERRY:{3:1,4:2},DOLLAR:{3:1,4:3},ORANGE:{3:1,4:3},PLUM:{3:1,4:3},BELL:{3:1,4:3},GRAPES:{3:2,4:20},MELON:{3:4,4:40},SEVEN:{3:7,4:80}}},
+{id:"multi-vegas-81",name:"Multi Vegas 81",tag:"CLASSIC",type:"hot",rtp:90,min:1,max:250,theme:"mv81",layout:"4x3",lines:81,image:"mv81/multi-vegas-81.svg",symbols:["CHERRY","DOLLAR","ORANGE","PLUM","BELL","GRAPES","MELON","SEVEN","WILD"],payouts:{CHERRY:{3:1,4:2},DOLLAR:{3:1,4:3},ORANGE:{3:1,4:3},PLUM:{3:1,4:3},BELL:{3:1,4:3},GRAPES:{3:2,4:20},MELON:{3:4,4:40},SEVEN:{3:7,4:80}}},
 {id:"vinewood",name:"Vinewood Nights",tag:"NEW",type:"new",rtp:96,min:10,max:3000,theme:"pink",layout:"5x4",lines:40,image:"vinewood.jpg",symbols:["STAR","CLAP","GEM","CHAMP","SEVEN"],payouts:{SEVEN:40,GEM:20,STAR:12,CLAP:8,CHAMP:5}},
 {id:"cash-cartel",name:"Cash Cartel",tag:"POPULAR",type:"hot",rtp:95,min:25,max:7500,theme:"gold",layout:"5x3",lines:25,image:"cash-cartel.jpg",symbols:["CASH","GOLD","GUN","CAR","SEVEN"],payouts:{SEVEN:50,CASH:30,GOLD:15,GUN:8,CAR:5}},
 {id:"diamond",name:"Diamond Rush",tag:"JACKPOT",type:"vip",rtp:94,min:50,max:10000,theme:"blue",layout:"6x4",lines:"MEGAWAYS",image:"diamond-rush.jpg",symbols:["DIAMOND","CLUB","ACE","COIN","SEVEN"],payouts:{SEVEN:60,DIAMOND:35,COIN:15,ACE:8,CLUB:5}},
@@ -28,7 +28,7 @@ function scrollToGames(){$("gamesSection").scrollIntoView({behavior:"smooth"})}
 function addTokens(){balance+=10000;updateBalances();toast("＋10,000 TOKENŮ PŘIDÁNO");}
 function openGame(id){
  current=games.find(g=>g.id===id);bet=Math.max(current.min,Math.min(current.max,bet));
- $("gameTitle").textContent=current.name.toUpperCase();$("gameTag").textContent=current.tag+" • "+current.layout+" • "+current.lines+" LINES";$("gameRtp").textContent=`RTP ${current.rtp}%`;
+ $("gameTitle").textContent=current.name.toUpperCase();$("gameTag").textContent=current.tag+" • "+current.layout+" • "+current.lines+" LINES";$("gameRtp").textContent=`RTP ${isMV81() ? 90 : current.rtp}%`;
  $("neonSign").innerHTML=current.name.split(" ").slice(0,-1).join(" ")+"<br><span>"+current.name.split(" ").at(-1).toUpperCase()+"</span>";
  $("machine").className="machine machine-"+current.theme;$("machineScene").className="machine-scene scene-"+current.theme;
  buildReels();updateBetUI();setReels(randomReels());$("machineResult").textContent="READY TO SPIN";$("gameOverlay").classList.remove("hidden");
@@ -40,6 +40,7 @@ function buildReels(){
  for(let i=0;i<cols*rows;i++){const el=document.createElement("div");el.className="reel";el.dataset.index=i;frame.appendChild(el)}
 }
 
+const MV81_PAYOUT_FACTOR=0.9/0.95;
 const MV81_PATTERNS_3=Array.from({length:27},(_,n)=>[Math.floor(n/9)%3,Math.floor(n/3)%3,n%3]);
 const MV81_PATTERNS_4=Array.from({length:81},(_,n)=>[Math.floor(n/27)%3,Math.floor(n/9)%3,Math.floor(n/3)%3,n%3]);
 const MV81_SYMBOLS={
@@ -116,7 +117,7 @@ function calculateMV81(r, wager=bet){
    const mult=current.payouts[m.symbol]?.[3]||0;
    if(!mult)continue;
    const wildMul=m.wilds===1?2:m.wilds===2?4:m.wilds===3?8:1;
-   wins.push({pattern:p,cols:3,symbol:m.symbol,count:3,wilds:m.wilds,amount:wager*mult*wildMul});
+   wins.push({pattern:p,cols:3,symbol:m.symbol,count:3,wilds:m.wilds,amount:Math.round(wager*mult*wildMul*MV81_PAYOUT_FACTOR)});
  }
  // 4-symbol wins: all 81 criss-cross paths. A 4-symbol win supersedes
  // the corresponding 3-symbol path; we remove it below.
@@ -126,7 +127,7 @@ function calculateMV81(r, wager=bet){
    const mult=current.payouts[m.symbol]?.[4]||0;
    if(!mult)continue;
    const wildMul=m.wilds===1?2:m.wilds===2?4:m.wilds===3?8:1;
-   wins.push({pattern:p,cols:4,symbol:m.symbol,count:4,wilds:m.wilds,amount:wager*mult*wildMul});
+   wins.push({pattern:p,cols:4,symbol:m.symbol,count:4,wilds:m.wilds,amount:Math.round(wager*mult*wildMul*MV81_PAYOUT_FACTOR)});
  }
  // Only the highest win on a winning line is valid. Each 4-reel path
  // corresponds to one of the 27 three-reel paths, so suppress the 3-way
@@ -271,7 +272,7 @@ async function runSimulation(){
     <div><small>SPINS</small><b>${fmt(totalSpins)}</b></div>
     <div><small>PROSÁZENO</small><b>${fmt(totalWagered)}</b></div>
     <div><small>VYPLACENO ZPĚT</small><b>${fmt(totalWon)}</b></div>
-    <div><small>RTP</small><b class="${rtp>=94&&rtp<=96?"sim-good":"sim-warn"}">${rtp.toFixed(2)}%</b></div>
+    <div><small>RTP</small><b class="${rtp>=89&&rtp<=91?"sim-good":"sim-warn"}">${rtp.toFixed(2)}%</b></div>
     <div><small>HOUSE EDGE</small><b>${(100-rtp).toFixed(2)}%</b></div>
     <div><small>HIT RATE</small><b>${(hits/totalSpins*100).toFixed(2)}%</b></div>
     <div><small>PRŮMĚRNÁ VÝHRA</small><b>${fmt(avgWin.toFixed(2))}</b></div>
