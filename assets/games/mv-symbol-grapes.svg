@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 220">
+<defs>
+ <linearGradient id="red" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b80f12"/><stop offset=".55" stop-color="#5a0508"/><stop offset="1" stop-color="#1b0306"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff4a0"/><stop offset=".35" stop-color="#f7c744"/><stop offset=".7" stop-color="#b87911"/><stop offset="1" stop-color="#ffe77c"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs><g><path d="M65 62Q130 20 191 62Q177 84 153 88Q130 63 102 89Q79 88 65 62Z" fill="#3d8738" stroke="#b8dc72" stroke-width="6"/><circle cx="92" cy="93" r="28" fill="#6b2aa4"/><circle cx="138" cy="95" r="30" fill="#7b32b2"/><circle cx="172" cy="113" r="27" fill="#6d2ca2"/><circle cx="70" cy="126" r="26" fill="#7a33b2"/><circle cx="111" cy="134" r="30" fill="#7430aa"/><circle cx="151" cy="150" r="28" fill="#6a2a9c"/><circle cx="91" cy="171" r="25" fill="#7830aa"/><circle cx="129" cy="186" r="23" fill="#642595"/></g></svg>

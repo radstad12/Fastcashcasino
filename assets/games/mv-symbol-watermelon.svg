@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 220">
+<defs>
+ <linearGradient id="red" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b80f12"/><stop offset=".55" stop-color="#5a0508"/><stop offset="1" stop-color="#1b0306"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff4a0"/><stop offset=".35" stop-color="#f7c744"/><stop offset=".7" stop-color="#b87911"/><stop offset="1" stop-color="#ffe77c"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs><g><path d="M28 145Q115 42 228 70Q202 183 78 192Q43 182 28 145Z" fill="#258d39" stroke="#e8ef93" stroke-width="8"/><path d="M65 137Q119 78 197 92Q174 156 97 166Q76 159 65 137Z" fill="#ef443f" stroke="#ffe1b4" stroke-width="5"/><path d="M82 130q8-8 16 0m21-15q8-8 16 0m24-1q8-8 16 0m-82 34q8-8 16 0m25-6q8-8 16 0" stroke="#222" stroke-width="5" fill="none"/></g></svg>

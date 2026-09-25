@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+<defs>
+ <linearGradient id="red" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b80f12"/><stop offset=".55" stop-color="#5a0508"/><stop offset="1" stop-color="#1b0306"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff4a0"/><stop offset=".35" stop-color="#f7c744"/><stop offset=".7" stop-color="#b87911"/><stop offset="1" stop-color="#ffe77c"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs><rect width="900" height="500" fill="url(#red)"/>
+<g opacity=".5" fill="none" stroke="#ffdf6a"><path d="M0 72H900M0 88H900M0 410H900M0 428H900" stroke-width="5"/><path d="M40 120H860M55 140H845M40 360H860M55 340H845" stroke-width="2"/></g>
+<path d="M80 105 Q450 25 820 105 L790 390 Q450 470 110 390Z" fill="#f7b92e" opacity=".12" stroke="#ffd965" stroke-width="4"/>
+<text x="450" y="112" text-anchor="middle" font-family="Arial Black,Arial" font-size="58" font-style="italic" fill="#fff2a0" stroke="#7d0b08" stroke-width="8" paint-order="stroke" filter="url(#glow)">MULTI</text>
+<text x="450" y="174" text-anchor="middle" font-family="Arial Black,Arial" font-size="78" fill="url(#gold)" stroke="#7a0809" stroke-width="9" paint-order="stroke">VEGAS</text>
+<text x="450" y="214" text-anchor="middle" font-family="Arial Black,Arial" font-size="27" letter-spacing="9" fill="#fff3b0">81 WAYS</text>
+
+<g transform="translate(100 255)">
+ <circle cx="60" cy="55" r="55" fill="#f6a51d" stroke="#fff0a0" stroke-width="5"/><path d="M91 25q32-20 44 3q-25-7-36 17" fill="#2e8b36"/>
+</g>
+<g transform="translate(285 258)">
+ <path d="M20 45Q55 5 90 45Q72 95 20 45Z" fill="#5c2a8d" stroke="#bda3f0" stroke-width="5"/><circle cx="36" cy="40" r="15" fill="#6f35a5"/><circle cx="58" cy="27" r="16" fill="#7c3fb0"/><circle cx="77" cy="44" r="15" fill="#6a309d"/>
+</g>
+<g transform="translate(490 260)">
+ <path d="M10 70Q55 5 105 35L94 88Q53 106 10 70Z" fill="#e63a35" stroke="#ffb9a0" stroke-width="5"/><text x="55" y="75" text-anchor="middle" font-family="Arial Black" font-size="48" fill="#fff1e2">7</text>
+</g>
+<g transform="translate(680 255)">
+ <path d="M20 80Q52 10 110 20Q98 95 20 80Z" fill="#2b9c42" stroke="#c9f083" stroke-width="5"/><path d="M45 35Q65 12 92 27Q74 53 45 35Z" fill="#e53c42"/>
+</g>
+<text x="450" y="465" text-anchor="middle" font-family="Arial Black,Arial" font-size="18" letter-spacing="5" fill="#ffe88a">CLASSIC FRUIT • MULTI WILD • 4 REELS</text>
+</svg>
