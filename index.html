@@ -115,6 +115,14 @@
     </div>
 
     <div class="poker-stage" id="pokerStage">
+  <div class="poker-editor-ui" id="pokerEditorUI">
+    <button type="button" onclick="pokerEditorSave()">ULOŽIT</button>
+    <button type="button" onclick="pokerEditorReset()">RESET</button>
+    <button type="button" onclick="pokerEditorExport()">EXPORT JSON</button>
+    <span class="editor-status" id="pokerEditorStatus">EDITOR AKTIVNÍ</span>
+    <span class="editor-hint">Táhni myší. Střed = žlutý kříž.</span>
+  </div>
+  <div class="poker-editor-crosshair" aria-hidden="true"><i></i></div>
   <div class="poker-background"></div>
 
   <!-- Dealer is outside the felt, directly opposite the player -->
