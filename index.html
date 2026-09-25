@@ -1,275 +1,225 @@
-<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Neon Noir Poker</title><style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;background:#05070a;color:#f4f5f7}body{overflow-x:hidden}
-:root{--gold:#d9aa48;--felt:#075442;--red:#d94142}
-body:before{content:"";position:fixed;inset:0;z-index:-5;background:radial-gradient(circle at 50% 10%,#203c55aa,transparent 30%),linear-gradient(180deg,#121923,#070b10 60%,#030507)}
-body:after{content:"";position:fixed;inset:0;z-index:-4;opacity:.22;background:linear-gradient(90deg,transparent 3%,#1b2530 4% 9%,transparent 10% 13%,#111a24 14% 19%,transparent 20% 25%,#18212b 26% 32%,transparent 33% 39%,#101923 40% 47%,transparent 48% 55%,#17212c 56% 64%,transparent 65% 72%,#111a24 73% 80%,transparent 81% 89%,#19222c 90% 96%,transparent);background-position:bottom;background-size:100% 55%;background-repeat:no-repeat}
-.top{height:76px;padding:14px 28px;display:flex;justify-content:space-between;align-items:center;background:#05080dcc;border-bottom:1px solid #202c38;backdrop-filter:blur(10px)}
-.logo{font-size:20px;font-weight:900;letter-spacing:5px}.logo b{color:#e4473d}.subtitle{font-size:8px;letter-spacing:4px;color:#8492a0}.top-right{display:flex;gap:8px;align-items:center}.pill{border:1px solid #2d3946;border-radius:20px;padding:8px 12px;background:#0b1118;color:#c5ced7;font-size:9px;letter-spacing:1px;cursor:pointer}
-.stage{max-width:1380px;margin:auto;padding:10px 24px 30px}.dealer-zone{height:130px;display:flex;justify-content:center}.dealer{position:relative;width:190px;height:128px;text-align:center}.dealer-avatar{position:absolute;left:55px;top:0;width:80px;height:106px;filter:drop-shadow(0 12px 10px #0009)}.dealer-shadow{position:absolute;bottom:0;left:5px;width:70px;height:18px;background:#0009;border-radius:50%;filter:blur(4px)}.dealer-body{position:absolute;left:14px;bottom:2px;width:54px;height:65px;background:#151d25;border:2px solid #3b4652;border-radius:25px 25px 8px 8px}.dealer-shirt{position:absolute;left:35px;bottom:8px;border-left:7px solid transparent;border-right:7px solid transparent;border-top:34px solid #c63d39;z-index:3}.dealer-head{position:absolute;left:25px;top:13px;width:35px;height:43px;background:#c88c6a;border:2px solid #1d2228;border-radius:48%;z-index:4}.dealer-hair{position:absolute;left:23px;top:8px;width:40px;height:19px;background:#17191d;border-radius:50% 50% 20% 20%;z-index:5}.dealer-eye{position:absolute;top:32px;width:4px;height:4px;background:#111;border-radius:50%;z-index:6}.eye-a{left:35px}.eye-b{left:48px}.dealer-smile{position:absolute;left:37px;top:47px;width:13px;height:4px;border-bottom:2px solid #73332e;border-radius:50%;z-index:6}.dealer-jacket{position:absolute;left:14px;bottom:2px;width:54px;height:64px;border-radius:25px 25px 8px 8px;border:2px solid #46515d;z-index:2}.bowtie{position:absolute;left:36px;top:58px;color:#d7a53e;z-index:7}.dealer-name{position:absolute;bottom:1px;width:100%;font-size:10px;font-weight:900;letter-spacing:3px;color:#d9aa48}.dealer-name span{color:#8b98a4}.speech{position:absolute;right:-130px;top:20px;width:155px;padding:8px;background:#0b1118ed;border:1px solid #3a4653;border-radius:8px;font-size:9px;color:#d8e0e7;text-align:left}
-.table-wrap{position:relative}.table{height:530px;border-radius:50%;background:radial-gradient(ellipse at center,#0a6952,#07503f 58%,#04372e);border:8px solid #252c34;box-shadow:0 32px 90px #000c,0 0 0 2px #9b6b2c,inset 0 0 65px #0008;position:relative}.table:before{content:"";position:absolute;inset:12px;border-radius:50%;border:1px solid #2a8a72}.table:after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(ellipse at center,transparent 0 48%,#0003 75%,#0008);pointer-events:none}
-.table-logo{position:absolute;top:39%;left:50%;transform:translate(-50%,-50%);text-align:center;opacity:.13}.table-logo b{font-size:38px;letter-spacing:6px}.table-logo span{color:#e04b42}.table-logo small{display:block;font-size:7px;letter-spacing:4px}
-.pot-area{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);z-index:5;text-align:center;min-width:210px}.pot-label{font-size:8px;letter-spacing:3px;color:#a9c0b9}.pot{font-size:34px;font-weight:900;text-shadow:0 2px 12px #0008}.pot-chips{height:24px;display:flex;justify-content:center;gap:3px;align-items:end}.pot-chips i{width:19px;height:19px;border-radius:50%;border:2px dotted white;box-shadow:0 2px 5px #000}.community{display:flex;justify-content:center;gap:7px;margin-top:12px;min-height:70px}.card{width:52px;height:73px;border-radius:7px;background:linear-gradient(145deg,#fff,#d9dde3);color:#12161a;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;box-shadow:0 7px 12px #0009;border:1px solid #c9ced4;animation:cardIn .35s ease}.card.red{color:#d33a34}.card .rank{font-size:19px}.card .suit{font-size:18px;margin-top:2px}.card.back{background:repeating-linear-gradient(45deg,#1b2a38 0 5px,#31485b 5px 9px);border:2px solid #d4a43f}@keyframes cardIn{from{transform:translateY(-15px) rotate(-4deg);opacity:0}to{transform:none;opacity:1}}
-.seat{position:absolute;width:185px;min-height:105px;padding:10px 12px;background:linear-gradient(#121a22f5,#080d13f5);border:1px solid #35414e;border-radius:12px;z-index:10;box-shadow:0 10px 26px #0009}.seat.active{box-shadow:0 0 25px #d7a43d88}.seat.winner{border-color:#e0b64f}.seat.folded{opacity:.45;filter:grayscale(.5)}.seat-name{font-size:11px;font-weight:900;letter-spacing:1.5px}.stack{float:right;color:#e6b950;font-weight:900;font-size:12px}.avatar-small{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#293746;border:1px solid #596978;color:#fff;font-weight:900;margin-top:7px}.chip-stack{display:inline-flex;margin-left:8px}.chip-stack i{width:11px;height:11px;border-radius:50%;background:#d84942;border:1px dotted white;margin-left:-3px}.hole-cards{position:absolute;left:50px;top:43px;display:flex;gap:4px}.hole-cards .card{width:38px;height:53px}.hole-cards .card .rank{font-size:14px}.hole-cards .card .suit{font-size:12px}.seat-badge{position:absolute;right:8px;bottom:7px;color:#d7ad4b;font-size:7px;font-weight:900;letter-spacing:1px}.seat-top{left:50%;top:-25px;transform:translateX(-50%)}.seat-right{right:2%;top:27%}.seat-left{left:2%;top:27%}.seat-farleft{left:11%;bottom:-28px}.seat-bottom{right:11%;bottom:-28px}
-.player-panel{position:absolute;left:50%;bottom:-51px;transform:translateX(-50%);width:260px;padding:10px 12px;background:linear-gradient(#111a23,#080d13);border:2px solid #c79435;border-radius:14px;z-index:20;box-shadow:0 13px 30px #000b}.player-panel.flash{animation:flash .4s}.youline{display:flex;justify-content:space-between;font-size:11px;font-weight:900;letter-spacing:1px}.youline b{color:#e8b94f}.player-cards{display:flex;justify-content:center;gap:6px;margin-top:8px}.player-cards .card{width:50px;height:69px}@keyframes flash{50%{box-shadow:0 0 30px #d7a43d}}
-.hud{position:relative;margin:90px auto 0;max-width:1000px;display:grid;grid-template-columns:1fr 2fr 1.2fr;gap:10px;z-index:30}.info,.actions,.raise-box{background:#090e14f5;border:1px solid #2f3b48;border-radius:12px;padding:11px;box-shadow:0 10px 25px #0008}.eyebrow{font-size:8px;color:#d8a94b;letter-spacing:2px}.info strong{display:block;font-size:11px;margin-top:6px}.info small{display:block;color:#8997a5;margin-top:5px;font-size:9px}.actions{display:flex;gap:6px;align-items:center;justify-content:center}.action{height:43px;padding:0 11px;border-radius:8px;border:1px solid #3a4653;background:#111923;color:#f1f3f5;font-size:9px;font-weight:900;letter-spacing:1px;cursor:pointer}.action:hover:not(:disabled){transform:translateY(-2px);border-color:#d4a33f}.action:disabled{opacity:.3;cursor:not-allowed}.call{background:#154e43;border-color:#2c8975}.raise{background:#986d26;border-color:#d7aa48}.allin{background:#9d312e;border-color:#e2584e}.raise-box{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center}.raise-box label{display:block;font-size:8px;color:#93a0ad;letter-spacing:1px}.raise-box input{width:100%;accent-color:#d3a43e}.raise-value{color:#e5b44e}.deal-row{display:flex;justify-content:center;margin-top:12px;position:relative;z-index:40}.deal{padding:13px 34px;border-radius:9px;border:1px solid #e2b753;background:#a47729;color:white;font-weight:900;letter-spacing:2px;cursor:pointer}.bottomline{max-width:1000px;margin:10px auto;display:flex;justify-content:space-between;color:#70808d;font-size:8px;letter-spacing:1px}.bottomline b{color:#c9a249}
-.rules{position:fixed;inset:0;background:#020509dd;backdrop-filter:blur(8px);z-index:100;display:none;place-items:center}.rules.show{display:grid}.rules-box{width:min(720px,92vw);background:#0b1118;border:1px solid #3a4653;border-radius:16px;padding:28px;box-shadow:0 25px 80px #000}.rules-box h2{margin:0 0 18px;color:#e1b44f;letter-spacing:3px}.close{float:right;background:none;border:0;color:#b4bdc7;font-size:25px;cursor:pointer}.rule-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.rule-grid div{padding:12px;border:1px solid #273442;border-radius:9px;background:#0d151d}.rule-grid b{font-size:10px;color:#d8aa48}.rule-grid p{margin:6px 0 0;color:#aab5c0;font-size:10px;line-height:1.45}.hands{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}.hands span{border:1px solid #33404e;border-radius:20px;padding:7px 9px;font-size:8px;color:#bdc7d0}
-@media(max-width:900px){.table{height:480px}.seat{width:150px}.seat-right{right:0}.seat-left{left:0}.seat-farleft{left:3%}.seat-bottom{right:3%}.hud{grid-template-columns:1fr;margin-top:105px}.actions{flex-wrap:wrap}}
-@media(max-width:600px){.top{padding:10px 12px}.pill:nth-child(2){display:none}.stage{padding:5px 8px}.dealer-zone{height:118px}.speech{right:-70px;width:125px}.table{height:405px}.seat{width:125px;min-height:90px;padding:8px}.seat-name{font-size:9px}.stack{font-size:9px}.seat-farleft,.seat-bottom{bottom:-38px}.hole-cards{left:43px;top:39px}.hole-cards .card{width:31px;height:44px}.player-panel{width:215px}.player-panel .player-cards .card{width:42px;height:58px}.community .card{width:43px;height:60px}.pot{font-size:27px}.bottomline{flex-wrap:wrap;gap:5px}}
-</style></head><body>
-<header class="top"><div><div class="logo">NEON <b>NOIR</b></div><div class="subtitle">PRIVATE POKER CLUB</div></div><div class="top-right"><span class="pill">TEXAS HOLD'EM</span><span class="pill">BLINDY 50 / 100</span><button class="pill" onclick="document.getElementById('rules').classList.add('show')">PRAVIDLA ?</button></div></header>
-<main class="stage">
-<section class="dealer-zone"><div class="dealer"><div class="dealer-avatar" id="dealerAvatar"><div class="dealer-shadow"></div><div class="dealer-body"></div><div class="dealer-shirt"></div><div class="dealer-head"></div><div class="dealer-hair"></div><div class="dealer-eye eye-a"></div><div class="dealer-eye eye-b"></div><div class="dealer-smile"></div><div class="dealer-jacket"></div><div class="bowtie">◆</div></div><div class="dealer-name">ALEX <span>· KRUPIÉR</span></div><div class="speech" id="dealerSpeech">Vítejte u stolu. Stiskni ROZDAT.</div></div></section>
-<section class="table-wrap"><div class="table"><div class="table-logo"><b>NEON <span>NOIR</span></b><small>PRIVATE POKER CLUB</small></div>
-<div class="pot-area"><div class="pot-label">HLAVNÍ BANK</div><div class="pot" id="pokerPot">0</div><div class="pot-chips" id="potChips"></div><div class="community" id="communityCards"></div><div id="streetLabel" style="font-size:8px;letter-spacing:3px;color:#9bb3ac;margin-top:7px">ČEKÁ SE NA ROZDÁNÍ</div></div>
-<div class="seat seat-top" id="seat0"><span class="seat-name">LUNA</span><span class="stack" id="stack0">2 000</span><div><span class="avatar-small">L</span><span class="chip-stack"><i></i><i></i><i></i></span></div><div class="hole-cards" id="cards0"></div><div class="seat-badge" id="badge0"></div></div>
-<div class="seat seat-right" id="seat1"><span class="seat-name">MARCUS</span><span class="stack" id="stack1">2 000</span><div><span class="avatar-small">M</span><span class="chip-stack"><i></i><i></i><i></i></span></div><div class="hole-cards" id="cards1"></div><div class="seat-badge" id="badge1"></div></div>
-<div class="seat seat-left" id="seat3"><span class="seat-name">NICO</span><span class="stack" id="stack3">2 000</span><span class="avatar-small">N</span><span class="chip-stack"><i></i><i></i><i></i></span><div class="hole-cards" id="cards3"></div><div class="seat-badge" id="badge3"></div></div>
-<div class="seat seat-farleft" id="seat4"><span class="seat-name">SOPHIE</span><span class="stack" id="stack4">2 000</span><span class="avatar-small">S</span><span class="chip-stack"><i></i><i></i><i></i></span><div class="hole-cards" id="cards4"></div><div class="seat-badge" id="badge4"></div></div>
-<div class="player-panel" id="playerPanel"><div class="youline"><span>TY · HRÁČ</span><b id="playerMoney">10 000</b></div><div class="player-cards" id="cards2"></div><div class="seat-badge" id="badge2"></div></div>
-</div></section>
-<section class="hud"><div class="info"><span class="eyebrow">TVÉ MÍSTO</span><strong id="pokerTurnText">Stiskni ROZDAT pro začátek</strong><small id="pokerHandText">Držíš —</small></div>
-<div class="actions"><button class="action fold" id="pokerFold" onclick="pokerAction('fold')">SLOŽIT</button><button class="action check" id="pokerCheck" onclick="pokerAction('check')">CHECK</button><button class="action call" id="pokerCall" onclick="pokerAction('call')">DOROVNAT <span id="callAmount">0</span></button><button class="action raise" id="pokerRaise" onclick="pokerAction('raise')">NAVÝŠIT <span id="raiseAmount">200</span></button><button class="action allin" id="pokerAllin" onclick="pokerAction('allin')">ALL-IN</button></div>
-<div class="raise-box"><div><label>NAVÝŠIT NA</label><input id="raiseSlider" type="range" min="100" max="5000" step="50" value="200" oninput="updateRaisePreview(this.value)"></div><strong class="raise-value" id="raisePreview">200</strong></div></section>
-<div class="deal-row"><button class="deal" id="dealPokerBtn" onclick="dealPoker()">🃏 ROZDAT KARTY</button></div>
-<div class="bottomline"><span>NO LIMIT HOLD'EM</span><span>5 HRÁČŮ · 4 BOTI</span><span id="pokerMessage">Stůl je připraven.</span><span>BANKROLL <b id="bankroll">10 000</b></span></div></main>
-<div class="rules" id="rules"><div class="rules-box"><button class="close" onclick="document.getElementById('rules').classList.remove('show')">×</button><h2>PRAVIDLA TEXAS HOLD'EM</h2><div class="rule-grid"><div><b>1 · ROZDAT</b><p>Každý hráč dostane dvě skryté karty. Dealer a blindy určují pořadí sázek.</p></div><div><b>2 · PRE-FLOP</b><p>Můžeš složit, dorovnat, navýšit nebo jít all-in.</p></div><div><b>3 · FLOP</b><p>Na stůl přijdou tři společné karty a další sázkové kolo.</p></div><div><b>4 · TURN</b><p>Čtvrtá společná karta a další sázkové kolo.</p></div><div><b>5 · RIVER</b><p>Pátá společná karta a poslední sázkové kolo.</p></div><div><b>6 · SHOWDOWN</b><p>Vyhrává nejlepší kombinace pěti karet z celkem sedmi dostupných.</p></div></div><div class="hands"><span>ROYAL FLUSH</span><span>STRAIGHT FLUSH</span><span>FOUR OF A KIND</span><span>FULL HOUSE</span><span>FLUSH</span><span>STRAIGHT</span><span>THREE OF A KIND</span><span>TWO PAIR</span><span>ONE PAIR</span><span>HIGH CARD</span></div></div></div>
-<script>
-let balance=10000;
-const money=n=>Number(n).toLocaleString("cs-CZ");
-function updateBalances(){document.getElementById("bankroll").textContent=money(balance);document.getElementById("playerMoney").textContent=money(balance);}
-const poker = {
-  players:[
-    {name:"LUNA",stack:2000,seat:0,bot:true},
-    {name:"MARCUS",stack:2000,seat:1,bot:true},
-    {name:"YOU",stack:2000,seat:2,bot:false},
-    {name:"NICO",stack:2000,seat:3,bot:true},
-    {name:"SOPHIE",stack:2000,seat:4,bot:true}
-  ],
-  deck:[],community:[],pot:0,street:"waiting",dealer:0,turn:null,currentBet:0,minRaise:100,folded:new Set(),contrib:[0,0,0,0,0],hole:[[],[],[],[],[]],handId:0,active:false,acting:false
-};
-const pokerRankMap={ "2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,"10":10,"J":11,"Q":12,"K":13,"A":14 };
-const pokerSuits=["♠","♥","♦","♣"], pokerRanks=["2","3","4","5","6","7","8","9","10","J","Q","K","A"];
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07090f">
+<title>FastCash Casino — Multi Vegas 81</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="ambient"></div>
 
-function pokerCard(rank,suit){return {rank,suit,value:pokerRankMap[rank]}}
-function pokerNewDeck(){
-  const d=[]; for(const s of pokerSuits) for(const r of pokerRanks)d.push(pokerCard(r,s));
-  for(let i=d.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]]}
-  return d;
-}
-function pokerCardHTML(c,back=false){
-  if(back)return '<div class="card back"></div>';
-  const red=(c.suit==="♥"||c.suit==="♦")?"red":"";
-  return `<div class="card ${red}"><span class="rank">${c.rank}</span><span class="suit">${c.suit}</span></div>`;
-}
-function pokerBestFive(cards){
-  let best=null;
-  function scoreFive(a){
-    const vals=a.map(c=>c.value).sort((x,y)=>y-x), counts={};
-    vals.forEach(v=>counts[v]=(counts[v]||0)+1);
-    const groups=Object.entries(counts).map(([v,n])=>({v:+v,n})).sort((x,y)=>y.n-x.n||y.v-x.v);
-    const flush=a.every(c=>c.suit===a[0].suit);
-    const uniq=[...new Set(vals)].sort((x,y)=>y-x);
-    let straightHigh=0;
-    if(uniq.length===5){ if(uniq[0]-uniq[4]===4)straightHigh=uniq[0]; else if(uniq.join(",")==="14,5,4,3,2")straightHigh=5; }
-    if(flush&&straightHigh)return [8,straightHigh];
-    if(groups[0].n===4)return [7,groups[0].v,groups[1].v];
-    if(groups[0].n===3&&groups[1].n===2)return [6,groups[0].v,groups[1].v];
-    if(flush)return [5,...vals];
-    if(straightHigh)return [4,straightHigh];
-    if(groups[0].n===3)return [3,groups[0].v,...groups.slice(1).map(x=>x.v).sort((a,b)=>b-a)];
-    const pairs=groups.filter(x=>x.n===2).sort((a,b)=>b.v-a.v);
-    if(pairs.length>=2)return [2,pairs[0].v,pairs[1].v,groups.find(x=>x.n===1).v];
-    if(pairs.length===1)return [1,pairs[0].v,...groups.filter(x=>x.n===1).map(x=>x.v).sort((a,b)=>b-a)];
-    return [0,...vals];
-  }
-  const combos=(arr,k,start=0,prefix=[],out=[])=>{
-    if(prefix.length===k){out.push(prefix.map(i=>arr[i]));return out}
-    for(let i=start;i<=arr.length-(k-prefix.length);i++)combos(arr,k,i+1,prefix.concat(i),out); return out
-  };
-  for(const five of combos(cards,5)){const s=scoreFive(five);if(!best||compareScores(s,best.score)>0)best={score:s,cards:five}}
-  return best;
-}
-function compareScores(a,b){for(let i=0;i<Math.max(a.length,b.length);i++){const x=a[i]||0,y=b[i]||0;if(x!==y)return x-y}return 0}
-function pokerHandName(score){
-  return ["High Card","One Pair","Two Pair","Three of a Kind","Straight","Flush","Full House","Four of a Kind","Straight Flush","Royal Flush"][score[0]==8&&score[1]===14?9:score[0]];
-}
-function pokerSyncBalance(flash=true){
-  balance=Math.max(0,Math.floor(Number(poker.players[2].stack)||0));
-  const el=document.getElementById("playerMoney"); if(el)el.textContent=money(balance);
-  if(flash){const p=document.getElementById("playerPanel");if(p){p.classList.remove("flash");void p.offsetWidth;p.classList.add("flash");}}
-}
-function pokerResetSeats(){
-  poker.players.forEach((p,i)=>{
-    if(i===2) p.stack=Math.max(0,Math.floor(balance));
-    else p.stack=Math.max(p.stack,2000);
-    p.folded=false;p.allin=false;
-    document.getElementById("stack"+i).textContent=p.stack.toLocaleString("cs-CZ");
-    document.getElementById("cards"+i).innerHTML="";
-    document.getElementById("badge"+i).textContent="";
-    document.getElementById("seat"+i).classList.remove("folded","winner","active");
-  });
-}
+<header class="topbar">
+  <button class="brand" onclick="showLobby()">
+    <span class="brand-script">Los Santos</span>
+    <span class="brand-main">FAST<span>CASH</span></span>
+    <span class="brand-sub">CASINO • PLAY BIGGER</span>
+  </button>
 
-function pokerMessage(t){const e=document.getElementById("pokerMessage");if(e)e.textContent=t}
-function pokerSpeak(t,anim=""){
-  const cz={
-    "Welcome to FastCash.":"Vítejte u stolu.",
-    "Cards are in. Action starts after the big blind.":"Karty jsou rozdány. Začínáme po velké sázce.",
-    "Flop is on the table.":"Flop je na stole.",
-    "Turn card.":"Turnová karta.",
-    "River. Last card.":"River. Poslední karta.",
-    "Beautiful hand. You take the pot!":"Výborná kombinace. Bereš bank!",
-  };
-  let msg=cz[t]||t;
-  msg=msg.replace(/ folds\./," se skládá.").replace(/ checks\./," check.")
-         .replace(/ raises\./," navyšuje.").replace(/ moves all-in\./," jde all-in.")
-         .replace(/ takes the pot\./," bere bank.").replace(/ wins — everyone folded\./," vyhrává — všichni se složili.");
-  const e=document.getElementById("dealerSpeech"); if(e)e.textContent=msg;
-  const a=document.getElementById("dealerAvatar"); if(a){a.classList.remove("deal","win");if(anim){void a.offsetWidth;a.classList.add(anim)}}
-}
-function pokerDealCard(playerIndex,hidden=false){
-  const c=poker.deck.pop(); poker.hole[playerIndex].push(c);
-  document.getElementById("cards"+playerIndex).insertAdjacentHTML("beforeend",pokerCardHTML(c,hidden));
-}
-function pokerStartHand(){
-  if(balance<50){
-    pokerMessage("Nemáš dostatek tokenů na blind.");
-    pokerSpeak("Na stůl potřebuješ alespoň 50 tokenů.");
-    pokerUpdateActions(false);
-    return;
-  }
-  poker.players[2].stack=Math.floor(balance);
-  poker.handId++;poker.deck=pokerNewDeck();poker.community=[];poker.pot=0;poker.street="preflop";poker.currentBet=100;poker.minRaise=100;poker.folded=new Set();poker.contrib=[0,0,0,0,0];poker.hole=[[],[],[],[],[]];poker.active=true;poker.acting=true;
-  poker.players.forEach((p,i)=>{p.folded=false;p.allin=false;document.getElementById("seat"+i).classList.remove("folded","winner","active");document.getElementById("cards"+i).innerHTML="";document.getElementById("badge"+i).textContent=""});
-  poker.dealer=(poker.dealer+1)%5;
-  const sb=(poker.dealer+1)%5, bb=(poker.dealer+2)%5;
-  pokerBet(sb,50);pokerBet(bb,100);
-  for(let r=0;r<2;r++)for(let i=0;i<5;i++)pokerDealCard(i,i!==2);
-  pokerRender();pokerSpeak("Karty jsou rozdány. Začínáme po velké sázce.","deal");pokerMessage("Pre-flop — jsi na tahu.");
-  poker.turn=(bb+1)%5;pokerSetTurn();
-}
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showLobby()">⌂ <span>HOME</span></button>
+    <button class="nav-btn" onclick="scrollToGames()">▣ <span>SLOTS</span></button><button class="nav-btn poker-nav" onclick="openPoker()">♠ <span>POKER</span></button>
+    <button class="nav-btn" onclick="openRewards()">♛ <span>VIP</span></button>
+    <button class="nav-btn" onclick="openRewards()">🎁 <span>REWARDS</span></button>
+    <button class="nav-btn" onclick="openStats()">▥ <span>STATS</span></button>
+    <button class="nav-btn" onclick="openHelp()">?</button>
+  </nav>
 
-function pokerBet(i,amount){
-  const p=poker.players[i];
-  const actual=Math.min(Math.max(0,amount),p.stack);
-  if(actual<=0)return 0;
-  p.stack-=actual;
-  poker.contrib[i]+=actual;
-  poker.pot+=actual;
-  if(p.stack===0)p.allin=true;
-  if(i===2) pokerSyncBalance(true);
-  return actual;
-}
+  <div class="profile">
+    <div class="avatar">MC</div>
+    <div class="profile-copy"><b>Player</b><small>LOS SANTOS CITIZEN</small></div>
+    <div class="wallet"><span>▣</span><b id="balance">10,000</b><small>TOKENS</small></div>
+    <button class="add-money" onclick="addTokens()">＋ <b>10,000</b><small>ADD TOKENS</small></button>
+    <button class="icon-btn" onclick="toggleSound()" id="soundBtn">♫</button>
+  </div>
+</header>
 
-function pokerSetTurn(){
-  if(!poker.active)return;
-  let loops=0;while(loops++<10 && (poker.folded.has(poker.turn)||poker.players[poker.turn].allin))poker.turn=(poker.turn+1)%5;
-  document.querySelectorAll(".seat").forEach(e=>e.classList.remove("active"));
-  document.getElementById("seat"+poker.turn).classList.add("active");
-  document.getElementById("actionGlow").classList.add("on");
-  document.getElementById("pokerTurnText").textContent=poker.turn===2?"JSI NA TAHU":"ČEKÁ SE NA "+poker.players[poker.turn].name;
-  pokerUpdateActions(poker.turn===2);
-  if(poker.turn!==2)setTimeout(pokerBotAction,650+Math.random()*650);
-}
-function pokerBotAction(){
-  if(!poker.active||poker.turn===2)return;
-  const i=poker.turn,p=poker.players[i],toCall=Math.max(0,poker.currentBet-poker.contrib[i]),strength=Math.random();
-  let action="fold";
-  if(strength>.18) action=toCall?"call":"check";
-  if(strength>.72 && p.stack>poker.currentBet) action="raise";
-  pokerDoAction(i,action);
-}
-function pokerAction(action){
-  if(!poker.active||poker.turn!==2)return;
-  pokerDoAction(2,action);
-}
-function pokerDoAction(i,action){
-  if(!poker.active||i!==poker.turn)return;
-  const p=poker.players[i],toCall=Math.max(0,poker.currentBet-poker.contrib[i]);
-  if(action==="fold"){p.folded=true;poker.folded.add(i);document.getElementById("seat"+i).classList.add("folded");document.getElementById("badge"+i).textContent="FOLDED";pokerSpeak(i===2?"Folded.":p.name+" folds.");}
-  else if(action==="check"&&toCall===0){document.getElementById("badge"+i).textContent="CHECK";pokerSpeak(i===2?"Check.":p.name+" checks.");}
-  else if(action==="call"){const amt=Math.min(toCall,p.stack);pokerBet(i,amt);document.getElementById("badge"+i).textContent="CALL "+amt;}
-  else if(action==="raise"){const raiseTo=Math.min(p.stack+poker.contrib[i],Math.max(poker.currentBet+poker.minRaise,Number(document.getElementById("raiseSlider").value)));const amt=raiseTo-poker.contrib[i];if(amt>0){pokerBet(i,amt);poker.currentBet=raiseTo;poker.minRaise=Math.max(100,raiseTo-poker.currentBet+amt);document.getElementById("badge"+i).textContent="RAISE "+raiseTo;pokerSpeak(i===2?"Raise.":p.name+" raises.");}}
-  else if(action==="allin"){const amt=p.stack;pokerBet(i,amt);poker.currentBet=Math.max(poker.currentBet,poker.contrib[i]);poker.players[i].allin=true;document.getElementById("badge"+i).textContent="ALL-IN";pokerSpeak(i===2?"All-in.":p.name+" moves all-in.");}
-  pokerRender();
-  const live=poker.players.filter((_,idx)=>!poker.folded.has(idx));
-  if(live.length===1){pokerAward(live[0]);return}
-  pokerAdvanceTurn();
-}
-function pokerAdvanceTurn(){
-  const oldStreet=poker.street;
-  // End betting round after everyone has matched current bet or is all-in.
-  const live=poker.players.map((p,i)=>i).filter(i=>!poker.folded.has(i));
-  const roundDone=live.every(i=>poker.players[i].allin||poker.contrib[i]===poker.currentBet);
-  if(roundDone){
-    if(poker.street==="preflop"){poker.street="flop";poker.currentBet=0;poker.contrib=poker.contrib.map(()=>0);poker.community.push(poker.deck.pop(),poker.deck.pop(),poker.deck.pop());pokerSpeak("Flop is on the table.","deal")}
-    else if(poker.street==="flop"){poker.street="turn";poker.currentBet=0;poker.contrib=poker.contrib.map(()=>0);poker.community.push(poker.deck.pop());pokerSpeak("Turn card.");}
-    else if(poker.street==="turn"){poker.street="river";poker.currentBet=0;poker.contrib=poker.contrib.map(()=>0);poker.community.push(poker.deck.pop());pokerSpeak("River. Last card.");}
-    else {pokerShowdown();return}
-    pokerRender();poker.turn=(poker.dealer+1)%5;pokerSetTurn();return
-  }
-  poker.turn=(poker.turn+1)%5;pokerSetTurn();
-}
-function pokerShowdown(){
-  poker.acting=false;
-  const live=poker.players.map((p,i)=>i).filter(i=>!poker.folded.has(i));
-  let best=null,winners=[];
-  live.forEach(i=>{const result=pokerBestFive(poker.community.concat(poker.hole[i]));if(!best||compareScores(result.score,best.score)>0){best=result;winners=[i]}else if(compareScores(result.score,best.score)===0)winners.push(i)});
-  const share=Math.floor(poker.pot/winners.length),remainder=poker.pot-share*winners.length;
-  winners.forEach((i,k)=>{poker.players[i].stack+=share+(k===0?remainder:0);document.getElementById("seat"+i).classList.add("winner");document.getElementById("badge"+i).textContent="VÝHRA • "+pokerHandName(best.score);}); if(winners.includes(2)) pokerSyncBalance(true);
-  pokerSpeak(winners.includes(2)?"Beautiful hand. You take the pot!":poker.players[winners[0]].name+" takes the pot.", "win");
-  pokerMessage("Showdown — "+winners.map(i=>poker.players[i].name).join(" / ")+" vyhrává.");
-  pokerRender(true);poker.active=false;pokerUpdateActions(false);
-  document.getElementById("dealPokerBtn").textContent="ROZDAT ZNOVU";
-}
-function pokerAward(i){poker.players[i].stack+=poker.pot; if(i===2) pokerSyncBalance(true); document.getElementById("seat"+i).classList.add("winner");document.getElementById("badge"+i).textContent="VÝHRA • VŠICHNI FOLD";pokerSpeak(poker.players[i].name+" wins — everyone folded.","win");pokerMessage("Konec hry.");poker.active=false;pokerRender(true);pokerUpdateActions(false);document.getElementById("dealPokerBtn").textContent="ROZDAT ZNOVU"}
-function dealPoker(){if(poker.active)return;pokerResetSeats();document.getElementById("dealPokerBtn").textContent="ROZDAT";pokerStartHand()}
-function pokerRender(showdown=false){
-  document.getElementById("pokerPot").textContent=poker.pot.toLocaleString("cs-CZ");
-  document.getElementById("streetLabel").textContent=({waiting:"WAITING FOR DEAL",preflop:"PRE-FLOP",flop:"FLOP",turn:"TURN",river:"RIVER"}[poker.street]||"SHOWDOWN");
-  document.getElementById("communityCards").innerHTML=poker.community.map(c=>pokerCardHTML(c)).join("");
-  poker.players.forEach((p,i)=>{
-    document.getElementById("stack"+i).textContent=p.stack.toLocaleString("cs-CZ");
-    const holder=document.getElementById("cards"+i);
-    if(i===2||showdown)holder.innerHTML=poker.hole[i].map(c=>pokerCardHTML(c)).join("");
-    else if(poker.hole[i].length)holder.innerHTML=poker.hole[i].map(()=>pokerCardHTML(null,true)).join("");
-  });
-  if(poker.turn===2 && poker.active){const toCall=Math.max(0,poker.currentBet-poker.contrib[2]);document.getElementById("callAmount").textContent=toCall.toLocaleString("cs-CZ");document.getElementById("pokerHandText").textContent=poker.hole[2].length?"Držíš "+poker.hole[2].map(c=>c.rank+c.suit).join(" "):"Držíš —";} 
-  else if(poker.hole[2].length)document.getElementById("pokerHandText").textContent="Držíš "+poker.hole[2].map(c=>c.rank+c.suit).join(" ");
-}
-function pokerUpdateActions(enabled){
-  const ids=["pokerFold","pokerCheck","pokerCall","pokerRaise","pokerAllin"];
-  ids.forEach(id=>{const e=document.getElementById(id);if(e)e.disabled=!enabled});
-  const toCall=poker.active?Math.max(0,poker.currentBet-poker.contrib[2]):0;
-  document.getElementById("pokerCheck").disabled=!enabled||toCall>0;
-  document.getElementById("pokerCall").disabled=!enabled||toCall===0;
-  document.getElementById("callAmount").textContent=toCall.toLocaleString("cs-CZ");
-}
-function updateRaisePreview(v){document.getElementById("raisePreview").textContent=Number(v).toLocaleString("cs-CZ");document.getElementById("raiseAmount").textContent=Number(v).toLocaleString("cs-CZ")}
+<main id="lobby">
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="pulse"></span> CASINO ONLINE</div>
+    <h1>GOOD PEOPLE.<br><em>BAD DECISIONS.</em></h1>
+    <p>Los Santos never sleeps. Pick a machine, set your bet and spin.</p>
+    <div class="hero-actions"><button class="gold-btn" onclick="openGame('multi-vegas-81')">PLAY NOW <span>→</span></button><button class="ghost-btn" onclick="scrollToGames()">VIEW ALL SLOTS</button></div>
+  </div>
+  <div class="hero-stats"><div><b>1,248</b><small>PLAYERS ONLINE</small></div><div><b>10</b><small>LIVE SLOTS</small></div><div><b>24/7</b><small>LOS SANTOS</small></div></div>
+</section>
 
-function pokerSyncBalance(flash=true){
- balance=Math.max(0,Math.floor(Number(poker.players[2].stack)||0));
- document.getElementById("playerMoney").textContent=money(balance);
- document.getElementById("bankroll").textContent=money(balance);
- if(flash){const p=document.getElementById("playerPanel");p.classList.remove("flash");void p.offsetWidth;p.classList.add("flash");}
-}
-function pokerRender(showdown=false){
- document.getElementById("pokerPot").textContent=poker.pot.toLocaleString("cs-CZ");
- document.getElementById("streetLabel").textContent=({waiting:"ČEKÁ SE NA ROZDÁNÍ",preflop:"PRE-FLOP",flop:"FLOP",turn:"TURN",river:"RIVER"}[poker.street]||"SHOWDOWN");
- document.getElementById("communityCards").innerHTML=poker.community.map(c=>pokerCardHTML(c)).join("");
- poker.players.forEach((p,i)=>{
-  document.getElementById("stack"+i).textContent=p.stack.toLocaleString("cs-CZ");
-  const h=document.getElementById("cards"+i);
-  if(i===2||showdown)h.innerHTML=poker.hole[i].map(c=>pokerCardHTML(c)).join("");
-  else if(poker.hole[i].length)h.innerHTML=poker.hole[i].map(()=>pokerCardHTML(null,true)).join("");
- });
- document.getElementById("playerMoney").textContent=money(poker.players[2].stack);
- document.getElementById("bankroll").textContent=money(poker.players[2].stack);
- if(poker.turn===2&&poker.active){const toCall=Math.max(0,poker.currentBet-poker.contrib[2]);document.getElementById("callAmount").textContent=toCall.toLocaleString("cs-CZ");document.getElementById("pokerHandText").textContent="Držíš "+poker.hole[2].map(c=>c.rank+c.suit).join(" ");}
- else if(poker.hole[2].length)document.getElementById("pokerHandText").textContent="Držíš "+poker.hole[2].map(c=>c.rank+c.suit).join(" ");
-}
-function pokerMessage(t){document.getElementById("pokerMessage").textContent=t}
-function updateRaisePreview(v){document.getElementById("raisePreview").textContent=Number(v).toLocaleString("cs-CZ");document.getElementById("raiseAmount").textContent=Number(v).toLocaleString("cs-CZ")}
-function pokerSpeak(t,anim=""){const e=document.getElementById("dealerSpeech");if(e)e.textContent=t;const a=document.getElementById("dealerAvatar");if(a){a.classList.remove("deal","win");if(anim){void a.offsetWidth;a.classList.add(anim)}}}
-updateBalances();pokerUpdateActions(false);pokerRender();
-</script></body></html>
+<section class="ticker"><div><span class="dot"></span> LIVE WINS</div><div id="tickerText">Mikey hit 2,500 tokens on Lucky Sevens</div><div class="ticker-right">DEMO MODE • <b>PLAY RESPONSIBLY</b></div></section>
+
+<section class="section" id="gamesSection">
+  <div class="section-head">
+    <div><div class="eyebrow gold">♛ SLOT FLOOR</div><h2>CHOOSE YOUR <em>GAME</em></h2></div>
+    <div class="filter-row"><button class="filter active" data-filter="all">ALL</button><button class="filter" data-filter="hot">HOT</button><button class="filter" data-filter="new">NEW</button><button class="filter" data-filter="vip">VIP</button></div>
+  </div>
+  <div class="game-grid" id="gameGrid"></div>
+</section>
+
+<section class="poker-promo">
+  <div class="poker-promo-copy">
+    <div class="eyebrow gold">♠ FASTCASH POKER ROOM</div>
+    <h2>TEXAS <em>HOLD’EM</em></h2>
+    <p>Private table for up to 5 players. Animated dealer, real hand evaluation, blinds, pots, raises and all-in.</p>
+    <div class="poker-promo-actions"><button class="gold-btn" onclick="openPoker()">SIT AT THE TABLE →</button><span>5 SEATS • NLH • PLAY MONEY</span></div>
+  </div>
+  <div class="poker-promo-table"><div class="mini-felt"></div><div class="mini-cards"><i></i><i></i><i></i><i></i><i></i></div><div class="mini-chip-stack"></div></div>
+</section>
+
+<section class="promo-row">
+  <div class="promo-card vip-card"><div class="promo-copy"><small>FASTCASH VIP</small><h3>CLIMB THE<br><em>RANKS.</em></h3><p>Unlock exclusive tables, bigger bets and VIP rewards.</p><button onclick="openRewards()">VIEW VIP</button></div><div class="promo-icon">♛</div></div>
+  <div class="promo-card daily-card"><div class="promo-copy"><small>DAILY REWARD</small><h3>FREE TOKENS<br><em>EVERY DAY.</em></h3><p>Your daily reward is waiting.</p><button onclick="claimDaily()">CLAIM 250</button></div><div class="promo-icon">★</div></div>
+</section>
+</main>
+
+<footer><div><b>FASTCASH</b><span> LOS SANTOS NEVER SLEEPS</span></div><div class="footer-badges"><span>✓ FAIR PLAY</span><span>♙ YOUR PRIORITY</span><span>● 1,248 PLAYERS ONLINE</span></div><div class="footer-motto">Same City.<br><em>Bigger Dreams.</em></div></footer>
+
+<div class="overlay hidden" id="gameOverlay">
+<div class="game-window">
+  <div class="game-top"><button class="back-btn" onclick="closeGame()">← LOBBY</button><div class="game-title"><small id="gameTag">SLOT GAME</small><h2 id="gameTitle">LOS SANTOS LEGENDS</h2></div><div class="game-tools"><button class="icon-btn" onclick="toggleFullscreen()">⛶</button><button class="icon-btn" onclick="openPaytable()">?</button></div></div>
+  <div class="machine-scene" id="machineScene">
+    <div class="neon-sign" id="neonSign">LOS SANTOS<br><span>LEGENDS</span></div>
+    <div class="machine" id="machine">
+      <div class="machine-topline"><span>FASTCASH</span><span id="gameRtp">RTP 95%</span></div>
+      <div class="reel-frame" id="reelFrame"></div>
+      <div class="win-line"></div>
+      <div class="machine-result" id="machineResult">PŘIPRAVEN TO SPIN</div>
+      <div class="machine-bottom"><span>BET <b id="machineBetLabel">100</b></span><span>WIN <b id="lastWin">0</b></span></div>
+    </div>
+  </div>
+  <div class="control-deck">
+    <div class="bet-control"><small>BET</small><button onclick="adjustBet(-1)">−</button><strong id="betValue">100</strong><button onclick="adjustBet(1)">+</button></div>
+    <div class="quick-bets"><button onclick="setBet('half')">½</button><button onclick="setBet('min')">MIN</button><button onclick="setBet(2)">2X</button><button onclick="setBet(5)">5X</button><button onclick="setBet(10)">10X</button></div>
+    <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN <span>↻</span></button>
+  </div>
+  <div class="game-footer"><button onclick="openPaytable()">PAYTABLE</button><button onclick="openSimulation()" class="sim-btn">🧪 TEST 1M SPINS</button><span>Balance <b id="gameBalance">10,000</b></span><span>Max Win <b id="maxWin">5,000</b></span></div>
+</div>
+</div>
+
+<div class="overlay hidden" id="simulationOverlay"><div class="panel simulation-panel"><button class="panel-close" onclick="closeSimulation()">×</button><div class="eyebrow gold">RTP LAB</div><h2>1,000,000 <em>SPINS TEST</em></h2><p class="sim-intro">Test používá přesně stejný RNG, reel strips, 81 Ways, paytable a Wild násobiče jako první Multi Vegas 81. Žádné předem připravené výsledky.</p><div class="sim-controls"><label>BET / SPIN <input id="simBet" type="number" min="1" max="250" step="1" value="100"></label><button class="gold-btn" id="runSimBtn" onclick="runSimulation()">▶ SPUSTIT 1 000 000 SPINŮ</button></div><div class="sim-progress"><div class="sim-progress-bar" id="simProgressBar"></div></div><div id="simProgressText">Připraveno.</div><div id="simResults" class="sim-results"></div></div></div><div class="overlay hidden" id="paytableOverlay"><div class="panel"><button class="panel-close" onclick="closePaytable()">×</button><div class="eyebrow gold">GAME INFO</div><h2 id="paytableTitle">PAYTABLE</h2><div id="paytableContent" class="paytable"></div></div></div>
+<div class="overlay hidden" id="panelOverlay"><div class="panel"><button class="panel-close" onclick="closePanel()">×</button><div id="panelContent"></div></div></div>
+
+<div class="overlay hidden" id="pokerOverlay">
+  <div class="poker-shell">
+    <div class="poker-topbar">
+      <button class="back-btn" onclick="closePoker()">← LOBBY</button>
+      <div class="poker-title"><small>FASTCASH PRIVATE ROOM</small><h2>TEXAS <em>HOLD’EM</em></h2></div>
+      <div class="poker-top-actions">
+        <span class="room-status"><i></i> TABLE OPEN</span>
+        <button class="icon-btn" onclick="toggleSound()">♫</button>
+        <button class="icon-btn" onclick="openPokerRules()">?</button>
+      </div>
+    </div>
+
+    <div class="poker-stage" id="pokerStage">
+  <div class="poker-background"></div>
+
+  <!-- Dealer is outside the felt, directly opposite the player -->
+  <div class="dealer-front poker-dealer">
+    <div class="dealer-avatar gta-style" id="dealerAvatar">
+      <div class="dealer-shadow"></div>
+      <div class="dealer-body"></div><div class="dealer-shirt"></div>
+      <div class="dealer-head"></div><div class="dealer-hair"></div>
+      <div class="dealer-eye eye-a"></div><div class="dealer-eye eye-b"></div>
+      <div class="dealer-smile"></div><div class="dealer-bowtie"></div><div class="dealer-jacket"></div>
+    </div>
+    <div class="dealer-name">ALEX <span>KRUPIÉR</span></div>
+    <div class="dealer-speech" id="dealerSpeech">Vítejte u stolu.</div>
+  </div>
+
+  <div class="poker-table poker-table-v5">
+    <div class="table-rail"></div>
+    <div class="table-felt">
+      <div class="table-logo"><b>FAST<span>CASH</span></b><small>PRIVATE POKER CLUB</small></div>
+      <div class="pot-display">
+        <small>BANK</small>
+        <strong id="pokerPot">0</strong>
+        <div class="pot-chips" id="potChips"></div>
+      </div>
+      <div class="chip-pile" id="chipPile"></div>
+      <div class="community-cards" id="communityCards"></div>
+      <div class="street-label" id="streetLabel">ČEKÁ SE NA ROZDÁNÍ</div>
+      <div class="action-glow" id="actionGlow"></div>
+    </div>
+
+    <!-- Players are outside the felt; their cards have their own space -->
+    <div class="seat seat-top" id="seat0">
+      <div class="seat-name">LUNA</div><div class="stack" id="stack0">2 000</div>
+      <div class="avatar-small">L</div><div class="chip-stack"><i></i><i></i><i></i></div>
+      <div class="hole-cards" id="cards0"></div><div class="seat-badge" id="badge0"></div>
+    </div>
+
+    <div class="seat seat-right" id="seat1">
+      <div class="seat-name">MARCUS</div><div class="stack" id="stack1">2 000</div>
+      <div class="avatar-small">M</div><div class="chip-stack"><i></i><i></i><i></i></div>
+      <div class="hole-cards" id="cards1"></div><div class="seat-badge" id="badge1"></div>
+    </div>
+
+    <div class="seat seat-bottom" id="seat2">
+      <div class="seat-name">TY</div><div class="stack" id="stack2">2 000</div>
+      <div class="avatar-small you">Y</div><div class="chip-stack"><i></i><i></i><i></i></div>
+      <div class="hole-cards player-cards" id="cards2"></div><div class="seat-badge" id="badge2"></div>
+    </div>
+
+    <div class="seat seat-left" id="seat3">
+      <div class="seat-name">NICO</div><div class="stack" id="stack3">2 000</div>
+      <div class="avatar-small">N</div><div class="chip-stack"><i></i><i></i><i></i></div>
+      <div class="hole-cards" id="cards3"></div><div class="seat-badge" id="badge3"></div>
+    </div>
+
+    <div class="seat seat-farleft" id="seat4">
+      <div class="seat-name">SOPHIE</div><div class="stack" id="stack4">2 000</div>
+      <div class="avatar-small">S</div><div class="chip-stack"><i></i><i></i><i></i></div>
+      <div class="hole-cards" id="cards4"></div><div class="seat-badge" id="badge4"></div>
+    </div>
+  </div>
+</div>
+
+<div class="poker-hud poker-hud-v5">
+  <div class="your-info">
+    <span class="eyebrow gold">VAŠE MÍSTO</span>
+    <b id="pokerTurnText">Stiskni ROZDAT pro začátek</b>
+    <small id="pokerHandText">Držíš —</small>
+  </div>
+
+  <div class="poker-actions">
+    <button type="button" class="poker-action fold" id="pokerFold" onclick="pokerAction('fold')">SLOŽIT</button>
+    <button type="button" class="poker-action check" id="pokerCheck" onclick="pokerAction('check')">CHECK</button>
+    <button type="button" class="poker-action call" id="pokerCall" onclick="pokerAction('call')">DOROVNAT <span id="callAmount">0</span></button>
+    <button type="button" class="poker-action raise" id="pokerRaise" onclick="pokerAction('raise')">NAVÝŠIT <span id="raiseAmount">200</span></button>
+    <button type="button" class="poker-action allin" id="pokerAllin" onclick="pokerAction('allin')">ALL-IN</button>
+  </div>
+
+  <div class="raise-control">
+    <div class="raise-slider">
+      <label>NAVÝŠIT</label>
+      <input id="raiseSlider" type="range" min="100" max="2000" step="100" value="200" oninput="updateRaisePreview(this.value)">
+    </div>
+    <strong id="raisePreview">200</strong>
+    <button type="button" class="deal-btn" id="dealPokerBtn" onclick="dealPoker()">ROZDAT</button>
+  </div>
+</div></div>
+    <div class="poker-bottomline"><span>BLINDS <b>50 / 100</b></span><span>NO LIMIT HOLD’EM</span><span>MAX 5 PLAYERS</span><span id="pokerMessage">Ready.</span></div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="pokerRulesOverlay">
+  <div class="panel poker-rules-panel"><button class="panel-close" onclick="closePokerRules()">×</button>
+    <div class="eyebrow gold">HOW TO PLAY</div><h2>TEXAS <em>HOLD’EM</em></h2>
+    <div class="rules-grid">
+      <div><b>1. ROZDAT</b><p>Každý hráč dostane dvě skryté karty.</p></div>
+      <div><b>2. FLOP</b><p>Na stůl přijdou tři společné karty.</p></div>
+      <div><b>3. TURN</b><p>Čtvrtá společná karta.</p></div>
+      <div><b>4. RIVER</b><p>Pátá společná karta.</p></div>
+    </div>
+    <div class="hand-list"><span>ROYAL FLUSH</span><span>STRAIGHT FLUSH</span><span>FOUR OF A KIND</span><span>FULL HOUSE</span><span>FLUSH</span><span>STRAIGHT</span><span>THREE OF A KIND</span><span>TWO PAIR</span><span>ONE PAIR</span><span>HIGH CARD</span></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
