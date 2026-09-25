@@ -722,8 +722,9 @@ pokerBet = function(i,amount){
   window.pokerEditorSave=function(show=true){try{localStorage.setItem(KEY,JSON.stringify(getData(),null,2));if(show)status('ULOŽENO ✓')}catch(e){status('CHYBA ULOŽENÍ')}};
   window.pokerEditorReset=function(){localStorage.removeItem(KEY);location.reload()};
   window.pokerEditorExport=function(){const blob=new Blob([JSON.stringify(getData(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='poker-layout-editor.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);status('JSON EXPORT ✓')};
-  window.pokerEditorEnable=function(){const ov=el('#pokerOverlay');if(!ov)return;ov.classList.add('editor-mode');markTargets();try{const raw=localStorage.getItem(KEY);if(raw)applyData(JSON.parse(raw))}catch(e){}const on=el('#pokerEditorOnBtn');if(on)on.style.display='none';updateScaleLabel();status('EDITOR AKTIVNÍ')};
-  window.pokerEditorDisable=function(){const ov=el('#pokerOverlay');if(!ov)return;pokerEditorSave(false);ov.classList.remove('editor-mode');if(selected)selected.classList.remove('editor-selected');selected=null;const on=el('#pokerEditorOnBtn');if(on)on.style.display='block';status('EDITOR VYPNUTÝ — HRA');updateScaleLabel()};
+  window.pokerEditorEnable=function(){const ov=el('#pokerOverlay');if(!ov)return;ov.classList.add('editor-mode');markTargets();try{const raw=localStorage.getItem(KEY);if(raw)applyData(JSON.parse(raw))}catch(e){}updateScaleLabel();status('EDITOR AKTIVNÍ')};
+  window.pokerEditorDisable=function(){const ov=el('#pokerOverlay');if(!ov)return;pokerEditorSave(false);ov.classList.remove('editor-mode');if(selected)selected.classList.remove('editor-selected');selected=null;status('EDITOR VYPNUTÝ — HRA');updateScaleLabel()};
+  window.pokerEditorToggle=function(){const ov=el('#pokerOverlay');if(!ov)return;if(ov.classList.contains('editor-mode')){pokerEditorDisable()}else{pokerEditorEnable()}};
   const oldOpen=window.openPoker;window.openPoker=function(){if(typeof oldOpen==='function')oldOpen();setTimeout(()=>window.pokerEditorEnable(),80)};
   const oldClose=window.closePoker;window.closePoker=function(){pokerEditorSave(false);window.pokerEditorDisable();if(typeof oldClose==='function')oldClose()};
   document.addEventListener('DOMContentLoaded',()=>{

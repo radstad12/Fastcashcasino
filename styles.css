@@ -1051,7 +1051,8 @@ body.poker-open{overflow:hidden}
 .poker-editor-crosshair:before{left:21px;top:0;width:2px;height:44px}.poker-editor-crosshair:after{left:0;top:21px;width:44px;height:2px}
 .poker-editor-crosshair i{position:absolute;left:17px;top:17px;width:10px;height:10px;border:2px solid #f6ca4a;border-radius:50%;box-shadow:0 0 8px rgba(246,202,74,.75)}
 #pokerOverlay.editor-mode .poker-editor-lock{display:none}
-#pokerOverlay:not(.editor-mode) .poker-editor-ui,#pokerOverlay:not(.editor-mode) .poker-editor-crosshair{display:none!important}
+#pokerOverlay:not(.editor-mode) .poker-editor-ui{display:flex!important}
+#pokerOverlay:not(.editor-mode) .poker-editor-crosshair{display:none!important}
 
 /* LIVE EDITOR FIX: everything is draggable and scalable, including dealer and table */
 #pokerOverlay.editor-mode .poker-dealer,
@@ -1088,14 +1089,3 @@ body.poker-open{overflow:hidden}
 #pokerOverlay.editor-mode .poker-table-v5.editor-selected { outline:3px solid #f7c84a !important; outline-offset:8px !important; }
 #pokerOverlay.editor-mode .poker-dealer.editor-selected { outline:2px solid #f7c84a !important; outline-offset:8px !important; }
 #pokerOverlay.editor-mode .editor-off-btn { background:#321416 !important; border-color:#9a3b42 !important; color:#ffb3b7 !important; }
-
-/* Editor toggle: always available while poker is open. */
-.poker-editor-on-btn{
-  position:absolute;top:10px;right:10px;z-index:100001;
-  display:block;padding:9px 13px;border:1px solid #596173;border-radius:8px;
-  background:#070a10f5;color:#f7c84a;font:900 10px Inter,sans-serif;
-  letter-spacing:.04em;cursor:pointer;box-shadow:0 10px 24px #000a;
-}
-.poker-editor-on-btn:hover{background:#171b25;border-color:#f7c84a;color:#fff}
-#pokerOverlay.editor-mode .poker-editor-on-btn{display:none!important}
-#pokerOverlay:not(.editor-mode) .poker-editor-ui{display:none!important}

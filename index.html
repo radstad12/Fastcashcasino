@@ -115,7 +115,6 @@
     </div>
 
     <div class="poker-stage" id="pokerStage">
-  <button type="button" class="poker-editor-on-btn" id="pokerEditorOnBtn" onclick="pokerEditorEnable()">⚙ ZAPNOUT EDITOR</button>
   <div class="poker-editor-ui" id="pokerEditorUI">
     <button type="button" onclick="pokerEditorSave()">ULOŽIT</button>
     <button type="button" onclick="pokerEditorReset()">RESET</button>
@@ -125,7 +124,7 @@
     <span class="editor-scale" id="pokerEditorScale">100%</span>
     <button type="button" class="editor-scale-btn" onclick="pokerEditorScale(0.05)">+</button>
     <button type="button" onclick="pokerEditorCenter()">STŘED</button>
-    <button type="button" class="editor-off-btn" onclick="pokerEditorDisable()">VYPNOUT EDITOR</button>
+    <button type="button" class="editor-off-btn" onclick="pokerEditorToggle()">VYPNOUT EDITOR</button>
     <span class="editor-status" id="pokerEditorStatus">EDITOR AKTIVNÍ</span>
     <span class="editor-hint">Táhni myší. Kolečko = velikost. Střed = žlutý kříž.</span>
   </div>
