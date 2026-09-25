@@ -221,41 +221,5 @@
 
 <div class="toast" id="toast"></div>
 <script src="app.js"></script>
-
-<div id="GLOBAL_POKER_EDITOR">
-  <div class="real-editor-panel">
-    <div class="real-editor-head">
-      <div><b>FASTCASH DEV TOOL</b><strong>EDITOR ROZLOŽENÍ POKERU</strong><small>Přetáhni hráče myší, nastav velikost stolu a ulož.</small></div>
-      <button type="button" onclick="closePokerEditor()">×</button>
-    </div>
-    <div class="real-editor-body">
-      <div class="real-editor-canvas">
-        <div id="REAL_PLE_STAGE">
-          <div id="REAL_PLE_TABLE"></div>
-          <div class="REAL_PLE_ITEM" data-role="dealer">KRUPIÉR</div>
-          <div class="REAL_PLE_ITEM" data-role="luna">LUNA</div>
-          <div class="REAL_PLE_ITEM" data-role="sophie">SOPHIE</div>
-          <div class="REAL_PLE_ITEM" data-role="nico">NICO</div>
-          <div class="REAL_PLE_ITEM" data-role="marcus">MARCUS</div>
-          <div class="REAL_PLE_ITEM" data-role="you">TY</div>
-        </div>
-      </div>
-      <div class="real-editor-controls">
-        <label>PRVEK<select id="REAL_PLE_SELECT"><option value="dealer">KRUPIÉR</option><option value="luna">LUNA</option><option value="sophie">SOPHIE</option><option value="nico">NICO</option><option value="marcus">MARCUS</option><option value="you">TY</option></select></label>
-        <div class="real-grid">
-          <label>X %<input id="REAL_PLE_X" type="number" step="1"></label>
-          <label>Y %<input id="REAL_PLE_Y" type="number" step="1"></label>
-          <label>VELIKOST<input id="REAL_PLE_SCALE" type="number" step=".05" min=".4" max="2"></label>
-          <label>STŮL %<input id="REAL_PLE_TABLE_SIZE" type="number" min="45" max="90"></label>
-        </div>
-        <div class="real-arrows"><button onclick="realPleNudge(-2,0)">←</button><button onclick="realPleNudge(2,0)">→</button><button onclick="realPleNudge(0,-2)">↑</button><button onclick="realPleNudge(0,2)">↓</button></div>
-        <div class="real-actions"><button onclick="realPleReset()">RESET</button><button onclick="realPleSave()">ULOŽIT</button><button onclick="realPleDownload()">STÁHNOUT JSON</button></div>
-        <div id="REAL_PLE_STATUS">Editor je připraven.</div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- TEMP GLOBAL EDITOR -->
-<button id="GLOBAL_POKER_EDITOR_BUTTON" type="button" onclick="openPokerEditor()">⚙ EDITOR</button>
 </body>
 </html>
