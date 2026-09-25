@@ -86,7 +86,7 @@
       <div class="machine-topline"><span>FASTCASH</span><span id="gameRtp">RTP 95%</span></div>
       <div class="reel-frame" id="reelFrame"></div>
       <div class="win-line"></div>
-      <div class="machine-result" id="machineResult">READY TO SPIN</div>
+      <div class="machine-result" id="machineResult">PŘIPRAVEN TO SPIN</div>
       <div class="machine-bottom"><span>BET <b id="machineBetLabel">100</b></span><span>WIN <b id="lastWin">0</b></span></div>
     </div>
   </div>
@@ -108,61 +108,101 @@
       <button class="back-btn" onclick="closePoker()">← LOBBY</button>
       <div class="poker-title"><small>FASTCASH PRIVATE ROOM</small><h2>TEXAS <em>HOLD’EM</em></h2></div>
       <div class="poker-top-actions">
-        <span class="room-status"><i></i> STŮL OTEVŘEN</span>
+        <span class="room-status"><i></i> TABLE OPEN</span>
         <button class="icon-btn" onclick="toggleSound()">♫</button>
         <button class="icon-btn" onclick="openPokerRules()">?</button>
       </div>
     </div>
 
     <div class="poker-stage" id="pokerStage">
-  <div class="position-dot dealer-dot"><span>D</span></div>
-  <div class="position-dot dot-tl"></div><div class="position-dot dot-tr"></div>
-  <div class="position-dot dot-ml"></div><div class="position-dot dot-mr"></div>
+  <div class="poker-background"></div>
 
-  <div class="dealer-front">
+  <!-- Dealer is outside the felt, directly opposite the player -->
+  <div class="dealer-front poker-dealer">
     <div class="dealer-avatar gta-style" id="dealerAvatar">
-      <div class="dealer-shadow"></div><div class="dealer-body"></div><div class="dealer-shirt"></div>
+      <div class="dealer-shadow"></div>
+      <div class="dealer-body"></div><div class="dealer-shirt"></div>
       <div class="dealer-head"></div><div class="dealer-hair"></div>
       <div class="dealer-eye eye-a"></div><div class="dealer-eye eye-b"></div>
       <div class="dealer-smile"></div><div class="dealer-bowtie"></div><div class="dealer-jacket"></div>
-      <div class="dealer-hand left"></div><div class="dealer-hand right"></div>
     </div>
     <div class="dealer-name">ALEX <span>KRUPIÉR</span></div>
     <div class="dealer-speech" id="dealerSpeech">Vítejte u stolu.</div>
   </div>
 
-  <div class="poker-table gta-table">
+  <div class="poker-table poker-table-v5">
     <div class="table-rail"></div>
     <div class="table-felt">
-      <div class="table-ornament"></div>
       <div class="table-logo"><b>FAST<span>CASH</span></b><small>PRIVATE POKER CLUB</small></div>
-      <div class="pot-display"><small>BANK</small><strong id="pokerPot">0</strong><div class="pot-chips" id="potChips"></div></div>
+      <div class="pot-display">
+        <small>BANK</small>
+        <strong id="pokerPot">0</strong>
+        <div class="pot-chips" id="potChips"></div>
+      </div>
       <div class="chip-pile" id="chipPile"></div>
       <div class="community-cards" id="communityCards"></div>
       <div class="street-label" id="streetLabel">ČEKÁ SE NA ROZDÁNÍ</div>
       <div class="action-glow" id="actionGlow"></div>
     </div>
 
-    <div class="seat seat-top-left" id="seat0"><div class="seat-name">LUNA</div><div class="stack" id="stack0">2 000</div><div class="avatar-small">L</div><div class="chip-stack"><i></i><i></i><i></i></div><div class="hole-cards" id="cards0"></div><div class="seat-badge" id="badge0"></div></div>
-    <div class="seat seat-top-right" id="seat1"><div class="seat-name">MARCUS</div><div class="stack" id="stack1">2 000</div><div class="avatar-small">M</div><div class="chip-stack"><i></i><i></i><i></i></div><div class="hole-cards" id="cards1"></div><div class="seat-badge" id="badge1"></div></div>
-    <div class="seat seat-right" id="seat3"><div class="seat-name">NICO</div><div class="stack" id="stack3">2 000</div><div class="avatar-small">N</div><div class="chip-stack"><i></i><i></i><i></i></div><div class="hole-cards" id="cards3"></div><div class="seat-badge" id="badge3"></div></div>
-    <div class="seat seat-left" id="seat4"><div class="seat-name">SOPHIE</div><div class="stack" id="stack4">2 000</div><div class="avatar-small">S</div><div class="chip-stack"><i></i><i></i><i></i></div><div class="hole-cards" id="cards4"></div><div class="seat-badge" id="badge4"></div></div>
-    <div class="seat seat-bottom" id="seat2"><div class="seat-name">TY</div><div class="stack" id="stack2">2 000</div><div class="avatar-small you">Y</div><div class="chip-stack"><i></i><i></i><i></i></div><div class="hole-cards player-cards" id="cards2"></div><div class="seat-badge" id="badge2"></div></div>
+    <!-- Players are outside the felt; their cards have their own space -->
+    <div class="seat seat-top" id="seat0">
+      <div class="seat-name">LUNA</div><div class="stack" id="stack0">2 000</div>
+      <div class="avatar-small">L</div><div class="chip-stack"><i></i><i></i><i></i></div>
+      <div class="hole-cards" id="cards0"></div><div class="seat-badge" id="badge0"></div>
+    </div>
+
+    <div class="seat seat-right" id="seat1">
+      <div class="seat-name">MARCUS</div><div class="stack" id="stack1">2 000</div>
+      <div class="avatar-small">M</div><div class="chip-stack"><i></i><i></i><i></i></div>
+      <div class="hole-cards" id="cards1"></div><div class="seat-badge" id="badge1"></div>
+    </div>
+
+    <div class="seat seat-bottom" id="seat2">
+      <div class="seat-name">TY</div><div class="stack" id="stack2">2 000</div>
+      <div class="avatar-small you">Y</div><div class="chip-stack"><i></i><i></i><i></i></div>
+      <div class="hole-cards player-cards" id="cards2"></div><div class="seat-badge" id="badge2"></div>
+    </div>
+
+    <div class="seat seat-left" id="seat3">
+      <div class="seat-name">NICO</div><div class="stack" id="stack3">2 000</div>
+      <div class="avatar-small">N</div><div class="chip-stack"><i></i><i></i><i></i></div>
+      <div class="hole-cards" id="cards3"></div><div class="seat-badge" id="badge3"></div>
+    </div>
+
+    <div class="seat seat-farleft" id="seat4">
+      <div class="seat-name">SOPHIE</div><div class="stack" id="stack4">2 000</div>
+      <div class="avatar-small">S</div><div class="chip-stack"><i></i><i></i><i></i></div>
+      <div class="hole-cards" id="cards4"></div><div class="seat-badge" id="badge4"></div>
+    </div>
+  </div>
+</div>
+
+<div class="poker-hud poker-hud-v5">
+  <div class="your-info">
+    <span class="eyebrow gold">VAŠE MÍSTO</span>
+    <b id="pokerTurnText">Stiskni ROZDAT pro začátek</b>
+    <small id="pokerHandText">Držíš —</small>
+  </div>
+
+  <div class="poker-actions">
+    <button type="button" class="poker-action fold" id="pokerFold" onclick="pokerAction('fold')">SLOŽIT</button>
+    <button type="button" class="poker-action check" id="pokerCheck" onclick="pokerAction('check')">CHECK</button>
+    <button type="button" class="poker-action call" id="pokerCall" onclick="pokerAction('call')">DOROVNAT <span id="callAmount">0</span></button>
+    <button type="button" class="poker-action raise" id="pokerRaise" onclick="pokerAction('raise')">NAVÝŠIT <span id="raiseAmount">200</span></button>
+    <button type="button" class="poker-action allin" id="pokerAllin" onclick="pokerAction('allin')">ALL-IN</button>
+  </div>
+
+  <div class="raise-control">
+    <div class="raise-slider">
+      <label>NAVÝŠIT</label>
+      <input id="raiseSlider" type="range" min="100" max="2000" step="100" value="200" oninput="updateRaisePreview(this.value)">
+    </div>
+    <strong id="raisePreview">200</strong>
+    <button type="button" class="deal-btn" id="dealPokerBtn" onclick="dealPoker()">ROZDAT</button>
   </div>
 </div></div>
-
-    <div class="poker-hud">
-      <div class="your-info"><span class="eyebrow gold">VAŠE MÍSTO</span><b id="pokerTurnText">Stiskni ROZDAT pro začátek</b><small id="pokerHandText">Držíš —</small></div>
-      <div class="poker-actions">
-        <button class="poker-action fold" id="pokerFold" onclick="pokerAction('fold')">SLOŽIT</button>
-        <button class="poker-action check" id="pokerCheck" onclick="pokerAction('check')">KONTROLA</button>
-        <button class="poker-action call" id="pokerCall" onclick="pokerAction('call')">DOROVNAT <span id="callAmount">0</span></button>
-        <button class="poker-action raise" id="pokerRaise" onclick="pokerAction('raise')">NAVÝŠIT <span id="raiseAmount">200</span></button>
-        <button class="poker-action allin" id="pokerAllin" onclick="pokerAction('allin')">ALL-IN</button>
-      </div>
-      <div class="raise-control"><label>NAVÝŠIT <input id="raiseSlider" type="range" min="100" max="2000" step="100" value="200" oninput="updateRaisePreview(this.value)"></label><strong id="raisePreview">200</strong><button class="deal-btn" id="dealPokerBtn" onclick="dealPoker()">DEAL</button></div>
-    </div>
-    <div class="poker-bottomline"><span>SLEPÉ <b>50 / 100</b></span><span>NO LIMIT HOLD’EM</span><span>MAX. 5 HRÁČŮ</span><span id="pokerMessage">Ready.</span></div>
+    <div class="poker-bottomline"><span>BLINDS <b>50 / 100</b></span><span>NO LIMIT HOLD’EM</span><span>MAX 5 PLAYERS</span><span id="pokerMessage">Ready.</span></div>
   </div>
 </div>
 
@@ -170,7 +210,7 @@
   <div class="panel poker-rules-panel"><button class="panel-close" onclick="closePokerRules()">×</button>
     <div class="eyebrow gold">HOW TO PLAY</div><h2>TEXAS <em>HOLD’EM</em></h2>
     <div class="rules-grid">
-      <div><b>1. DEAL</b><p>Každý hráč dostane dvě skryté karty.</p></div>
+      <div><b>1. ROZDAT</b><p>Každý hráč dostane dvě skryté karty.</p></div>
       <div><b>2. FLOP</b><p>Na stůl přijdou tři společné karty.</p></div>
       <div><b>3. TURN</b><p>Čtvrtá společná karta.</p></div>
       <div><b>4. RIVER</b><p>Pátá společná karta.</p></div>

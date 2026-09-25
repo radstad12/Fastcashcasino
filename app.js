@@ -563,51 +563,16 @@ pokerBet = function(i,amount){
   window.pokerMessageCZ=function(t){ const e=document.getElementById("pokerMessage"); if(e)e.textContent=cz[t]||t; };
 })();
 
-/* ===== Poker V3: visible chip flight + growing pot ===== */
+/* V5 UI safety: keep the visible HUD in Czech. */
 (function(){
-  window.animatePokerChipsV3=function(amount){
-    const pile=document.getElementById("chipPile"), pot=document.getElementById("potChips");
-    if(!pile)return;
-    const colors=["#d9414d","#e8c44a","#4b83c6","#f1f1f1"];
-    const count=Math.max(4,Math.min(16,Math.ceil(amount/50)));
-    for(let i=0;i<count;i++){
-      const c=document.createElement("i"); c.className="chip";
-      c.style.background=`radial-gradient(circle at 35% 30%,#fff 0 8%,${colors[i%colors.length]} 9% 70%,#17191d 71%)`;
-      c.style.setProperty("--sx",(Math.random()*220-110)+"px");
-      c.style.setProperty("--sy",(Math.random()*120-60)+"px");
-      c.style.setProperty("--ex",(Math.random()*50-25)+"px");
-      c.style.setProperty("--ey",(Math.random()*25-10)+"px");
-      c.style.left=(80+Math.random()*25)+"px"; c.style.top=(25+Math.random()*25)+"px";
-      pile.appendChild(c); setTimeout(()=>c.remove(),1400);
-    }
-    if(pot){
-      pot.innerHTML="";
-      const n=Math.max(5,Math.min(22,Math.ceil((poker.pot||0)/75)));
-      for(let i=0;i<n;i++){
-        const s=document.createElement("i");
-        s.style.background=colors[i%colors.length];
-        s.style.marginTop=(-Math.floor(i/7)*4)+"px";
-        pot.appendChild(s);
-      }
-    }
-  };
-  const oldBet=window.pokerBet;
-  if(typeof oldBet==="function"){
-    window.pokerBet=function(i,amount){
-      oldBet(i,amount);
-      if(amount>0) setTimeout(()=>window.animatePokerChipsV3(amount),20);
-    };
-  }
-})();
-
-/* V4 safety: Czech HUD text and visible action state. */
-(function(){
-  const oldSetTurn = window.pokerSetTurn;
-  if(typeof oldSetTurn==="function"){
+  const _oldSetTurn = window.pokerSetTurn;
+  if(typeof _oldSetTurn === "function"){
     window.pokerSetTurn = function(){
-      oldSetTurn();
+      _oldSetTurn();
       const t=document.getElementById("pokerTurnText");
-      if(t && poker.active) t.textContent=(poker.turn===2)?"TVŮJ TAH":"TAH MÁ "+poker.players[poker.turn].name;
+      if(t && window.poker && poker.active){
+        t.textContent = poker.turn===2 ? "TVŮJ TAH" : "TAH MÁ "+poker.players[poker.turn].name;
+      }
     };
   }
 })();
