@@ -119,8 +119,13 @@
     <button type="button" onclick="pokerEditorSave()">ULOŽIT</button>
     <button type="button" onclick="pokerEditorReset()">RESET</button>
     <button type="button" onclick="pokerEditorExport()">EXPORT JSON</button>
+    <span class="editor-sep"></span>
+    <button type="button" class="editor-scale-btn" onclick="pokerEditorScale(-0.05)">−</button>
+    <span class="editor-scale" id="pokerEditorScale">100%</span>
+    <button type="button" class="editor-scale-btn" onclick="pokerEditorScale(0.05)">+</button>
+    <button type="button" onclick="pokerEditorCenter()">STŘED</button>
     <span class="editor-status" id="pokerEditorStatus">EDITOR AKTIVNÍ</span>
-    <span class="editor-hint">Táhni myší. Střed = žlutý kříž.</span>
+    <span class="editor-hint">Táhni myší. Kolečko = velikost. Střed = žlutý kříž.</span>
   </div>
   <div class="poker-editor-crosshair" aria-hidden="true"><i></i></div>
   <div class="poker-background"></div>
