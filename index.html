@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#07090f">
-<title>FastCash Casino — Los Santos</title>
+<title>FastCash Casino — Multi Vegas 81</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
@@ -22,8 +22,7 @@
 
   <nav class="nav">
     <button class="nav-btn active" onclick="showLobby()">⌂ <span>HOME</span></button>
-    <button class="nav-btn" onclick="scrollToGames()">▣ <span>SLOTS</span></button>
-    <button class="nav-btn" onclick="openPokerLobby()">♠ <span>POKER</span></button>
+    <button class="nav-btn" onclick="scrollToGames()">▣ <span>SLOTS</span></button><button class="nav-btn poker-nav" onclick="openPoker()">♠ <span>POKER</span></button>
     <button class="nav-btn" onclick="openRewards()">♛ <span>VIP</span></button>
     <button class="nav-btn" onclick="openRewards()">🎁 <span>REWARDS</span></button>
     <button class="nav-btn" onclick="openStats()">▥ <span>STATS</span></button>
@@ -45,7 +44,7 @@
     <div class="eyebrow"><span class="pulse"></span> CASINO ONLINE</div>
     <h1>GOOD PEOPLE.<br><em>BAD DECISIONS.</em></h1>
     <p>Los Santos never sleeps. Pick a machine, set your bet and spin.</p>
-    <div class="hero-actions"><button class="gold-btn" onclick="openGame('los-santos')">PLAY NOW <span>→</span></button><button class="ghost-btn" onclick="scrollToGames()">VIEW ALL SLOTS</button></div>
+    <div class="hero-actions"><button class="gold-btn" onclick="openGame('multi-vegas-81')">PLAY NOW <span>→</span></button><button class="ghost-btn" onclick="scrollToGames()">VIEW ALL SLOTS</button></div>
   </div>
   <div class="hero-stats"><div><b>1,248</b><small>PLAYERS ONLINE</small></div><div><b>10</b><small>LIVE SLOTS</small></div><div><b>24/7</b><small>LOS SANTOS</small></div></div>
 </section>
@@ -60,9 +59,14 @@
   <div class="game-grid" id="gameGrid"></div>
 </section>
 
-<section class="poker-promo" onclick="openPokerLobby()">
-  <div class="poker-promo-copy"><div class="eyebrow gold">LIVE TABLE • MAX 5 PLAYERS</div><h2>TEXAS HOLD’EM <em>PRIVATE ROOM</em></h2><p>Dealer, blinds, betting rounds, hand evaluation, animated cards and a real 5-seat table.</p><button class="gold-btn">SIT AT THE TABLE <span>→</span></button></div>
-  <div class="poker-promo-table"><div class="mini-felt"></div><div class="mini-card mc1">A♠</div><div class="mini-card mc2">K♦</div><div class="mini-chip">♠</div></div>
+<section class="poker-promo">
+  <div class="poker-promo-copy">
+    <div class="eyebrow gold">♠ FASTCASH POKER ROOM</div>
+    <h2>TEXAS <em>HOLD’EM</em></h2>
+    <p>Private table for up to 5 players. Animated dealer, real hand evaluation, blinds, pots, raises and all-in.</p>
+    <div class="poker-promo-actions"><button class="gold-btn" onclick="openPoker()">SIT AT THE TABLE →</button><span>5 SEATS • NLH • PLAY MONEY</span></div>
+  </div>
+  <div class="poker-promo-table"><div class="mini-felt"></div><div class="mini-cards"><i></i><i></i><i></i><i></i><i></i></div><div class="mini-chip-stack"></div></div>
 </section>
 
 <section class="promo-row">
@@ -91,49 +95,83 @@
     <div class="quick-bets"><button onclick="setBet('half')">½</button><button onclick="setBet('min')">MIN</button><button onclick="setBet(2)">2X</button><button onclick="setBet(5)">5X</button><button onclick="setBet(10)">10X</button></div>
     <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN <span>↻</span></button>
   </div>
-  <div class="game-footer"><button onclick="openPaytable()">PAYTABLE</button><span>Balance <b id="gameBalance">10,000</b></span><span>Max Win <b id="maxWin">5,000</b></span></div>
+  <div class="game-footer"><button onclick="openPaytable()">PAYTABLE</button><button onclick="openSimulation()" class="sim-btn">🧪 TEST 1M SPINS</button><span>Balance <b id="gameBalance">10,000</b></span><span>Max Win <b id="maxWin">5,000</b></span></div>
 </div>
 </div>
 
-<div class="overlay hidden" id="paytableOverlay"><div class="panel"><button class="panel-close" onclick="closePaytable()">×</button><div class="eyebrow gold">GAME INFO</div><h2 id="paytableTitle">PAYTABLE</h2><div id="paytableContent" class="paytable"></div></div></div>
+<div class="overlay hidden" id="simulationOverlay"><div class="panel simulation-panel"><button class="panel-close" onclick="closeSimulation()">×</button><div class="eyebrow gold">RTP LAB</div><h2>1,000,000 <em>SPINS TEST</em></h2><p class="sim-intro">Test používá přesně stejný RNG, reel strips, 81 Ways, paytable a Wild násobiče jako první Multi Vegas 81. Žádné předem připravené výsledky.</p><div class="sim-controls"><label>BET / SPIN <input id="simBet" type="number" min="1" max="250" step="1" value="100"></label><button class="gold-btn" id="runSimBtn" onclick="runSimulation()">▶ SPUSTIT 1 000 000 SPINŮ</button></div><div class="sim-progress"><div class="sim-progress-bar" id="simProgressBar"></div></div><div id="simProgressText">Připraveno.</div><div id="simResults" class="sim-results"></div></div></div><div class="overlay hidden" id="paytableOverlay"><div class="panel"><button class="panel-close" onclick="closePaytable()">×</button><div class="eyebrow gold">GAME INFO</div><h2 id="paytableTitle">PAYTABLE</h2><div id="paytableContent" class="paytable"></div></div></div>
 <div class="overlay hidden" id="panelOverlay"><div class="panel"><button class="panel-close" onclick="closePanel()">×</button><div id="panelContent"></div></div></div>
-<div class="toast" id="toast"></div>
+
 <div class="overlay hidden" id="pokerOverlay">
-  <div class="poker-window">
-    <div class="poker-header">
+  <div class="poker-shell">
+    <div class="poker-topbar">
       <button class="back-btn" onclick="closePoker()">← LOBBY</button>
-      <div class="poker-brand"><span>♠</span><div><small>FASTCASH PRIVATE ROOM</small><b>TEXAS HOLD’EM</b></div></div>
-      <div class="poker-head-right"><span class="table-status"><i></i> LIVE TABLE</span><span>MAX 5</span><button class="icon-btn" onclick="toggleFullscreenPoker()">⛶</button></div>
-    </div>
-    <div class="poker-room">
-      <div class="dealer-stage"><div class="dealer-avatar"><div class="dealer-face">♠</div><div class="dealer-mouth"></div></div><div class="dealer-copy"><b id="dealerName">MARCEL • DEALER</b><small id="dealerLine">Welcome to the table. Please take your seat.</small></div><div class="dealer-badge">HOUSE<br><span>DEALER</span></div></div>
-      <div class="poker-table" id="pokerTable">
-        <div class="table-rail"></div><div class="table-felt"></div><div class="table-logo">FAST<span>CASH</span><small>LOS SANTOS • TEXAS HOLD’EM</small></div>
-        <div class="community" id="community"></div>
-        <div class="pot-display"><small>POT</small><b id="potAmount">0</b></div>
-        <div class="seat seat-top" data-seat="2"><div class="seat-player" id="seat2"></div></div>
-        <div class="seat seat-left" data-seat="1"><div class="seat-player" id="seat1"></div></div>
-        <div class="seat seat-right" data-seat="3"><div class="seat-player" id="seat3"></div></div>
-        <div class="seat seat-bottom-left" data-seat="0"><div class="seat-player" id="seat0"></div></div>
-        <div class="seat seat-bottom-right" data-seat="4"><div class="seat-player" id="seat4"></div></div>
-        <div class="deck"><div class="deck-card"></div><div class="deck-card back2"></div></div>
+      <div class="poker-title"><small>FASTCASH PRIVATE ROOM</small><h2>TEXAS <em>HOLD’EM</em></h2></div>
+      <div class="poker-top-actions">
+        <span class="room-status"><i></i> TABLE OPEN</span>
+        <button class="icon-btn" onclick="toggleSound()">♫</button>
+        <button class="icon-btn" onclick="openPokerRules()">?</button>
       </div>
-      <div class="poker-bottom">
-        <div class="hand-panel"><div class="hand-title"><span>YOUR HAND</span><b id="handRank">—</b></div><div class="hole-cards" id="holeCards"></div><div class="player-stack"><span>TABLE CHIPS</span><b id="heroChips">0</b></div></div>
-        <div class="action-panel">
-          <div class="round-info"><span id="roundLabel">WAITING FOR PLAYERS</span><b id="toCall">CALL 0</b></div>
-          <div class="action-row"><button class="poker-action fold" onclick="pokerAction('fold')">FOLD</button><button class="poker-action check" onclick="pokerAction('check')">CHECK</button><button class="poker-action call" onclick="pokerAction('call')">CALL <span id="callAmount">0</span></button><button class="poker-action raise" onclick="pokerAction('raise')">RAISE <span id="raiseAmount">200</span></button><button class="poker-action allin" onclick="pokerAction('allin')">ALL IN</button></div>
-          <div class="raise-control"><span>BET SIZE</span><input id="raiseRange" type="range" min="100" max="2000" step="100" value="200" oninput="updateRaiseLabel()"><b id="raiseLabel">200</b></div>
+    </div>
+
+    <div class="poker-stage" id="pokerStage">
+      <div class="dealer-podium">
+        <div class="dealer-avatar" id="dealerAvatar">
+          <div class="dealer-shadow"></div><div class="dealer-body"></div><div class="dealer-head"></div>
+          <div class="dealer-hair"></div><div class="dealer-eye eye-a"></div><div class="dealer-eye eye-b"></div>
+          <div class="dealer-smile"></div><div class="dealer-bowtie"></div>
         </div>
+        <div class="dealer-name">ALEX <span>DEALER</span></div>
+        <div class="dealer-speech" id="dealerSpeech">Welcome to FastCash.</div>
+      </div>
+
+      <div class="poker-table">
+        <div class="table-rail"></div>
+        <div class="table-felt">
+          <div class="table-logo"><b>FAST<span>CASH</span></b><small>PRIVATE POKER CLUB</small></div>
+          <div class="pot-display"><small>POT</small><strong id="pokerPot">0</strong></div>
+          <div class="community-cards" id="communityCards"></div>
+          <div class="street-label" id="streetLabel">WAITING FOR DEAL</div>
+          <div class="action-glow" id="actionGlow"></div>
+        </div>
+
+        <div class="seat seat-top" id="seat0"><div class="seat-name">LUNA</div><div class="stack" id="stack0">2,000</div><div class="avatar-small">L</div><div class="hole-cards" id="cards0"></div><div class="seat-badge" id="badge0"></div></div>
+        <div class="seat seat-right" id="seat1"><div class="seat-name">MARCUS</div><div class="stack" id="stack1">2,000</div><div class="avatar-small">M</div><div class="hole-cards" id="cards1"></div><div class="seat-badge" id="badge1"></div></div>
+        <div class="seat seat-bottom" id="seat2"><div class="seat-name">YOU</div><div class="stack" id="stack2">2,000</div><div class="avatar-small you">Y</div><div class="hole-cards" id="cards2"></div><div class="seat-badge" id="badge2"></div></div>
+        <div class="seat seat-left" id="seat3"><div class="seat-name">NICO</div><div class="stack" id="stack3">2,000</div><div class="avatar-small">N</div><div class="hole-cards" id="cards3"></div><div class="seat-badge" id="badge3"></div></div>
+        <div class="seat seat-farleft" id="seat4"><div class="seat-name">SOPHIE</div><div class="stack" id="stack4">2,000</div><div class="avatar-small">S</div><div class="hole-cards" id="cards4"></div><div class="seat-badge" id="badge4"></div></div>
       </div>
     </div>
-    <div class="poker-footer"><span>♣ NO LIMIT TEXAS HOLD’EM</span><span>Blinds <b>50 / 100</b></span><span>5 seats maximum</span><button onclick="openPokerRules()">RULES & HAND RANKS</button></div>
+
+    <div class="poker-hud">
+      <div class="your-info"><span class="eyebrow gold">YOUR SEAT</span><b id="pokerTurnText">Press DEAL to start</b><small id="pokerHandText">You are holding —</small></div>
+      <div class="poker-actions">
+        <button class="poker-action fold" id="pokerFold" onclick="pokerAction('fold')">FOLD</button>
+        <button class="poker-action check" id="pokerCheck" onclick="pokerAction('check')">CHECK</button>
+        <button class="poker-action call" id="pokerCall" onclick="pokerAction('call')">CALL <span id="callAmount">0</span></button>
+        <button class="poker-action raise" id="pokerRaise" onclick="pokerAction('raise')">RAISE <span id="raiseAmount">200</span></button>
+        <button class="poker-action allin" id="pokerAllin" onclick="pokerAction('allin')">ALL-IN</button>
+      </div>
+      <div class="raise-control"><label>RAISE <input id="raiseSlider" type="range" min="100" max="2000" step="100" value="200" oninput="updateRaisePreview(this.value)"></label><strong id="raisePreview">200</strong><button class="deal-btn" id="dealPokerBtn" onclick="dealPoker()">DEAL</button></div>
+    </div>
+    <div class="poker-bottomline"><span>BLINDS <b>50 / 100</b></span><span>NO LIMIT HOLD’EM</span><span>MAX 5 PLAYERS</span><span id="pokerMessage">Ready.</span></div>
   </div>
 </div>
 
-<div class="overlay hidden" id="pokerRulesOverlay"><div class="panel poker-rules"><button class="panel-close" onclick="closePokerRules()">×</button><div class="eyebrow gold">TEXAS HOLD’EM</div><h2>RULES & <em>HAND RANKS</em></h2><p>Each player receives two private cards. Five community cards are revealed across flop, turn and river. The best five-card poker hand from the seven available cards wins the pot.</p><div class="rank-list"><div><b>1</b><span>ROYAL FLUSH</span><em>A-K-Q-J-10 same suit</em></div><div><b>2</b><span>STRAIGHT FLUSH</span><em>Five consecutive cards, same suit</em></div><div><b>3</b><span>FOUR OF A KIND</span><em>Four cards of one rank</em></div><div><b>4</b><span>FULL HOUSE</span><em>Three of a kind + pair</em></div><div><b>5</b><span>FLUSH</span><em>Five cards same suit</em></div><div><b>6</b><span>STRAIGHT</span><em>Five consecutive ranks</em></div><div><b>7</b><span>THREE OF A KIND</span><em>Three cards of one rank</em></div><div><b>8</b><span>TWO PAIR</span><em>Two different pairs</em></div><div><b>9</b><span>ONE PAIR</span><em>One pair</em></div><div><b>10</b><span>HIGH CARD</span><em>Highest cards when no hand is made</em></div></div></div></div>
+<div class="overlay hidden" id="pokerRulesOverlay">
+  <div class="panel poker-rules-panel"><button class="panel-close" onclick="closePokerRules()">×</button>
+    <div class="eyebrow gold">HOW TO PLAY</div><h2>TEXAS <em>HOLD’EM</em></h2>
+    <div class="rules-grid">
+      <div><b>1. DEAL</b><p>Každý hráč dostane dvě skryté karty.</p></div>
+      <div><b>2. FLOP</b><p>Na stůl přijdou tři společné karty.</p></div>
+      <div><b>3. TURN</b><p>Čtvrtá společná karta.</p></div>
+      <div><b>4. RIVER</b><p>Pátá společná karta.</p></div>
+    </div>
+    <div class="hand-list"><span>ROYAL FLUSH</span><span>STRAIGHT FLUSH</span><span>FOUR OF A KIND</span><span>FULL HOUSE</span><span>FLUSH</span><span>STRAIGHT</span><span>THREE OF A KIND</span><span>TWO PAIR</span><span>ONE PAIR</span><span>HIGH CARD</span></div>
+  </div>
+</div>
 
+<div class="toast" id="toast"></div>
 <script src="app.js"></script>
-<script src="poker.js"></script>
 </body>
 </html>
