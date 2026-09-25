@@ -599,3 +599,15 @@ pokerBet = function(i,amount){
     };
   }
 })();
+
+/* V4 safety: Czech HUD text and visible action state. */
+(function(){
+  const oldSetTurn = window.pokerSetTurn;
+  if(typeof oldSetTurn==="function"){
+    window.pokerSetTurn = function(){
+      oldSetTurn();
+      const t=document.getElementById("pokerTurnText");
+      if(t && poker.active) t.textContent=(poker.turn===2)?"TVŮJ TAH":"TAH MÁ "+poker.players[poker.turn].name;
+    };
+  }
+})();

@@ -451,3 +451,81 @@ body.poker-open{overflow:hidden}
  .position-dot{width:34px;height:34px}
  .dot-tl{left:21%}.dot-tr{right:21%}.dot-ml{left:15%}.dot-mr{right:15%}
 }
+
+/* ==========================================================
+   POKER V4 — CLEAN TABLE GEOMETRY
+   Reference markers are positioning guides only; they are NOT
+   rendered as pink/green dots.
+   ========================================================== */
+#pokerOverlay{z-index:1000}
+.poker-shell{width:min(1480px,98vw);height:min(940px,97vh);display:grid;grid-template-rows:58px minmax(0,1fr) 122px 28px;overflow:hidden}
+.poker-stage{min-height:0;position:relative;overflow:hidden;display:block!important;background:
+ radial-gradient(ellipse at 50% 45%,#182027 0,#090c11 65%,#05070a 100%)!important}
+.stage-vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.62) 100%)}
+.gta-table{position:absolute!important;left:50%!important;top:55%!important;transform:translate(-50%,-50%)!important;
+ width:min(940px,72vw)!important;height:min(460px,53vh)!important;margin:0!important;z-index:10}
+.gta-table .table-felt{z-index:1}
+.gta-table .table-rail{z-index:0}
+.gta-table .seat{z-index:30}
+
+.dealer-seat{position:absolute!important;z-index:80!important;left:50%!important;top:10px!important;
+ transform:translateX(-50%)!important;width:190px!important;height:150px!important;
+ display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.dealer-seat .dealer-avatar{transform:scale(.72)!important;transform-origin:bottom center;margin-bottom:-35px!important}
+.dealer-seat .dealer-name{font-size:11px}
+.dealer-seat .dealer-speech{margin-top:4px!important;width:190px!important;font-size:8px!important}
+
+.seat{position:absolute!important;width:155px!important;text-align:center;z-index:35!important}
+.gta-table .seat-top{left:50%!important;top:-74px!important;right:auto!important;bottom:auto!important;transform:translateX(-50%)!important}
+.gta-table .seat-right{right:-105px!important;top:50%!important;left:auto!important;bottom:auto!important;transform:translateY(-50%)!important}
+.gta-table .seat-bottom{left:50%!important;bottom:-103px!important;right:auto!important;top:auto!important;transform:translateX(-50%)!important}
+.gta-table .seat-left{left:-105px!important;top:50%!important;right:auto!important;bottom:auto!important;transform:translateY(-50%)!important}
+.gta-table .seat-farleft{left:-55px!important;top:-55px!important;right:auto!important;bottom:auto!important;transform:none!important}
+
+.gta-table .seat-bottom .player-cards{min-height:88px!important}
+.gta-table .seat-bottom .player-cards .card{width:58px!important;height:82px!important}
+.gta-table .seat-right .hole-cards,.gta-table .seat-left .hole-cards,.gta-table .seat-farleft .hole-cards,.gta-table .seat-top .hole-cards{min-height:66px!important}
+.gta-table .seat .hole-cards{position:relative!important;z-index:45!important}
+.gta-table .seat-bottom{z-index:60!important}
+
+.poker-hud{position:relative;z-index:200;min-height:122px!important;height:122px!important;
+ display:grid!important;grid-template-columns:230px minmax(430px,1fr) 330px!important;
+ align-items:center!important;gap:18px!important;padding:12px 24px!important;
+ background:#080b10!important;border-top:1px solid #2c333d!important}
+.poker-actions{display:flex!important;align-items:center!important;justify-content:center!important;gap:9px!important}
+.poker-action{display:block!important;visibility:visible!important;opacity:1!important;width:auto!important;min-width:92px!important;height:50px!important;padding:0 14px!important}
+.poker-action:disabled{opacity:.28!important}
+.raise-control{display:flex!important;align-items:center!important;gap:10px!important}
+.raise-slider{flex:1;min-width:0}.raise-slider label{display:block;font-size:8px;color:#87909d;letter-spacing:1px;margin-bottom:4px}
+.raise-slider input{width:100%!important}
+.raise-control strong{width:38px!important;text-align:right!important;color:#fff}
+.deal-btn{display:block!important;visibility:visible!important;opacity:1!important;width:86px!important;height:50px!important;font-size:12px!important}
+
+.your-info{min-width:0}.your-info b{font-size:13px!important;color:#fff}.your-info small{font-size:9px!important}
+.poker-bottomline{position:relative;z-index:210;height:28px!important;min-height:28px!important}
+
+.pot-display{z-index:20!important}
+.community-cards{z-index:50!important}
+.dealer-seat{z-index:100!important}
+.dealer-seat~.poker-table{z-index:10!important}
+
+/* No accidental pink/green guide dots. */
+.poker-stage .seat-marker{display:none!important}
+
+@media(max-width:1100px){
+ .poker-shell{grid-template-rows:55px minmax(0,1fr) 128px 26px}
+ .gta-table{width:70vw!important;height:49vh!important}
+ .gta-table .seat-right{right:-90px!important}.gta-table .seat-left{left:-90px!important}
+ .poker-hud{grid-template-columns:190px minmax(360px,1fr) 280px!important;gap:10px!important;padding:10px 14px!important}
+ .poker-action{min-width:75px!important;padding:0 9px!important}
+}
+@media(max-width:820px){
+ .poker-shell{width:100vw;height:100vh;border-radius:0;grid-template-rows:50px minmax(0,1fr) 168px 25px}
+ .gta-table{width:86vw!important;height:45vh!important;top:52%!important}
+ .gta-table .seat-right{right:-65px!important}.gta-table .seat-left{left:-65px!important}
+ .gta-table .seat-top{top:-66px!important}.gta-table .seat-bottom{bottom:-88px!important}
+ .dealer-seat{top:2px!important;transform:translateX(-50%) scale(.8)!important;transform-origin:top center!important}
+ .poker-hud{height:168px!important;grid-template-columns:1fr!important;grid-template-rows:36px 58px 48px!important;gap:5px!important;padding:5px 10px!important}
+ .poker-actions{gap:4px!important}.poker-action{min-width:0!important;flex:1!important;height:48px!important}
+ .raise-control{height:48px!important}
+}
