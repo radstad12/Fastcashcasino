@@ -622,3 +622,9 @@ pokerBet = function(i,amount){
     e.style.textOverflow="ellipsis";
   }
 })();
+
+(function(){
+  document.querySelectorAll('#pokerOverlay [class*="marker"],#pokerOverlay [class*="guide"],#pokerOverlay [class*="debug"]').forEach(n=>n.remove());
+  const d=document.getElementById('dealerSpeech');
+  if(d){d.style.whiteSpace='nowrap';d.style.wordBreak='normal';d.style.overflow='hidden';d.style.textOverflow='ellipsis';}
+})();
